@@ -99,11 +99,11 @@
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- ADMIN CONTROL BAR -->
+    <!-- ADMIN CONTROL BAR (Hanya Muncul Jika Admin Login) -->
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
-            <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Live</span>
-            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-indicator">Semua perubahan otomatis tersimpan real-time.</span>
+            <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Live Connected</span>
+            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-indicator">Semua perubahan otomatis tersimpan real-time ke cloud.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -131,7 +131,7 @@
                 <input type="file" id="profile-upload" accept="image/*" class="hidden" onchange="uploadProfilePhoto(event)">
             </label>
             <button onclick="addNewGalleryItem()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1">
-                <i class="fa-solid fa-images"></i> +Bukti Karya/Sertif
+                <i class="fa-solid fa-images"></i> +Sertifikat/Karya
             </button>
             <button onclick="addNewExperience()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1">
                 <i class="fa-solid fa-briefcase"></i> +Karir
@@ -143,7 +143,7 @@
                 <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Manual
             </button>
             <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold">
-                <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                <i class="fa-solid fa-right-from-bracket"></i> Keluar Admin
             </button>
         </div>
     </div>
@@ -563,7 +563,7 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
                 <h3 class="text-xl font-bold">Login Administrator</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan password khusus admin untuk mengaktifkan penyimpanan real-time.</p>
+                <p class="text-xs text-slate-500 mt-1">Masukkan password admin untuk mulai mengelola & mengedit konten portofolio.</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -579,7 +579,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE SDK & SYNCED STORAGE LOGIC -->
+    <!-- FIREBASE SDK & SECURE SYNC LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -613,7 +613,7 @@
 
         window.openLoginModal = function() {
             if (isAdminLoggedIn) {
-                alert('Anda sudah masuk dalam sesi Admin!');
+                alert('Anda sudah berada dalam sesi Admin!');
                 return;
             }
             document.getElementById('login-modal').classList.remove('hidden');
@@ -635,7 +635,7 @@
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Login Berhasil! Perubahan otomatis tersimpan real-time.');
+                alert('Akses Admin Diberikan! Perubahan teks dan tema kini tersimpan otomatis real-time.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -654,13 +654,10 @@
             document.getElementById('nav-login-btn').classList.add('hidden');
         }
 
-        // PERBAIKAN UTAMA: Menggunakan Async/Await agar simpan tuntas dulu sebelum logout & reload
         window.logoutAdmin = async function() {
             if (isAdminLoggedIn) {
                 const indicator = document.getElementById('autosave-indicator');
-                if(indicator) indicator.textContent = "Menyimpan editan terakhir secara permanen...";
-                
-                // Tunggu sampai penyimpanan Firebase benar-benar selesai
+                if(indicator) indicator.textContent = "Menyimpan seluruh editan secara permanen...";
                 await window.saveChangesToFirebase(false);
             }
             isAdminLoggedIn = false;
@@ -669,7 +666,7 @@
             document.getElementById('admin-bar').classList.add('hidden');
             document.getElementById('nav-login-btn').classList.remove('hidden');
             
-            alert('Sesi Admin Berakhir. Seluruh editan sukses tersimpan permanen!');
+            alert('Sesi Admin Berakhir. Portofolio kembali dalam mode publik dengan data editan terakhir.');
             location.reload();
         }
 
@@ -698,7 +695,7 @@
                 btnText.textContent = "Edit: OFF";
                 disableEditing();
                 await window.saveChangesToFirebase(false);
-                alert('Mode Edit dimatikan. Data tersimpan permanen!');
+                alert('Mode Edit dinonaktifkan. Seluruh perubahan tersimpan permanen.');
             }
         }
 
@@ -724,7 +721,7 @@
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(async () => {
                 await window.saveChangesToFirebase(false);
-                if(indicator) indicator.textContent = "Semua perubahan otomatis tersimpan real-time.";
+                if(indicator) indicator.textContent = "Semua perubahan otomatis tersimpan real-time ke cloud.";
             }, 500);
         }
 
@@ -856,7 +853,6 @@
             return clone.innerHTML;
         }
 
-        // Fungsi Simpan Mengembalikan Promise agar sinkronisasi aman
         window.saveChangesToFirebase = function(showAlert = false) {
             document.querySelectorAll('.editable').forEach((el, idx) => {
                 if (!el.id) {
@@ -884,7 +880,7 @@
             return set(ref(db, 'portfolio/data'), portfolioData)
                 .then(() => {
                     if (showAlert) {
-                        alert('Berhasil! Perubahan tersimpan permanen ke database.');
+                        alert('Berhasil! Perubahan sukses tersimpan permanen.');
                     }
                 })
                 .catch((error) => {
