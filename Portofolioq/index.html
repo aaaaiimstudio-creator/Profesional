@@ -563,7 +563,7 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
                 <h3 class="text-xl font-bold">Login Administrator</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan password khusus admin untuk mengaktifkan fitur penyimpanan real-time.</p>
+                <p class="text-xs text-slate-500 mt-1">Masukkan password khusus admin untuk mengaktifkan penyimpanan real-time.</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -579,12 +579,11 @@
         </div>
     </div>
 
-    <!-- FIREBASE SDK & REAL-TIME AUTO-SAVE LOGIC -->
+    <!-- FIREBASE SDK & SYNCED STORAGE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Konfigurasi Firebase Anda
         const firebaseConfig = {
             apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
             authDomain: "portofolio-ku-6446b.firebaseapp.com",
@@ -636,7 +635,7 @@
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Login Berhasil! Perubahan teks, tema, dan penambahan data akan tersimpan secara otomatis real-time.');
+                alert('Login Berhasil! Perubahan otomatis tersimpan real-time.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -655,16 +654,22 @@
             document.getElementById('nav-login-btn').classList.add('hidden');
         }
 
-        window.logoutAdmin = function() {
+        // PERBAIKAN UTAMA: Menggunakan Async/Await agar simpan tuntas dulu sebelum logout & reload
+        window.logoutAdmin = async function() {
             if (isAdminLoggedIn) {
-                window.saveChangesToFirebase(false);
+                const indicator = document.getElementById('autosave-indicator');
+                if(indicator) indicator.textContent = "Menyimpan editan terakhir secara permanen...";
+                
+                // Tunggu sampai penyimpanan Firebase benar-benar selesai
+                await window.saveChangesToFirebase(false);
             }
             isAdminLoggedIn = false;
             sessionStorage.removeItem('admin_auth');
             disableEditing();
             document.getElementById('admin-bar').classList.add('hidden');
             document.getElementById('nav-login-btn').classList.remove('hidden');
-            alert('Sesi Admin Berakhir. Seluruh hasil editan tersimpan permanen.');
+            
+            alert('Sesi Admin Berakhir. Seluruh editan sukses tersimpan permanen!');
             location.reload();
         }
 
@@ -682,7 +687,7 @@
             }
         }
 
-        window.toggleEditMode = function() {
+        window.toggleEditMode = async function() {
             if (!isAdminLoggedIn) return;
             isEditMode = !isEditMode;
             const btnText = document.getElementById('edit-status-text');
@@ -692,8 +697,8 @@
             } else {
                 btnText.textContent = "Edit: OFF";
                 disableEditing();
-                window.saveChangesToFirebase(false);
-                alert('Mode Edit dimatikan. Data tampil permanen sesuai editan terakhir!');
+                await window.saveChangesToFirebase(false);
+                alert('Mode Edit dimatikan. Data tersimpan permanen!');
             }
         }
 
@@ -711,18 +716,16 @@
             if (btnText) btnText.textContent = "Edit: ON";
         }
 
-        // Auto-save real-time saat user mengetik teks (dengan jeda 600ms agar performa lancar)
         function handleTypingAutoSave() {
             if (!isAdminLoggedIn) return;
-            
             const indicator = document.getElementById('autosave-indicator');
             if(indicator) indicator.textContent = "Menyimpan perubahan secara real-time...";
 
             clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(() => {
-                window.saveChangesToFirebase(false);
+            autoSaveTimer = setTimeout(async () => {
+                await window.saveChangesToFirebase(false);
                 if(indicator) indicator.textContent = "Semua perubahan otomatis tersimpan real-time.";
-            }, 600);
+            }, 500);
         }
 
         function disableEditing() {
@@ -737,15 +740,15 @@
             if (btnText) btnText.textContent = "Edit: OFF";
         }
 
-        window.uploadProfilePhoto = function(event) {
+        window.uploadProfilePhoto = async function(event) {
             if (!isAdminLoggedIn) return;
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     const base64Image = e.target.result;
                     document.getElementById('profile-img').src = base64Image;
-                    window.saveChangesToFirebase(true);
+                    await window.saveChangesToFirebase(true);
                 }
                 reader.readAsDataURL(file);
             }
@@ -763,7 +766,7 @@
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(event) {
+                    reader.onload = async function(event) {
                         const imgUrl = event.target.result;
                         const container = document.getElementById('gallery-container');
                         const newItem = document.createElement('div');
@@ -779,7 +782,7 @@
                         `;
                         container.prepend(newItem);
                         enableEditing();
-                        window.saveChangesToFirebase(true);
+                        await window.saveChangesToFirebase(true);
                     }
                     reader.readAsDataURL(file);
                 }
@@ -787,7 +790,7 @@
             fileInput.click();
         }
 
-        window.addNewExperience = function() {
+        window.addNewExperience = async function() {
             if (!isAdminLoggedIn) return;
             const jobTitle = prompt('Masukkan Posisi / Jabatan:', 'Contoh: Konsultan Keuangan');
             const company = prompt('Masukkan Nama Instansi:', 'Contoh: PT ABC');
@@ -811,11 +814,11 @@
                 `;
                 container.prepend(newItem);
                 enableEditing();
-                window.saveChangesToFirebase(true);
+                await window.saveChangesToFirebase(true);
             }
         }
 
-        window.addNewEducation = function() {
+        window.addNewEducation = async function() {
             if (!isAdminLoggedIn) return;
             const degree = prompt('Jenjang & Jurusan:', 'Contoh: S3 Ilmu Manajemen');
             const institution = prompt('Nama Universitas:', 'Contoh: Universitas Gadjah Mada');
@@ -838,7 +841,7 @@
                 `;
                 container.prepend(newItem);
                 enableEditing();
-                window.saveChangesToFirebase(true);
+                await window.saveChangesToFirebase(true);
             }
         }
 
@@ -853,7 +856,7 @@
             return clone.innerHTML;
         }
 
-        // Fungsi Simpan ke Firebase Real-time
+        // Fungsi Simpan Mengembalikan Promise agar sinkronisasi aman
         window.saveChangesToFirebase = function(showAlert = false) {
             document.querySelectorAll('.editable').forEach((el, idx) => {
                 if (!el.id) {
@@ -878,7 +881,7 @@
                 font: getComputedStyle(document.documentElement).getPropertyValue('--current-font').trim() || 'Plus Jakarta Sans'
             };
 
-            set(ref(db, 'portfolio/data'), portfolioData)
+            return set(ref(db, 'portfolio/data'), portfolioData)
                 .then(() => {
                     if (showAlert) {
                         alert('Berhasil! Perubahan tersimpan permanen ke database.');
@@ -889,7 +892,6 @@
                 });
         }
 
-        // Muat Data Secara Sinkron Real-time dari Firebase
         function loadFromFirebase() {
             const dbRef = ref(db, 'portfolio/data');
             onValue(dbRef, (snapshot) => {
