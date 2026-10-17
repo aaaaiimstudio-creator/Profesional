@@ -99,11 +99,11 @@
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- ADMIN CONTROL BAR -->
+    <!-- ADMIN CONTROL BAR (Hanya Muncul Jika Admin Login) -->
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
-            <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Auto-Save</span>
-            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-status">Status: Perubahan tersimpan otomatis</span>
+            <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Live</span>
+            <span class="text-xs text-slate-400 hidden xl:inline">Tema, font, dan teks otomatis tersimpan secara real-time.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -138,6 +138,9 @@
             </button>
             <button onclick="addNewEducation()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1">
                 <i class="fa-solid fa-graduation-cap"></i> +Edu
+            </button>
+            <button onclick="saveChangesToFirebase(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-bold flex items-center gap-1 shadow-lg">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Perubahan
             </button>
             <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
@@ -302,4 +305,638 @@
                             <div class="text-brand-500 font-semibold text-sm editable">PT Umat Mandiri Berkemajuan (Holding UMY)</div>
                         </div>
                         <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-semibold px-3 py-1 rounded-full editable">Sep 2023 - Apr 2025</span>
-          
+                    </div>
+                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
+                        <li>Memimpin pengelolaan likuiditas korporat dan penyusunan anggaran operasional tahunan secara komprehensif.</li>
+                        <li>Mengaudit Laporan Pertanggungjawaban (LPJ) unit bisnis serta merumuskan strategi efisiensi biaya yang efektif.</li>
+                    </ul>
+                </div>
+
+                <!-- Job Item 3 -->
+                <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                        <div>
+                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-brand-500 text-sm"></i> Dosen Tutor & Asisten Akademik</h4>
+                            <div class="text-brand-500 font-semibold text-sm editable">Universitas Siber Muhammadiyah & UMY</div>
+                        </div>
+                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-semibold px-3 py-1 rounded-full editable">Sep 2021 - Apr 2025</span>
+                    </div>
+                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
+                        <li>Mengampu mata kuliah Statistika dan Aplikasi Komputer Manajemen bagi ratusan mahasiswa aktif.</li>
+                        <li>Meraih penghargaan bergengsi sebagai <strong>Dosen Tutor Terbaik</strong> berkat dedikasi dan metode pengajaran interaktif.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION SECTION -->
+    <section id="education" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-block p-3 rounded-2xl bg-brand-50 dark:bg-slate-800 text-brand-500 text-xl mb-3 shadow-sm">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-2" id="edu-subtitle">Latar Belakang Akademis</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold" id="edu-title">Pendidikan Formal</h3>
+                <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div id="education-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- S2 -->
+                <div class="bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <span class="text-xs font-bold text-brand-500 bg-brand-50 px-2.5 py-1 rounded-md">Jan 2026 - Present</span>
+                        <h4 class="text-xl font-bold mt-3 editable">Magister Manajemen (S2) - Candidate</h4>
+                        <p class="font-medium text-sm mt-1 editable">Universitas Negeri Semarang (UNNES)</p>
+                        <p class="text-sm opacity-75 mt-4 leading-relaxed editable">
+                            Fokus riset mendalam pada strategi keuangan korporat, manajemen risiko, dan tata kelola manajerial modern.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- S1 -->
+                <div class="bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">Sep 2018 - Des 2021</span>
+                        <h4 class="text-xl font-bold mt-3 editable">Sarjana Manajemen (S.E.) - IPK 3.93</h4>
+                        <p class="font-medium text-sm mt-1 editable">Universitas Muhammadiyah Yogyakarta</p>
+                        <p class="text-sm opacity-75 mt-4 leading-relaxed editable">
+                            <strong>Wisudawan Terbaik & Tercepat Tingkat Universitas.</strong> Skripsi mengenai Intellectual Capital dan Nilai Perusahaan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO GALLERY & EVIDENCES SECTION -->
+    <section id="portfolio-gallery" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-block p-3 rounded-2xl bg-brand-50 dark:bg-slate-800 text-brand-500 text-xl mb-3 shadow-sm">
+                    <i class="fa-solid fa-certificate"></i>
+                </div>
+                <h2 class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-2">Dokumentasi & Bukti Portofolio</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold">Galeri Sertifikasi & Karya</h3>
+                <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Gallery Item 1 -->
+                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm group">
+                    <div class="aspect-video overflow-hidden relative bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" alt="Sertifikat MOS" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg editable">Sertifikasi Internasional MOS</h4>
+                        <p class="text-xs opacity-75 mt-1 editable">Dokumentasi kelulusan ujian Microsoft Office Specialist standar global.</p>
+                    </div>
+                </div>
+                <!-- Gallery Item 2 -->
+                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm group">
+                    <div class="aspect-video overflow-hidden relative bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" alt="Analisis Keuangan" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg editable">Laporan Rekonsiliasi Keuangan</h4>
+                        <p class="text-xs opacity-75 mt-1 editable">Sampel dashboard pelaporan arus kas harian dan audit verifikasi klaim asuransi.</p>
+                    </div>
+                </div>
+                <!-- Gallery Item 3 -->
+                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm group">
+                    <div class="aspect-video overflow-hidden relative bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800" alt="Penghargaan Dosen" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg editable">Penghargaan Tutor Akademik Terbaik</h4>
+                        <p class="text-xs opacity-75 mt-1 editable">Sertifikat penghargaan atas kontribusi pengajaran digital di Universitas Siber Muhammadiyah.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACHIEVEMENTS & SKILLS -->
+    <section id="achievements" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Achievements & Certifications -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-trophy text-amber-500"></i>
+                        <span class="editable" id="achieve-heading">Prestasi & Sertifikasi</span>
+                    </h3>
+                    <div id="achievements-container" class="space-y-4">
+                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
+                            <div class="p-2 bg-amber-100 text-amber-700 rounded-lg"><i class="fa-solid fa-medal"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm editable">Wisudawan Terbaik & Termuda UMY (2021)</h5>
+                                <p class="text-xs opacity-75 mt-0.5 editable">Meraih predikat kelulusan tertinggi tingkat universitas.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
+                            <div class="p-2 bg-brand-100 text-brand-700 rounded-lg"><i class="fa-solid fa-star"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm editable">Dosen Tutor Terbaik Universitas Siber Muhammadiyah (2026)</h5>
+                                <p class="text-xs opacity-75 mt-0.5 editable">Penghargaan atas keunggulan metode bimbingan dan pengajaran.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
+                            <div class="p-2 bg-emerald-100 text-emerald-700 rounded-lg"><i class="fa-solid fa-certificate"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm editable">Sertifikasi Internasional Microsoft Office Specialist (MOS)</h5>
+                                <p class="text-xs opacity-75 mt-0.5 editable">Standar kompetensi global aplikasi perkantoran.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
+                            <div class="p-2 bg-purple-100 text-purple-700 rounded-lg"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm editable">Sertifikasi Brevet Pajak A & B</h5>
+                                <p class="text-xs opacity-75 mt-0.5 editable">Keahlian komprehensif perpajakan korporasi dan perorangan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-screwdriver-wrench text-brand-500"></i>
+                        <span class="editable" id="skills-heading">Keahlian & Kompetensi</span>
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills</h4>
+                            <div id="hard-skills-container" class="flex flex-wrap gap-2">
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Financial Analysis & Cashflow</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Microsoft Office Expert (MOS)</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Brevet Pajak A & B</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Statistical Data Analysis</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">CorelDRAW & WordPress</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-users text-brand-500"></i> Soft Skills</h4>
+                            <div id="soft-skills-container" class="flex flex-wrap gap-2">
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Strategic Leadership</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Public Speaking & Mentoring</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Financial Auditing & Verification</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Cross-functional Teamwork</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 bg-slate-900 text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center space-y-8">
+                <div class="inline-block p-3 rounded-2xl bg-slate-800 text-brand-500 text-xl mb-1 shadow-sm">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h2 class="text-xs font-bold text-brand-500 uppercase tracking-widest editable" id="contact-subtitle">Mari Berkolaborasi</h2>
+                <h3 class="text-3xl sm:text-5xl font-extrabold tracking-tight editable" id="contact-title">Tertarik Untuk Mengundang / Bekerja Sama?</h3>
+                <p class="text-slate-400 text-base max-w-2xl mx-auto leading-relaxed editable" id="contact-desc">
+                    Terbuka untuk diskusi akademis, konsultasi manajemen keuangan, pengajaran, maupun peluang kolaborasi profesional lainnya.
+                </p>
+
+                <!-- Contact Links -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
+                    <a href="tel:0895363155826" class="p-6 bg-slate-800/80 rounded-2xl border border-slate-700 hover:border-brand-500 transition duration-300 text-center group">
+                        <i class="fa-solid fa-phone text-2xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
+                        <div class="text-xs text-slate-400 font-medium">Telepon / WhatsApp</div>
+                        <div class="text-sm font-bold mt-1 text-slate-200 editable" id="contact-phone">0895363155826</div>
+                    </a>
+                    <a href="mailto:hikarinaimaistimas.work@gmail.com" class="p-6 bg-slate-800/80 rounded-2xl border border-slate-700 hover:border-brand-500 transition duration-300 text-center group">
+                        <i class="fa-solid fa-envelope text-2xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
+                        <div class="text-xs text-slate-400 font-medium">Email Resmi</div>
+                        <div class="text-sm font-bold mt-1 text-slate-200 editable break-all" id="contact-email">hikarinaimaistimas.work@gmail.com</div>
+                    </a>
+                    <a href="https://www.instagram.com/hikarinaim/" target="_blank" class="p-6 bg-slate-800/80 rounded-2xl border border-slate-700 hover:border-brand-500 transition duration-300 text-center group">
+                        <i class="fa-brands fa-instagram text-2xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
+                        <div class="text-xs text-slate-400 font-medium">Instagram</div>
+                        <div class="text-sm font-bold mt-1 text-slate-200 editable" id="contact-ig">@hikarinaim</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-500 py-8 border-t border-slate-800/50 text-xs text-center">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                © 2026 Hikarinaim Aistimas, S.E., MOS. All rights reserved.
+            </div>
+            <div>
+                <button onclick="openLoginModal()" class="hover:text-slate-300 transition-colors">
+                    <i class="fa-solid fa-lock text-[10px] mr-1"></i> Area Akses Admin
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white text-slate-900 rounded-2xl shadow-2xl border border-slate-100 max-w-md w-full p-6 relative animate-fade-in">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-slate-900 text-white rounded-xl mx-auto flex items-center justify-center text-xl mb-3 shadow-md">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="text-xl font-bold">Login Administrator</h3>
+                <p class="text-xs text-slate-500 mt-1">Masukkan password khusus admin. Pengunjung umum hanya dapat melihat portofolio.</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Password Admin</label>
+                    <input type="password" id="admin-password" placeholder="Masukkan password" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    <p class="text-[11px] text-slate-400 mt-1">Password default: <code class="bg-slate-100 px-1 py-0.5 rounded font-mono">admin123</code></p>
+                </div>
+                <button type="submit" class="w-full bg-slate-900 hover:bg-brand-500 text-white font-semibold py-2.5 rounded-xl transition duration-300 text-sm shadow-md">
+                    Masuk Sebagai Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FIREBASE SDK (MODULAR) & SCRIPT LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Konfigurasi Firebase Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
+            authDomain: "portofolio-ku-6446b.firebaseapp.com",
+            projectId: "portofolio-ku-6446b",
+            storageBucket: "portofolio-ku-6446b.firebasestorage.app",
+            messagingSenderId: "489665741012",
+            appId: "1:489665741012:web:80f9d7aa2e201c5aa27b41",
+            measurementId: "G-ELDPNEQDPC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let isAdminLoggedIn = false;
+        let isEditMode = false;
+        let autoSaveTimer = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromFirebase();
+            checkAdminSession();
+        });
+
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        window.openLoginModal = function() {
+            if (isAdminLoggedIn) {
+                alert('Anda sudah masuk dalam sesi Admin!');
+                return;
+            }
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('admin-password').focus();
+        }
+
+        window.closeLoginModal = function() {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+        }
+
+        window.handleLogin = function(e) {
+            e.preventDefault();
+            const passwordInput = document.getElementById('admin-password').value;
+            
+            if (passwordInput === 'admin123') {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('admin_auth', 'true');
+                closeLoginModal();
+                showAdminBar();
+                enableEditing();
+                alert('Login Berhasil! Perubahan tema dan teks otomatis tersimpan real-time.');
+            } else {
+                alert('Password salah! Akses ditolak.');
+            }
+        }
+
+        function checkAdminSession() {
+            if (sessionStorage.getItem('admin_auth') === 'true') {
+                isAdminLoggedIn = true;
+                showAdminBar();
+                enableEditing();
+            }
+        }
+
+        function showAdminBar() {
+            document.getElementById('admin-bar').classList.remove('hidden');
+            document.getElementById('nav-login-btn').classList.add('hidden');
+        }
+
+        window.logoutAdmin = function() {
+            if (isAdminLoggedIn) {
+                window.saveChangesToFirebase(false);
+            }
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('admin_auth');
+            disableEditing();
+            document.getElementById('admin-bar').classList.add('hidden');
+            document.getElementById('nav-login-btn').classList.remove('hidden');
+            alert('Sesi Admin Berakhir. Tema & seluruh perubahan tersimpan permanen.');
+            location.reload();
+        }
+
+        window.changeTheme = function(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            if (isAdminLoggedIn) {
+                window.saveChangesToFirebase(false);
+            }
+        }
+
+        window.changeFont = function(fontName) {
+            document.documentElement.style.setProperty('--current-font', fontName);
+            if (isAdminLoggedIn) {
+                window.saveChangesToFirebase(false);
+            }
+        }
+
+        window.toggleEditMode = function() {
+            if (!isAdminLoggedIn) return;
+            isEditMode = !isEditMode;
+            const btnText = document.getElementById('edit-status-text');
+            if (isEditMode) {
+                btnText.textContent = "Edit: ON";
+                enableEditing();
+            } else {
+                btnText.textContent = "Edit: OFF";
+                disableEditing();
+                window.saveChangesToFirebase(false);
+                alert('Mode Edit dimatikan. Data & Tema tersimpan permanen!');
+            }
+        }
+
+        function enableEditing() {
+            if (!isAdminLoggedIn) return;
+            isEditMode = true;
+            const editables = document.querySelectorAll('.editable');
+            editables.forEach(el => {
+                el.contentEditable = "true";
+                el.classList.add('editable-active');
+                el.removeEventListener('input', handleTypingAutoSave);
+                el.addEventListener('input', handleTypingAutoSave);
+            });
+            const btnText = document.getElementById('edit-status-text');
+            if (btnText) btnText.textContent = "Edit: ON";
+        }
+
+        function handleTypingAutoSave() {
+            if (!isAdminLoggedIn) return;
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                window.saveChangesToFirebase(false);
+            }, 600);
+        }
+
+        function disableEditing() {
+            isEditMode = false;
+            const editables = document.querySelectorAll('.editable');
+            editables.forEach(el => {
+                el.contentEditable = "false";
+                el.classList.remove('editable-active');
+                el.removeEventListener('input', handleTypingAutoSave);
+            });
+            const btnText = document.getElementById('edit-status-text');
+            if (btnText) btnText.textContent = "Edit: OFF";
+        }
+
+        window.uploadProfilePhoto = function(event) {
+            if (!isAdminLoggedIn) return;
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    document.getElementById('profile-img').src = base64Image;
+                    window.saveChangesToFirebase(true);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.addNewGalleryItem = function() {
+            if (!isAdminLoggedIn) return;
+            const title = prompt('Masukkan Judul Bukti Karya / Sertifikasi:', 'Contoh: Sertifikat Kompetensi Keuangan');
+            const desc = prompt('Masukkan Deskripsi Singkat Bukti Karya:', 'Contoh: Bukti verifikasi dan pengelolaan portofolio.');
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            
+            fileInput.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgUrl = event.target.result;
+                        const container = document.getElementById('gallery-container');
+                        const newItem = document.createElement('div');
+                        newItem.className = 'bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm group';
+                        newItem.innerHTML = `
+                            <div class="aspect-video overflow-hidden relative bg-slate-200">
+                                <img src="${imgUrl}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            </div>
+                            <div class="p-6">
+                                <h4 class="font-bold text-lg editable">${title}</h4>
+                                <p class="text-xs opacity-75 mt-1 editable">${desc}</p>
+                            </div>
+                        `;
+                        container.prepend(newItem);
+                        enableEditing();
+                        window.saveChangesToFirebase(true);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            };
+            fileInput.click();
+        }
+
+        window.addNewExperience = function() {
+            if (!isAdminLoggedIn) return;
+            const jobTitle = prompt('Masukkan Posisi / Jabatan:', 'Contoh: Konsultan Keuangan');
+            const company = prompt('Masukkan Nama Instansi:', 'Contoh: PT ABC');
+            const period = prompt('Masukkan Periode:', 'Contoh: 2026 - Present');
+            
+            if (jobTitle && company) {
+                const container = document.getElementById('experience-container');
+                const newItem = document.createElement('div');
+                newItem.className = 'bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group';
+                newItem.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                        <div>
+                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-briefcase text-brand-500 text-sm"></i> <span>${jobTitle}</span></h4>
+                            <div class="text-brand-500 font-semibold text-sm editable">${company}</div>
+                        </div>
+                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-semibold px-3 py-1 rounded-full editable">${period}</span>
+                    </div>
+                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
+                        <li>Tuliskan deskripsi tugas di sini.</li>
+                    </ul>
+                `;
+                container.prepend(newItem);
+                enableEditing();
+                window.saveChangesToFirebase(true);
+            }
+        }
+
+        window.addNewEducation = function() {
+            if (!isAdminLoggedIn) return;
+            const degree = prompt('Jenjang & Jurusan:', 'Contoh: S3 Ilmu Manajemen');
+            const institution = prompt('Nama Universitas:', 'Contoh: Universitas Gadjah Mada');
+            const period = prompt('Tahun:', 'Contoh: 2026 - Present');
+            
+            if (degree && institution) {
+                const container = document.getElementById('education-container');
+                const newItem = document.createElement('div');
+                newItem.className = 'bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between';
+                newItem.innerHTML = `
+                    <div>
+                        <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="text-xs font-bold text-brand-500 bg-brand-50 px-2.5 py-1 rounded-md editable">${period}</span>
+                        <h4 class="text-xl font-bold mt-3 editable">${degree}</h4>
+                        <p class="font-medium text-sm mt-1 editable">${institution}</p>
+                        <p class="text-sm opacity-75 mt-4 leading-relaxed editable">Deskripsi singkat studi.</p>
+                    </div>
+                `;
+                container.prepend(newItem);
+                enableEditing();
+                window.saveChangesToFirebase(true);
+            }
+        }
+
+        // Simpan Kontainer Tanpa Atribut Sementara `contenteditable` agar Hasil Murni Tersimpan
+        function getCleanHTML(elementId) {
+            const container = document.getElementById(elementId);
+            if (!container) return '';
+            const clone = container.cloneNode(true);
+            clone.querySelectorAll('.editable').forEach(el => {
+                el.removeAttribute('contenteditable');
+                el.classList.remove('editable-active');
+            });
+            return clone.innerHTML;
+        }
+
+        // Fungsi Utama Menyimpan Data, Tema, dan Font ke Firebase
+        window.saveChangesToFirebase = function(showAlert = false) {
+            // Berikan ID unik pada seluruh elemen editable yang belum punya ID
+            document.querySelectorAll('.editable').forEach((el, idx) => {
+                if (!el.id) {
+                    el.id = 'editable_dyn_' + idx;
+                }
+            });
+
+            const editableElements = document.querySelectorAll('.editable');
+            const savedData = {};
+
+            editableElements.forEach((el) => {
+                savedData[el.id] = el.innerHTML;
+            });
+
+            const portfolioData = {
+                texts: savedData,
+                profileImg: document.getElementById('profile-img').src,
+                experienceHtml: getCleanHTML('experience-container'),
+                educationHtml: getCleanHTML('education-container'),
+                galleryHtml: getCleanHTML('gallery-container'),
+                theme: document.documentElement.getAttribute('data-theme') || 'blue',
+                font: getComputedStyle(document.documentElement).getPropertyValue('--current-font').trim() || 'Plus Jakarta Sans'
+            };
+
+            set(ref(db, 'portfolio/data'), portfolioData)
+                .then(() => {
+                    if (showAlert) {
+                        alert('Sukses! Perubahan dan tema berhasil disimpan permanen ke Firebase.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Gagal menyimpan ke Firebase: ' + error.message);
+                });
+        }
+
+        // Memuat Data Real-time dari Firebase tanpa mengganggu sesi pengetikan
+        function loadFromFirebase() {
+            const dbRef = ref(db, 'portfolio/data');
+            onValue(dbRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    if (data.theme) {
+                        document.documentElement.setAttribute('data-theme', data.theme);
+                        const themeSelect = document.getElementById('theme-selector');
+                        if (themeSelect) themeSelect.value = data.theme;
+                    }
+                    if (data.font) {
+                        document.documentElement.style.setProperty('--current-font', data.font);
+                        const fontSelect = document.getElementById('font-selector');
+                        if (fontSelect) fontSelect.value = data.font;
+                    }
+                    if (data.profileImg) {
+                        document.getElementById('profile-img').src = data.profileImg;
+                    }
+
+                    // Hindari penimpaan langsung jika admin sedang fokus mengetik salah satu elemen di kontainer
+                    const activeEl = document.activeElement;
+                    const isFocusInExp = document.getElementById('experience-container')?.contains(activeEl);
+                    const isFocusInEdu = document.getElementById('education-container')?.contains(activeEl);
+                    const isFocusInGal = document.getElementById('gallery-container')?.contains(activeEl);
+
+                    if (data.experienceHtml && !isFocusInExp) {
+                        document.getElementById('experience-container').innerHTML = data.experienceHtml;
+                    }
+                    if (data.educationHtml && !isFocusInEdu) {
+                        document.getElementById('education-container').innerHTML = data.educationHtml;
+                    }
+                    if (data.galleryHtml && !isFocusInGal) {
+                        document.getElementById('gallery-container').innerHTML = data.galleryHtml;
+                    }
+
+                    if (data.texts) {
+                        Object.keys(data.texts).forEach(key => {
+                            const el = document.getElementById(key);
+                            if (el && document.activeElement !== el) {
+                                el.innerHTML = data.texts[key];
+                            }
+                        });
+                    }
+
+                    // Apabila sedang dalam status Admin, re-apply atribut editable
+                    if (isAdminLoggedIn) {
+                        enableEditing();
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
