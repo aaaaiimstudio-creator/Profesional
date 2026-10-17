@@ -99,11 +99,11 @@
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- ADMIN CONTROL BAR (Hanya Muncul Jika Admin Login) -->
+    <!-- ADMIN CONTROL BAR -->
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
             <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Live Connected</span>
-            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-indicator">Semua perubahan otomatis tersimpan real-time ke cloud.</span>
+            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-indicator">Semua perubahan otomatis tersimpan real-time.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -582,7 +582,7 @@
     <!-- FIREBASE SDK & SECURE SYNC LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
@@ -600,6 +600,7 @@
         let isAdminLoggedIn = false;
         let isEditMode = false;
         let autoSaveTimer = null;
+        let initialDataLoaded = false;
 
         window.addEventListener('DOMContentLoaded', () => {
             loadFromFirebase();
@@ -635,7 +636,7 @@
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Akses Admin Diberikan! Perubahan teks dan tema kini tersimpan otomatis real-time.');
+                alert('Akses Admin Diberikan! Perubahan teks dan tema otomatis tersimpan real-time.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -654,20 +655,27 @@
             document.getElementById('nav-login-btn').classList.add('hidden');
         }
 
+        // FUNGSI KELUAR ADMIN (LOGOUT) DENGAN JAMINAN SIMPAN TUNTAS & RELOAD AMAN
         window.logoutAdmin = async function() {
-            if (isAdminLoggedIn) {
-                const indicator = document.getElementById('autosave-indicator');
-                if(indicator) indicator.textContent = "Menyimpan seluruh editan secara permanen...";
-                await window.saveChangesToFirebase(false);
+            if (confirm('Apakah Anda yakin ingin keluar dari mode Admin? Perubahan terakhir akan disimpan secara permanen.')) {
+                if (isAdminLoggedIn) {
+                    const indicator = document.getElementById('autosave-indicator');
+                    if(indicator) indicator.textContent = "Menyimpan editan terakhir ke cloud sebelum keluar...";
+                    
+                    // Paksa simpan tuntas dan tunggu sampai janji (promise) terpenuhi
+                    await window.saveChangesToFirebase(false);
+                }
+                
+                isAdminLoggedIn = false;
+                sessionStorage.removeItem('admin_auth');
+                disableEditing();
+                
+                document.getElementById('admin-bar').classList.add('hidden');
+                document.getElementById('nav-login-btn').classList.remove('hidden');
+                
+                alert('Keluar Admin Berhasil. Portofolio beralih ke mode publik.');
+                location.reload();
             }
-            isAdminLoggedIn = false;
-            sessionStorage.removeItem('admin_auth');
-            disableEditing();
-            document.getElementById('admin-bar').classList.add('hidden');
-            document.getElementById('nav-login-btn').classList.remove('hidden');
-            
-            alert('Sesi Admin Berakhir. Portofolio kembali dalam mode publik dengan data editan terakhir.');
-            location.reload();
         }
 
         window.changeTheme = function(themeName) {
@@ -695,7 +703,7 @@
                 btnText.textContent = "Edit: OFF";
                 disableEditing();
                 await window.saveChangesToFirebase(false);
-                alert('Mode Edit dinonaktifkan. Seluruh perubahan tersimpan permanen.');
+                alert('Mode Edit dinonaktifkan. Data tersimpan permanen.');
             }
         }
 
@@ -721,7 +729,7 @@
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(async () => {
                 await window.saveChangesToFirebase(false);
-                if(indicator) indicator.textContent = "Semua perubahan otomatis tersimpan real-time ke cloud.";
+                if(indicator) indicator.textContent = "Semua perubahan otomatis tersimpan real-time.";
             }, 500);
         }
 
@@ -853,6 +861,7 @@
             return clone.innerHTML;
         }
 
+        // FUNGSI UTAMA PENYIMPANAN KE FIREBASE
         window.saveChangesToFirebase = function(showAlert = false) {
             document.querySelectorAll('.editable').forEach((el, idx) => {
                 if (!el.id) {
@@ -880,7 +889,7 @@
             return set(ref(db, 'portfolio/data'), portfolioData)
                 .then(() => {
                     if (showAlert) {
-                        alert('Berhasil! Perubahan sukses tersimpan permanen.');
+                        alert('Berhasil! Perubahan sukses tersimpan permanen ke cloud.');
                     }
                 })
                 .catch((error) => {
@@ -888,8 +897,21 @@
                 });
         }
 
+        // LOAD DATA DARI FIREBASE (Mendukung Real-Time Sync & Cold-Start)
         function loadFromFirebase() {
             const dbRef = ref(db, 'portfolio/data');
+            
+            // Cek data sekali saat pertama kali halaman dibuka (Cold-Start)
+            get(dbRef).then((snapshot) => {
+                if (!snapshot.exists()) {
+                    // Jika database cloud masih kosong, inisialisasi otomatis dengan data bawaan halaman
+                    window.saveChangesToFirebase(false);
+                }
+            }).catch((error) => {
+                console.error("Gagal membaca initial state:", error);
+            });
+
+            // Sinkronisasi Real-Time secara terus-menerus untuk semua pengunjung/browser
             onValue(dbRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
