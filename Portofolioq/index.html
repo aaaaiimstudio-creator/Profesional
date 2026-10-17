@@ -103,7 +103,7 @@
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
             <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Live</span>
-            <span class="text-xs text-slate-400 hidden xl:inline">Perubahan otomatis tersinkronisasi ke seluruh perangkat secara real-time.</span>
+            <span class="text-xs text-slate-400 hidden xl:inline">Perubahan otomatis tersimpan saat Anda menonaktifkan Edit atau klik Simpan.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -140,7 +140,7 @@
                 <i class="fa-solid fa-graduation-cap"></i> +Edu
             </button>
             <button onclick="saveChangesToFirebase()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-bold flex items-center gap-1 shadow-lg">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Firebase
+                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Perubahan
             </button>
             <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
@@ -635,7 +635,7 @@
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Login Berhasil! Perubahan akan langsung tersimpan secara otomatis ke Firebase.');
+                alert('Login Berhasil! Perubahan akan otomatis tersimpan saat Anda mematikan mode edit atau klik Simpan.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -655,6 +655,9 @@
         }
 
         window.logoutAdmin = function() {
+            if (isEditMode) {
+                window.saveChangesToFirebase();
+            }
             isAdminLoggedIn = false;
             sessionStorage.removeItem('admin_auth');
             disableEditing();
@@ -667,15 +670,16 @@
         window.changeTheme = function(themeName) {
             if (!isAdminLoggedIn) return;
             document.documentElement.setAttribute('data-theme', themeName);
-            saveChangesToFirebase();
+            window.saveChangesToFirebase();
         }
 
         window.changeFont = function(fontName) {
             if (!isAdminLoggedIn) return;
             document.documentElement.style.setProperty('--current-font', fontName);
-            saveChangesToFirebase();
+            window.saveChangesToFirebase();
         }
 
+        // Toggle Edit Mode: Jika dimatikan (Edit: OFF), otomatis menyimpan ke Firebase
         window.toggleEditMode = function() {
             if (!isAdminLoggedIn) return;
             isEditMode = !isEditMode;
@@ -686,6 +690,8 @@
             } else {
                 btnText.textContent = "Edit: OFF";
                 disableEditing();
+                window.saveChangesToFirebase(); // SIMPAN OTOMATIS SAAT KELUAR MODE EDIT
+                alert('Mode Edit dimatikan. Data berhasil tersimpan secara permanen ke Firebase!');
             }
         }
 
@@ -816,7 +822,7 @@
             }
         }
 
-        // Simpan Otomatis / Manual ke Firebase
+        // Fungsi Simpan ke Firebase (Tombol Simpan Perubahan)
         window.saveChangesToFirebase = function() {
             if (!isAdminLoggedIn) return;
             const editableElements = document.querySelectorAll('.editable');
@@ -839,14 +845,14 @@
 
             set(ref(db, 'portfolio/data'), portfolioData)
                 .then(() => {
-                    console.log('Data berhasil disinkronkan ke Firebase.');
+                    alert('Sukses! Seluruh data portofolio berhasil disimpan ke Firebase.');
                 })
                 .catch((error) => {
                     alert('Gagal menyimpan ke Firebase: ' + error.message);
                 });
         }
 
-        // Muat Data Real-Time dari Firebase (Sinkronisasi Antar PC/HP)
+        // Muat Data Secara Real-Time dari Firebase (Sinkronisasi Antar Perangkat)
         function loadFromFirebase() {
             const dbRef = ref(db, 'portfolio/data');
             onValue(dbRef, (snapshot) => {
