@@ -99,11 +99,11 @@
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- ADMIN CONTROL BAR (Hanya Muncul Jika Admin Login) -->
+    <!-- ADMIN CONTROL BAR -->
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
             <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Live</span>
-            <span class="text-xs text-slate-400 hidden xl:inline">Tema, font, dan teks otomatis tersimpan secara real-time.</span>
+            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-indicator">Semua perubahan otomatis tersimpan real-time.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -140,7 +140,7 @@
                 <i class="fa-solid fa-graduation-cap"></i> +Edu
             </button>
             <button onclick="saveChangesToFirebase(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-bold flex items-center gap-1 shadow-lg">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Perubahan
+                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Manual
             </button>
             <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
@@ -247,7 +247,7 @@
                     </div>
                 </div>
 
-                <!-- Hero Right / Professional Visual Image Card -->
+                <!-- Hero Right / Visual Card -->
                 <div class="lg:col-span-5 flex justify-center">
                     <div class="relative w-full max-w-md">
                         <div class="absolute -inset-1.5 bg-gradient-to-r from-brand-500 to-brand-900 rounded-3xl blur-lg opacity-30 transition duration-1000"></div>
@@ -376,7 +376,7 @@
         </div>
     </section>
 
-    <!-- PORTFOLIO GALLERY & EVIDENCES SECTION -->
+    <!-- PORTFOLIO GALLERY SECTION -->
     <section id="portfolio-gallery" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -429,7 +429,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 
-                <!-- Achievements & Certifications -->
+                <!-- Achievements -->
                 <div>
                     <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
                         <i class="fa-solid fa-trophy text-amber-500"></i>
@@ -478,21 +478,21 @@
                         <div>
                             <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills</h4>
                             <div id="hard-skills-container" class="flex flex-wrap gap-2">
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Financial Analysis & Cashflow</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Microsoft Office Expert (MOS)</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Brevet Pajak A & B</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Statistical Data Analysis</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">CorelDRAW & WordPress</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)] editable">Financial Analysis & Cashflow</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)] editable">Microsoft Office Expert (MOS)</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)] editable">Brevet Pajak A & B</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)] editable">Statistical Data Analysis</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)] editable">CorelDRAW & WordPress</span>
                             </div>
                         </div>
 
                         <div>
                             <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-users text-brand-500"></i> Soft Skills</h4>
                             <div id="soft-skills-container" class="flex flex-wrap gap-2">
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Strategic Leadership</span>
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Public Speaking & Mentoring</span>
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Financial Auditing & Verification</span>
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Cross-functional Teamwork</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700 editable">Strategic Leadership</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700 editable">Public Speaking & Mentoring</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700 editable">Financial Auditing & Verification</span>
+                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700 editable">Cross-functional Teamwork</span>
                             </div>
                         </div>
                     </div>
@@ -563,7 +563,7 @@
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
                 <h3 class="text-xl font-bold">Login Administrator</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan password khusus admin. Pengunjung umum hanya dapat melihat portofolio.</p>
+                <p class="text-xs text-slate-500 mt-1">Masukkan password khusus admin untuk mengaktifkan fitur penyimpanan real-time.</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -579,7 +579,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE SDK (MODULAR) & SCRIPT LOGIC -->
+    <!-- FIREBASE SDK & REAL-TIME AUTO-SAVE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -636,7 +636,7 @@
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Login Berhasil! Perubahan tema dan teks otomatis tersimpan real-time.');
+                alert('Login Berhasil! Perubahan teks, tema, dan penambahan data akan tersimpan secara otomatis real-time.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -664,7 +664,7 @@
             disableEditing();
             document.getElementById('admin-bar').classList.add('hidden');
             document.getElementById('nav-login-btn').classList.remove('hidden');
-            alert('Sesi Admin Berakhir. Tema & seluruh perubahan tersimpan permanen.');
+            alert('Sesi Admin Berakhir. Seluruh hasil editan tersimpan permanen.');
             location.reload();
         }
 
@@ -693,7 +693,7 @@
                 btnText.textContent = "Edit: OFF";
                 disableEditing();
                 window.saveChangesToFirebase(false);
-                alert('Mode Edit dimatikan. Data & Tema tersimpan permanen!');
+                alert('Mode Edit dimatikan. Data tampil permanen sesuai editan terakhir!');
             }
         }
 
@@ -711,11 +711,17 @@
             if (btnText) btnText.textContent = "Edit: ON";
         }
 
+        // Auto-save real-time saat user mengetik teks (dengan jeda 600ms agar performa lancar)
         function handleTypingAutoSave() {
             if (!isAdminLoggedIn) return;
+            
+            const indicator = document.getElementById('autosave-indicator');
+            if(indicator) indicator.textContent = "Menyimpan perubahan secara real-time...";
+
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(() => {
                 window.saveChangesToFirebase(false);
+                if(indicator) indicator.textContent = "Semua perubahan otomatis tersimpan real-time.";
             }, 600);
         }
 
@@ -836,7 +842,6 @@
             }
         }
 
-        // Simpan Kontainer Tanpa Atribut Sementara `contenteditable` agar Hasil Murni Tersimpan
         function getCleanHTML(elementId) {
             const container = document.getElementById(elementId);
             if (!container) return '';
@@ -848,9 +853,8 @@
             return clone.innerHTML;
         }
 
-        // Fungsi Utama Menyimpan Data, Tema, dan Font ke Firebase
+        // Fungsi Simpan ke Firebase Real-time
         window.saveChangesToFirebase = function(showAlert = false) {
-            // Berikan ID unik pada seluruh elemen editable yang belum punya ID
             document.querySelectorAll('.editable').forEach((el, idx) => {
                 if (!el.id) {
                     el.id = 'editable_dyn_' + idx;
@@ -877,15 +881,15 @@
             set(ref(db, 'portfolio/data'), portfolioData)
                 .then(() => {
                     if (showAlert) {
-                        alert('Sukses! Perubahan dan tema berhasil disimpan permanen ke Firebase.');
+                        alert('Berhasil! Perubahan tersimpan permanen ke database.');
                     }
                 })
                 .catch((error) => {
-                    console.error('Gagal menyimpan ke Firebase: ' + error.message);
+                    console.error('Gagal menyimpan: ' + error.message);
                 });
         }
 
-        // Memuat Data Real-time dari Firebase tanpa mengganggu sesi pengetikan
+        // Muat Data Secara Sinkron Real-time dari Firebase
         function loadFromFirebase() {
             const dbRef = ref(db, 'portfolio/data');
             onValue(dbRef, (snapshot) => {
@@ -905,7 +909,6 @@
                         document.getElementById('profile-img').src = data.profileImg;
                     }
 
-                    // Hindari penimpaan langsung jika admin sedang fokus mengetik salah satu elemen di kontainer
                     const activeEl = document.activeElement;
                     const isFocusInExp = document.getElementById('experience-container')?.contains(activeEl);
                     const isFocusInEdu = document.getElementById('education-container')?.contains(activeEl);
@@ -930,7 +933,6 @@
                         });
                     }
 
-                    // Apabila sedang dalam status Admin, re-apply atribut editable
                     if (isAdminLoggedIn) {
                         enableEditing();
                     }
