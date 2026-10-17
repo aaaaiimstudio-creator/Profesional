@@ -103,7 +103,7 @@
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
             <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Live</span>
-            <span class="text-xs text-slate-400 hidden xl:inline">Perubahan otomatis tersimpan real-time saat Anda klik Simpan, matikan edit, atau keluar.</span>
+            <span class="text-xs text-slate-400 hidden xl:inline">Perubahan otomatis tersimpan real-time saat Anda mengetik atau mengubah data.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -600,6 +600,7 @@
 
         let isAdminLoggedIn = false;
         let isEditMode = false;
+        let autoSaveTimer = null; // Timer untuk auto-save saat mengetik
 
         window.addEventListener('DOMContentLoaded', () => {
             loadFromFirebase();
@@ -635,7 +636,7 @@
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Login Berhasil! Perubahan teks dan elemen akan otomatis tersimpan saat Anda klik Simpan, matikan edit, atau keluar.');
+                alert('Login Berhasil! Setiap ketikan Anda akan otomatis tersimpan real-time.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -654,17 +655,16 @@
             document.getElementById('nav-login-btn').classList.add('hidden');
         }
 
-        // PENTING: Saat keluar dari mode admin / klik tombol Keluar, data otomatis disimpan
         window.logoutAdmin = function() {
             if (isAdminLoggedIn) {
-                window.saveChangesToFirebase(false); // Simpan otomatis tanpa pop-up berlebihan sebelum keluar
+                window.saveChangesToFirebase(false); // Simpan terakhir sebelum keluar
             }
             isAdminLoggedIn = false;
             sessionStorage.removeItem('admin_auth');
             disableEditing();
             document.getElementById('admin-bar').classList.add('hidden');
             document.getElementById('nav-login-btn').classList.remove('hidden');
-            alert('Sesi Admin Berakhir. Seluruh perubahan berhasil disimpan secara permanen.');
+            alert('Sesi Admin Berakhir. Seluruh perubahan tersimpan permanen.');
             location.reload();
         }
 
@@ -680,7 +680,6 @@
             window.saveChangesToFirebase(false);
         }
 
-        // Saat mode edit dimatikan (Edit: OFF), otomatis menyimpan ke Firebase
         window.toggleEditMode = function() {
             if (!isAdminLoggedIn) return;
             isEditMode = !isEditMode;
@@ -691,8 +690,8 @@
             } else {
                 btnText.textContent = "Edit: OFF";
                 disableEditing();
-                window.saveChangesToFirebase(false); // Simpan otomatis saat mode edit dimatikan
-                alert('Mode Edit dimatikan. Data berhasil tersimpan otomatis secara real-time!');
+                window.saveChangesToFirebase(false);
+                alert('Mode Edit dimatikan. Data tersimpan permanen!');
             }
         }
 
@@ -703,8 +702,21 @@
             editables.forEach(el => {
                 el.contentEditable = "true";
                 el.classList.add('editable-active');
+                
+                // TAMBAHAN: Auto-save otomatis saat user mengetik di elemen apa pun
+                el.removeEventListener('input', handleTypingAutoSave);
+                el.addEventListener('input', handleTypingAutoSave);
             });
             document.getElementById('edit-status-text').textContent = "Edit: ON";
+        }
+
+        // Fungsi Debounce agar penyimpanan otomatis berjalan mulus setiap selesai mengetik
+        function handleTypingAutoSave() {
+            if (!isAdminLoggedIn) return;
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                window.saveChangesToFirebase(false); // Simpan otomatis senyap (real-time)
+            }, 600); // Menyimpan otomatis 600ms setelah selesai mengetik
         }
 
         function disableEditing() {
@@ -713,6 +725,7 @@
             editables.forEach(el => {
                 el.contentEditable = "false";
                 el.classList.remove('editable-active');
+                el.removeEventListener('input', handleTypingAutoSave);
             });
             document.getElementById('edit-status-text').textContent = "Edit: OFF";
         }
@@ -758,6 +771,7 @@
                             </div>
                         `;
                         container.prepend(newItem);
+                        enableEditing(); // Perbarui event input untuk elemen baru
                         window.saveChangesToFirebase(true);
                     }
                     reader.readAsDataURL(file);
@@ -789,6 +803,7 @@
                     </ul>
                 `;
                 container.prepend(newItem);
+                enableEditing();
                 window.saveChangesToFirebase(true);
             }
         }
@@ -815,11 +830,12 @@
                     </div>
                 `;
                 container.prepend(newItem);
+                enableEditing();
                 window.saveChangesToFirebase(true);
             }
         }
 
-        // Fungsi Simpan ke Firebase (Dapat memunculkan notifikasi atau berjalan senyap)
+        // Fungsi Utama Penyimpanan ke Firebase
         window.saveChangesToFirebase = function(showAlert = false) {
             if (!isAdminLoggedIn) return;
             const editableElements = document.querySelectorAll('.editable');
@@ -843,7 +859,7 @@
             set(ref(db, 'portfolio/data'), portfolioData)
                 .then(() => {
                     if (showAlert) {
-                        alert('Sukses! Perubahan portofolio berhasil disimpan ke Firebase.');
+                        alert('Sukses! Perubahan berhasil disimpan ke Firebase.');
                     }
                 })
                 .catch((error) => {
@@ -851,7 +867,7 @@
                 });
         }
 
-        // Muat Data Real-Time dari Firebase (Sinkronisasi Antar Perangkat & Refresh Aman)
+        // Muat Data Secara Real-Time dari Firebase (Sinkronisasi Antar Perangkat & Refresh Aman)
         function loadFromFirebase() {
             const dbRef = ref(db, 'portfolio/data');
             onValue(dbRef, (snapshot) => {
@@ -882,7 +898,7 @@
                     if (data.texts) {
                         Object.keys(data.texts).forEach(key => {
                             const el = document.getElementById(key);
-                            if (el) {
+                            if (el && document.activeElement !== el) { // Hindari bentrok kursor saat mengetik aktif
                                 el.innerHTML = data.texts[key];
                             }
                         });
