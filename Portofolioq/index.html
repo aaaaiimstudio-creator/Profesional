@@ -102,8 +102,8 @@
     <!-- ADMIN CONTROL BAR (Sangat Rahasia / Hanya Muncul Jika Admin Login) -->
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950 text-white px-4 py-3 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-2">
-            <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Control Panel</span>
-            <span class="text-xs text-slate-400 hidden xl:inline">Mode Edit Aktif: Anda memiliki hak akses penuh untuk mengubah situs ini.</span>
+            <span class="bg-emerald-500 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wider">Admin Firebase Connected</span>
+            <span class="text-xs text-slate-400 hidden xl:inline">Perubahan otomatis tersinkronisasi ke Cloud Firebase.</span>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <!-- Theme Selector -->
@@ -139,8 +139,8 @@
             <button onclick="addNewEducation()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1">
                 <i class="fa-solid fa-graduation-cap"></i> +Edu
             </button>
-            <button onclick="saveChanges()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-bold flex items-center gap-1 shadow-lg">
-                <i class="fa-solid fa-floppy-disk"></i> Simpan
+            <button onclick="saveChangesToFirebase()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-bold flex items-center gap-1 shadow-lg">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Firebase
             </button>
             <button onclick="logoutAdmin()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold">
                 <i class="fa-solid fa-right-from-bracket"></i> Keluar
@@ -281,7 +281,6 @@
 
             <!-- Timeline Container -->
             <div id="experience-container" class="max-w-4xl mx-auto space-y-8">
-
                 <!-- Job Item 1 -->
                 <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
@@ -298,39 +297,6 @@
                         <li>Melakukan verifikasi berkas klaim pasien Jasa Raharja dan BPJS Ketenagakerjaan[span_10](start_span)[span_10](end_span).</li>
                     </ul>
                 </div>
-
-                <!-- Job Item 2 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                        <div>
-                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-building-columns text-brand-500 text-sm"></i> Kepala Urusan Keuangan</h4>
-                            <div class="text-brand-500 font-semibold text-sm editable">PT Umat Mandiri Berkemajuan (Holding UMY)[span_11](start_span)[span_11](end_span)</div>
-                        </div>
-                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-semibold px-3 py-1 rounded-full editable">Sep 2023 - Apr 2025[span_12](start_span)[span_12](end_span)</span>
-                    </div>
-                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
-                        <li>Mengelola arus kas perusahaan serta memastikan stabilitas finansial di seluruh unit bisnis[span_13](start_span)[span_13](end_span).</li>
-                        <li>Mengimplementasikan strategi efisiensi biaya untuk pencapaian target keuangan bulanan & tahunan[span_14](start_span)[span_14](end_span).</li>
-                        <li>Mengontrol pengeluaran dana melalui Laporan Pertanggungjawaban (LPJ) & menyusun Laporan Keuangan Bulanan[span_15](start_span)[span_15](end_span).</li>
-                    </ul>
-                </div>
-
-                <!-- Job Item 3 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                        <div>
-                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-brand-500 text-sm"></i> Asisten Dosen & Dosen Tutor</h4>
-                            <div class="text-brand-500 font-semibold text-sm editable">Prodi Manajemen UMY / Siber Muhammadiyah[span_16](start_span)[span_16](end_span)[span_17](start_span)[span_17](end_span)</div>
-                        </div>
-                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-semibold px-3 py-1 rounded-full editable">Sep 2021 - Apr 2025[span_18](start_span)[span_18](end_span)</span>
-                    </div>
-                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
-                        <li>Mengajar & membimbing 95+ mahasiswa dalam mata kuliah Aplikasi Komputer Manajemen & Statistika[span_19](start_span)[span_19](end_span).</li>
-                        <li>Penerima Penghargaan <strong>Dosen Tutor Terbaik Universitas Siber Muhammadiyah (2026)</strong>[span_20](start_span)[span_20](end_span).</li>
-                        <li>Menginput nilai mahasiswa melalui sistem KRS secara akurat & mengelola bimbingan akademik[span_21](start_span)[span_21](end_span).</li>
-                    </ul>
-                </div>
-
             </div>
         </div>
     </section>
@@ -348,43 +314,20 @@
             </div>
 
             <div id="education-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                
                 <!-- S2 -->
                 <div class="bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
                             <i class="fa-solid fa-user-graduate"></i>
                         </div>
-                        <span class="text-xs font-bold text-brand-500 bg-brand-50 px-2.5 py-1 rounded-md">Jan 2026 - Present[span_22](start_span)[span_22](end_span)</span>
-                        <h4 class="text-xl font-bold mt-3 editable">Master of Management (Candidate)[span_23](start_span)[span_23](end_span)</h4>
-                        <p class="font-medium text-sm mt-1 editable">Universitas Negeri Semarang (UNNES)[span_24](start_span)[span_24](end_span)</p>
+                        <span class="text-xs font-bold text-brand-500 bg-brand-50 px-2.5 py-1 rounded-md">Jan 2026 - Present[span_11](start_span)[span_11](end_span)</span>
+                        <h4 class="text-xl font-bold mt-3 editable">Master of Management (Candidate)[span_12](start_span)[span_12](end_span)</h4>
+                        <p class="font-medium text-sm mt-1 editable">Universitas Negeri Semarang (UNNES)[span_13](start_span)[span_13](end_span)</p>
                         <p class="text-sm opacity-75 mt-4 leading-relaxed editable">
                             Fokus pendalaman riset pada manajemen strategi keuangan dan pengembangan organisasi akademik.
                         </p>
                     </div>
                 </div>
-
-                <!-- S1 -->
-                <div class="bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
-                            <i class="fa-solid fa-award"></i>
-                        </div>
-                        <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">Sep 2018 - Dec 2021[span_25](start_span)[span_25](end_span)</span>
-                        <h4 class="text-xl font-bold mt-3 editable">S1 Manajemen (IPK 3.93 / 4.00)[span_26](start_span)[span_26](end_span)</h4>
-                        <p class="font-medium text-sm mt-1 editable">Universitas Muhammadiyah Yogyakarta[span_27](start_span)[span_27](end_span)</p>
-                        <p class="text-sm opacity-75 mt-4 leading-relaxed editable">
-                            <strong>Wisudawan Terbaik & Tercepat Tingkat Universitas.</strong> Penerima Beasiswa Prestasi Akademik[span_28](start_span)[span_28](end_span). Fokus Skripsi: Intellectual Capital & Nilai Perusahaan Perbankan BEI[span_29](start_span)[span_29](end_span).
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-[var(--border-color)]">
-                        <a href="https://etd.umy.ac.id/id/eprint/6872/" target="_blank" class="text-xs text-brand-500 font-semibold hover:underline flex items-center gap-1">
-                            <span>Lihat Repositori Skripsi[span_30](start_span)[span_30](end_span)</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                        </a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
@@ -413,26 +356,6 @@
                         <p class="text-xs opacity-75 mt-1 editable">Bukti kompetensi standar internasional dalam pengoperasian aplikasi perkantoran.</p>
                     </div>
                 </div>
-                <!-- Gallery Item 2 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm group">
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" alt="Laporan Keuangan" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-bold text-lg editable">Dokumentasi Pengelolaan Keuangan</h4>
-                        <p class="text-xs opacity-75 mt-1 editable">Portofolio penyusunan laporan keuangan dan efisiensi anggaran instansi.</p>
-                    </div>
-                </div>
-                <!-- Gallery Item 3 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm group">
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800" alt="Dosen Tutor" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-bold text-lg editable">Penghargaan Dosen Tutor Terbaik</h4>
-                        <p class="text-xs opacity-75 mt-1 editable">Dokumentasi penghargaan dedikasi akademik di Universitas Siber Muhammadiyah[span_31](start_span)[span_31](end_span).</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -452,29 +375,8 @@
                         <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
                             <div class="p-2 bg-amber-100 text-amber-700 rounded-lg"><i class="fa-solid fa-medal"></i></div>
                             <div>
-                                <h5 class="font-bold text-sm editable">Wisudawan Terbaik Se-Universitas (2021)[span_32](start_span)[span_32](end_span)</h5>
-                                <p class="text-xs opacity-75 mt-0.5 editable">Lulusan terbaik, tercepat, dan termuda UMY[span_33](start_span)[span_33](end_span).</p>
-                            </div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
-                            <div class="p-2 bg-brand-100 text-brand-700 rounded-lg"><i class="fa-solid fa-star"></i></div>
-                            <div>
-                                <h5 class="font-bold text-sm editable">Dosen Tutor Terbaik (2026)[span_34](start_span)[span_34](end_span)</h5>
-                                <p class="text-xs opacity-75 mt-0.5 editable">Penghargaan Dosen Tutor Terbaik Universitas Siber Muhammadiyah[span_35](start_span)[span_35](end_span).</p>
-                            </div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
-                            <div class="p-2 bg-emerald-100 text-emerald-700 rounded-lg"><i class="fa-solid fa-certificate"></i></div>
-                            <div>
-                                <h5 class="font-bold text-sm editable">Sertifikasi Internasional Microsoft Office (MOS)[span_36](start_span)[span_36](end_span)</h5>
-                                <p class="text-xs opacity-75 mt-0.5 editable">Menguasai pengoperasian Microsoft Office standar internasional[span_37](start_span)[span_37](end_span).</p>
-                            </div>
-                        </div>
-                        <div class="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] flex items-start gap-4 shadow-sm">
-                            <div class="p-2 bg-purple-100 text-purple-700 rounded-lg"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                            <div>
-                                <h5 class="font-bold text-sm editable">Sertifikasi Brevet Pajak A & B[span_38](start_span)[span_38](end_span)</h5>
-                                <p class="text-xs opacity-75 mt-0.5 editable">Pemahaman regulasi perpajakan dasar hingga tingkat lanjutan[span_39](start_span)[span_39](end_span).</p>
+                                <h5 class="font-bold text-sm editable">Wisudawan Terbaik Se-Universitas (2021)[span_14](start_span)[span_14](end_span)</h5>
+                                <p class="text-xs opacity-75 mt-0.5 editable">Lulusan terbaik, tercepat, dan termuda UMY[span_15](start_span)[span_15](end_span).</p>
                             </div>
                         </div>
                     </div>
@@ -489,23 +391,10 @@
                     
                     <div class="space-y-6">
                         <div>
-                            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills[span_40](start_span)[span_40](end_span)</h4>
+                            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills[span_16](start_span)[span_16](end_span)</h4>
                             <div id="hard-skills-container" class="flex flex-wrap gap-2">
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Microsoft Office (Word, Excel, PowerPoint)[span_41](start_span)[span_41](end_span)</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">CorelDRAW Design[span_42](start_span)[span_42](end_span)</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">WordPress Web Management[span_43](start_span)[span_43](end_span)</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Financial Analysis & Cashflow</span>
-                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Statistika & Komputer Manajemen</span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h4 class="text-xs font-bold uppercase tracking-wider mb-3 opacity-70 flex items-center gap-1.5"><i class="fa-solid fa-users text-brand-500"></i> Soft Skills[span_44](start_span)[span_44](end_span)</h4>
-                            <div id="soft-skills-container" class="flex flex-wrap gap-2">
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Public Speaking & Presentation[span_45](start_span)[span_45](end_span)</span>
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Leadership & Team Coordination[span_46](start_span)[span_46](end_span)</span>
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Analytical & Critical Thinking</span>
-                                <span class="bg-brand-50 dark:bg-slate-800 text-brand-800 dark:text-brand-500 text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-100 dark:border-slate-700">Academic Mentoring</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">Microsoft Office (Word, Excel, PowerPoint)[span_17](start_span)[span_17](end_span)</span>
+                                <span class="bg-[var(--bg-card)] text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--border-color)]">CorelDRAW Design[span_18](start_span)[span_18](end_span)</span>
                             </div>
                         </div>
                     </div>
@@ -592,22 +481,42 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC (KEAMANAN & KONTROL ADMIN) -->
-    <script>
-        let isAdminLoggedIn = false;
-        let isEditMode = false; // Default FALSE (Pengunjung umum tidak bisa mengedit)
+    <!-- FIREBASE SDK (MODULAR) & SCRIPT LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSavedContent();
+        // ==========================================
+        // GANTI DENGAN KONFIGURASI FIREBASE ANDA
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let isAdminLoggedIn = false;
+        let isEditMode = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromFirebase();
             checkAdminSession();
         });
 
-        function toggleMobileMenu() {
+        window.toggleMobileMenu = function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        function openLoginModal() {
+        window.openLoginModal = function() {
             if (isAdminLoggedIn) {
                 alert('Anda sudah masuk dalam sesi Admin!');
                 return;
@@ -616,23 +525,22 @@
             document.getElementById('admin-password').focus();
         }
 
-        function closeLoginModal() {
+        window.closeLoginModal = function() {
             document.getElementById('login-modal').classList.add('hidden');
             document.getElementById('admin-password').value = '';
         }
 
-        function handleLogin(e) {
+        window.handleLogin = function(e) {
             e.preventDefault();
             const passwordInput = document.getElementById('admin-password').value;
             
-            // Password Validasi Admin
             if (passwordInput === 'admin123') {
                 isAdminLoggedIn = true;
                 sessionStorage.setItem('admin_auth', 'true');
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Login Berhasil! Anda memiliki hak akses eksklusif sebagai Admin untuk mengedit seluruh isi website.');
+                alert('Login Berhasil! Perubahan akan langsung tersimpan secara otomatis ke Firebase.');
             } else {
                 alert('Password salah! Akses ditolak.');
             }
@@ -651,7 +559,7 @@
             document.getElementById('nav-login-btn').classList.add('hidden');
         }
 
-        function logoutAdmin() {
+        window.logoutAdmin = function() {
             isAdminLoggedIn = false;
             sessionStorage.removeItem('admin_auth');
             disableEditing();
@@ -661,19 +569,19 @@
             location.reload();
         }
 
-        function changeTheme(themeName) {
+        window.changeTheme = function(themeName) {
             if (!isAdminLoggedIn) return;
             document.documentElement.setAttribute('data-theme', themeName);
-            localStorage.setItem('portfolio_theme', themeName);
+            saveToFirebase('theme', themeName);
         }
 
-        function changeFont(fontName) {
+        window.changeFont = function(fontName) {
             if (!isAdminLoggedIn) return;
             document.documentElement.style.setProperty('--current-font', fontName);
-            localStorage.setItem('portfolio_font', fontName);
+            saveToFirebase('font', fontName);
         }
 
-        function toggleEditMode() {
+        window.toggleEditMode = function() {
             if (!isAdminLoggedIn) return;
             isEditMode = !isEditMode;
             const btnText = document.getElementById('edit-status-text');
@@ -707,8 +615,8 @@
             document.getElementById('edit-status-text').textContent = "Edit: OFF";
         }
 
-        // Upload Foto Profil oleh Admin
-        function uploadProfilePhoto(event) {
+        // Upload Foto Profil dan Simpan ke Firebase
+        window.uploadProfilePhoto = function(event) {
             if (!isAdminLoggedIn) return;
             const file = event.target.files[0];
             if (file) {
@@ -716,15 +624,15 @@
                 reader.onload = function(e) {
                     const base64Image = e.target.result;
                     document.getElementById('profile-img').src = base64Image;
-                    localStorage.setItem('portfolio_profile_img', base64Image);
-                    alert('Foto profil berhasil diperbarui!');
+                    saveToFirebase('profileImg', base64Image);
+                    alert('Foto profil berhasil diunggah & disimpan ke Firebase!');
                 }
                 reader.readAsDataURL(file);
             }
         }
 
         // Tambah Bukti Karya / Sertifikasi ke Galeri
-        function addNewGalleryItem() {
+        window.addNewGalleryItem = function() {
             if (!isAdminLoggedIn) return;
             const title = prompt('Masukkan Judul Bukti Karya / Sertifikasi:', 'Contoh: Sertifikat Kompetensi Keuangan');
             const desc = prompt('Masukkan Deskripsi Singkat Bukti Karya:', 'Contoh: Bukti verifikasi dan pengelolaan portofolio.');
@@ -751,7 +659,8 @@
                             </div>
                         `;
                         container.prepend(newItem);
-                        alert('Bukti karya baru berhasil ditambahkan! Klik tombol Simpan.');
+                        window.saveChangesToFirebase();
+                        alert('Bukti karya baru berhasil ditambahkan dan disimpan ke Firebase!');
                     }
                     reader.readAsDataURL(file);
                 }
@@ -759,7 +668,7 @@
             fileInput.click();
         }
 
-        function addNewExperience() {
+        window.addNewExperience = function() {
             if (!isAdminLoggedIn) return;
             const jobTitle = prompt('Masukkan Posisi / Jabatan:', 'Contoh: Konsultan Keuangan');
             const company = prompt('Masukkan Nama Instansi:', 'Contoh: PT ABC');
@@ -782,11 +691,12 @@
                     </ul>
                 `;
                 container.prepend(newItem);
-                alert('Pengalaman baru ditambahkan!');
+                window.saveChangesToFirebase();
+                alert('Pengalaman baru ditambahkan ke Firebase!');
             }
         }
 
-        function addNewEducation() {
+        window.addNewEducation = function() {
             if (!isAdminLoggedIn) return;
             const degree = prompt('Jenjang & Jurusan:', 'Contoh: S3 Ilmu Manajemen');
             const institution = prompt('Nama Universitas:', 'Contoh: Universitas Gadjah Mada');
@@ -808,11 +718,13 @@
                     </div>
                 `;
                 container.prepend(newItem);
-                alert('Pendidikan baru ditambahkan!');
+                window.saveChangesToFirebase();
+                alert('Pendidikan baru ditambahkan ke Firebase!');
             }
         }
 
-        function saveChanges() {
+        // Simpan Semua Data ke Firebase Realtime Database
+        window.saveChangesToFirebase = function() {
             if (!isAdminLoggedIn) return;
             const editableElements = document.querySelectorAll('.editable');
             const savedData = {};
@@ -822,59 +734,64 @@
                 savedData[key] = el.innerHTML;
             });
 
-            localStorage.setItem('portfolio_content_data', JSON.stringify(savedData));
-            localStorage.setItem('portfolio_profile_img', document.getElementById('profile-img').src);
-            localStorage.setItem('portfolio_exp_html', document.getElementById('experience-container').innerHTML);
-            localStorage.setItem('portfolio_edu_html', document.getElementById('education-container').innerHTML);
-            localStorage.setItem('portfolio_gallery_html', document.getElementById('gallery-container').innerHTML);
+            const portfolioData = {
+                texts: savedData,
+                profileImg: document.getElementById('profile-img').src,
+                experienceHtml: document.getElementById('experience-container').innerHTML,
+                educationHtml: document.getElementById('education-container').innerHTML,
+                galleryHtml: document.getElementById('gallery-container').innerHTML,
+                theme: document.documentElement.getAttribute('data-theme') || 'blue',
+                font: getComputedStyle(document.documentElement).getPropertyValue('--current-font').trim() || 'Plus Jakarta Sans'
+            };
 
-            alert('Perubahan berhasil disimpan secara permanen!');
+            set(ref(db, 'portfolio/data'), portfolioData)
+                .then(() => {
+                    alert('Berhasil! Seluruh data berhasil disimpan otomatis ke Firebase Database.');
+                })
+                .catch((error) => {
+                    alert('Gagal menyimpan ke Firebase: ' + error.message);
+                });
         }
 
-        function loadSavedContent() {
-            const savedTheme = localStorage.getItem('portfolio_theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                document.getElementById('theme-selector').value = savedTheme;
-            }
-
-            const savedFont = localStorage.getItem('portfolio_font');
-            if (savedFont) {
-                document.documentElement.style.setProperty('--current-font', savedFont);
-                document.getElementById('font-selector').value = savedFont;
-            }
-
-            const savedImg = localStorage.getItem('portfolio_profile_img');
-            if (savedImg) {
-                document.getElementById('profile-img').src = savedImg;
-            }
-
-            const savedExp = localStorage.getItem('portfolio_exp_html');
-            if (savedExp) {
-                document.getElementById('experience-container').innerHTML = savedExp;
-            }
-
-            const savedEdu = localStorage.getItem('portfolio_edu_html');
-            if (savedEdu) {
-                document.getElementById('education-container').innerHTML = savedEdu;
-            }
-
-            const savedGallery = localStorage.getItem('portfolio_gallery_html');
-            if (savedGallery) {
-                document.getElementById('gallery-container').innerHTML = savedGallery;
-            }
-
-            const savedData = JSON.parse(localStorage.getItem('portfolio_content_data'));
-            if (savedData) {
-                Object.keys(savedData).forEach(key => {
-                    const el = document.getElementById(key);
-                    if (el) {
-                        el.innerHTML = savedData[key];
+        // Muat Data Secara Real-Time dari Firebase
+        function loadFromFirebase() {
+            const dbRef = ref(db, 'portfolio/data');
+            onValue(dbRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    if (data.theme) {
+                        document.documentElement.setAttribute('data-theme', data.theme);
+                        const themeSelect = document.getElementById('theme-selector');
+                        if (themeSelect) themeSelect.value = data.theme;
                     }
-                });
-            }
+                    if (data.font) {
+                        document.documentElement.style.setProperty('--current-font', data.font);
+                        const fontSelect = document.getElementById('font-selector');
+                        if (fontSelect) fontSelect.value = data.font;
+                    }
+                    if (data.profileImg) {
+                        document.getElementById('profile-img').src = data.profileImg;
+                    }
+                    if (data.experienceHtml) {
+                        document.getElementById('experience-container').innerHTML = data.experienceHtml;
+                    }
+                    if (data.educationHtml) {
+                        document.getElementById('education-container').innerHTML = data.educationHtml;
+                    }
+                    if (data.galleryHtml) {
+                        document.getElementById('gallery-container').innerHTML = data.galleryHtml;
+                    }
+                    if (data.texts) {
+                        Object.keys(data.texts).forEach(key => {
+                            const el = document.getElementById(key);
+                            if (el) {
+                                el.innerHTML = data.texts[key];
+                            }
+                        });
+                    }
+                }
+            });
         }
     </script>
 </body>
 </html>
-
