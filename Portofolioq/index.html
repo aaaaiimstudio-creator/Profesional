@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hikarinaim Aistimas, S.E., M.M. (cand.), MOS - Executive Portfolio & Academic Profile</title>
+    <title>Hikarinaim Aistimas, S.E., M.M. (cand.), MOS - Executive Portfolio</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -149,12 +149,11 @@
         .editable-active {
             outline: 2px dashed var(--brand-500) !important;
             outline-offset: 3px;
-            background-color: rgba(37, 99, 235, 0.06);
+            background-color: rgba(37, 99, 235, 0.08);
             border-radius: 6px;
             padding: 2px 4px;
         }
 
-        /* Smooth Glassmorphism Header */
         .glass-nav {
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
@@ -163,7 +162,6 @@
             background-color: rgba(19, 27, 46, 0.85);
         }
 
-        /* Custom Modal Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
@@ -173,63 +171,69 @@
         }
     </style>
 </head>
-<body class="antialiased selection:bg-brand-500 selection:text-white">
+<body class="antialiased selection:bg-brand-500 selection:text-white pb-12">
 
-    <!-- ADMIN CONTROL PANEL (SUPER ADMIN TOOLBAR) -->
+    <!-- ADMIN CONTROL PANEL (SUPER ADMIN TOOLBAR ADVANCED) -->
     <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950/95 backdrop-blur-md text-white px-4 py-2.5 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
         <div class="flex items-center space-x-3">
             <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-shield-halved"></i> Super Admin Active
+                <i class="fa-solid fa-shield-halved"></i> Super Editor Active
             </span>
-            <span class="text-xs text-slate-400 hidden xl:inline" id="autosave-indicator">Klik teks langsung untuk mengedit atau gunakan tombol kontrol di samping.</span>
+            <span class="text-xs text-slate-400 hidden lg:inline" id="autosave-indicator">Klik langsung teks untuk mengedit atau gunakan alat tambah di samping.</span>
         </div>
         
         <div class="flex flex-wrap items-center gap-2">
+            <!-- Format Tools -->
+            <div class="flex items-center bg-slate-900 rounded-lg border border-slate-700 p-0.5">
+                <button onclick="formatText('bold')" title="Tebal (Bold)" class="px-2 py-1 hover:bg-slate-800 rounded text-xs font-bold text-slate-200">B</button>
+                <button onclick="formatText('italic')" title="Miring (Italic)" class="px-2 py-1 hover:bg-slate-800 rounded text-xs italic text-slate-200">I</button>
+                <button onclick="formatText('underline')" title="Garis Bawah" class="px-2 py-1 hover:bg-slate-800 rounded text-xs underline text-slate-200">U</button>
+            </div>
+
             <!-- Theme Switcher -->
-            <select id="theme-selector" onchange="changeTheme(this.value)" class="bg-slate-900 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-brand-500">
-                <option value="blue">🎨 Tema: Sapphire Blue</option>
-                <option value="emerald">🎨 Tema: Emerald Luxe</option>
-                <option value="amber">🎨 Tema: Obsidian Amber</option>
-                <option value="rose">🎨 Tema: Sunset Rose</option>
-                <option value="violet">🎨 Tema: Deep Violet</option>
-                <option value="dark">🎨 Tema: Midnight Dark Pro</option>
+            <select id="theme-selector" onchange="changeTheme(this.value)" class="bg-slate-900 text-slate-200 text-xs px-2 py-1.5 rounded-lg border border-slate-700 focus:outline-none">
+                <option value="blue">🎨 Tema: Sapphire</option>
+                <option value="emerald">🎨 Tema: Emerald</option>
+                <option value="amber">🎨 Tema: Amber</option>
+                <option value="rose">🎨 Tema: Rose</option>
+                <option value="violet">🎨 Tema: Violet</option>
+                <option value="dark">🎨 Tema: Dark Pro</option>
             </select>
 
             <!-- Font Switcher -->
-            <select id="font-selector" onchange="changeFont(this.value)" class="bg-slate-900 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-brand-500">
-                <option value="Plus Jakarta Sans">🔤 Font: Jakarta Sans</option>
-                <option value="Outfit">🔤 Font: Outfit Modern</option>
+            <select id="font-selector" onchange="changeFont(this.value)" class="bg-slate-900 text-slate-200 text-xs px-2 py-1.5 rounded-lg border border-slate-700 focus:outline-none">
+                <option value="Plus Jakarta Sans">🔤 Font: Jakarta</option>
+                <option value="Outfit">🔤 Font: Outfit</option>
                 <option value="Inter">🔤 Font: Inter</option>
-                <option value="Playfair Display">🔤 Font: Playfair (Serif)</option>
-                <option value="Space Grotesk">🔤 Font: Space Grotesk</option>
+                <option value="Playfair Display">🔤 Font: Playfair</option>
+                <option value="Space Grotesk">🔤 Font: Space</option>
             </select>
 
-            <button onclick="toggleEditMode()" id="btn-toggle-edit" class="bg-brand-500 hover:bg-brand-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1.5">
-                <i class="fa-solid fa-pen-to-square"></i> <span id="edit-status-text">Edit Teks: ON</span>
+            <!-- Add Tools Dropdown / Quick Buttons -->
+            <button onclick="openCustomSectionModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1">
+                <i class="fa-solid fa-plus-circle"></i> + Seksi Baru
             </button>
-            
-            <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-3 py-1.5 rounded-lg transition font-medium cursor-pointer flex items-center gap-1.5 border border-slate-700">
-                <i class="fa-solid fa-camera text-brand-500"></i> Foto Profil
+            <button onclick="openExpModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-briefcase"></i> + Karir
+            </button>
+            <button onclick="openSkillModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-bolt"></i> + Skill
+            </button>
+            <button onclick="openAchievementModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1">
+                <i class="fa-solid fa-trophy"></i> + Prestasi
+            </button>
+
+            <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg transition font-medium cursor-pointer flex items-center gap-1 border border-slate-700">
+                <i class="fa-solid fa-camera text-brand-500"></i> Foto Utama
                 <input type="file" id="profile-upload" accept="image/*" class="hidden" onchange="uploadProfilePhoto(event)">
             </label>
 
-            <!-- Add Actions -->
-            <button onclick="openSkillModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1.5">
-                <i class="fa-solid fa-bolt"></i> + Skill
-            </button>
-            <button onclick="openAchievementModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1.5">
-                <i class="fa-solid fa-trophy"></i> + Prestasi & Foto
-            </button>
-            <button onclick="openCertificateModal()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-semibold flex items-center gap-1.5">
-                <i class="fa-solid fa-certificate"></i> + Sertifikat & Foto
-            </button>
-
-            <button onclick="saveChangesToFirebase(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-bold flex items-center gap-1.5 shadow-md">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Permanen
+            <button onclick="saveChangesToFirebase(true)" class="bg-teal-600 hover:bg-teal-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 shadow-md">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan
             </button>
             
-            <button onclick="logoutAdmin()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-lg transition font-semibold border border-slate-700">
-                <i class="fa-solid fa-right-from-bracket"></i> Keluar
+            <button onclick="logoutAdmin()" class="bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-rose-700/50">
+                <i class="fa-solid fa-power-off"></i> Keluar
             </button>
         </div>
     </div>
@@ -244,23 +248,24 @@
                         HA
                     </div>
                     <div>
-                        <span class="text-lg font-extrabold tracking-tight block leading-tight" id="nav-title">Hikarinaim Aistimas</span>
-                        <span class="text-xs text-brand-500 font-semibold" id="nav-subtitle">Finance Professional & M.M. Candidate</span>
+                        <span class="text-lg font-extrabold tracking-tight block leading-tight editable" id="nav-title">Hikarinaim Aistimas</span>
+                        <span class="text-xs text-brand-500 font-semibold editable" id="nav-subtitle">Finance Professional & M.M. Candidate</span>
                     </div>
                 </div>
                 
                 <!-- Desktop Navigation -->
-                <div class="hidden lg:flex items-center space-x-7 text-xs font-bold tracking-wide uppercase opacity-90">
-                    <a href="#about" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-user text-brand-500"></i> Tentang</a>
-                    <a href="#experience" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-briefcase text-brand-500"></i> Karir</a>
-                    <a href="#education" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-graduation-cap text-brand-500"></i> Pendidikan</a>
-                    <a href="#skills" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-layer-group text-brand-500"></i> Hard & Soft Skills</a>
-                    <a href="#achievements" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-trophy text-brand-500"></i> Prestasi</a>
-                    <a href="#portfolio-gallery" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-certificate text-brand-500"></i> Sertifikasi</a>
-                    <a href="#contact" class="hover:text-brand-500 transition-colors flex items-center gap-1.5 py-2"><i class="fa-solid fa-envelope text-brand-500"></i> Kontak</a>
+                <div class="hidden lg:flex items-center space-x-6 text-xs font-bold tracking-wide uppercase opacity-90" id="nav-links">
+                    <a href="#about" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-user text-brand-500 mr-1"></i> Tentang</a>
+                    <a href="#experience" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-briefcase text-brand-500 mr-1"></i> Karir</a>
+                    <a href="#education" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-graduation-cap text-brand-500 mr-1"></i> Pendidikan</a>
+                    <a href="#skills" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-layer-group text-brand-500 mr-1"></i> Skills</a>
+                    <a href="#achievements" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-trophy text-brand-500 mr-1"></i> Prestasi</a>
+                    <a href="#portfolio-gallery" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-certificate text-brand-500 mr-1"></i> Sertifikat</a>
+                    <a href="#custom-sections" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-folder-plus text-brand-500 mr-1"></i> Custom</a>
+                    <a href="#contact" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-envelope text-brand-500 mr-1"></i> Kontak</a>
                     
-                    <button onclick="openLoginModal()" id="nav-login-btn" class="bg-brand-900 text-white dark:bg-brand-500 dark:text-slate-950 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all duration-300 shadow-md hover:shadow-glow hover:-translate-y-0.5">
-                        <i class="fa-solid fa-lock text-xs mr-1.5"></i> Admin Login
+                    <button onclick="openLoginModal()" id="nav-login-btn" class="bg-brand-900 text-white dark:bg-brand-500 dark:text-slate-950 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all duration-300 shadow-md hover:shadow-glow">
+                        <i class="fa-solid fa-lock text-xs mr-1.5"></i> Admin
                     </button>
                 </div>
 
@@ -279,17 +284,18 @@
         <!-- Mobile Navigation Menu -->
         <div id="mobile-menu" class="hidden lg:hidden bg-[var(--bg-card)] border-b border-[var(--border-color)] px-6 pt-3 pb-6 space-y-3 font-semibold text-sm">
             <a href="#about" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-user mr-2 text-brand-500"></i> Tentang Saya</a>
-            <a href="#experience" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-briefcase mr-2 text-brand-500"></i> Pengalaman Karir</a>
-            <a href="#education" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-graduation-cap mr-2 text-brand-500"></i> Pendidikan Formal</a>
-            <a href="#skills" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-layer-group mr-2 text-brand-500"></i> Hard & Soft Skills</a>
-            <a href="#achievements" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-trophy mr-2 text-brand-500"></i> Prestasi & Riset</a>
-            <a href="#portfolio-gallery" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-certificate mr-2 text-brand-500"></i> Sertifikasi & Galeri</a>
-            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-envelope mr-2 text-brand-500"></i> Kontak Langsung</a>
+            <a href="#experience" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-briefcase mr-2 text-brand-500"></i> Karir</a>
+            <a href="#education" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-graduation-cap mr-2 text-brand-500"></i> Pendidikan</a>
+            <a href="#skills" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-layer-group mr-2 text-brand-500"></i> Skills</a>
+            <a href="#achievements" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-trophy mr-2 text-brand-500"></i> Prestasi</a>
+            <a href="#portfolio-gallery" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-certificate mr-2 text-brand-500"></i> Sertifikasi</a>
+            <a href="#custom-sections" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-folder-plus mr-2 text-brand-500"></i> Seksi Tambahan</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-envelope mr-2 text-brand-500"></i> Kontak</a>
         </div>
     </nav>
 
     <!-- HERO SECTION -->
-    <section id="about" class="pt-12 pb-20 lg:pt-20 lg:pb-32 overflow-hidden relative">
+    <section id="about" class="pt-12 pb-20 lg:pt-16 lg:pb-28 overflow-hidden relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
@@ -360,17 +366,17 @@
     <!-- WORK EXPERIENCE SECTION -->
     <section id="experience" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <div class="inline-block p-3 rounded-2xl bg-[var(--badge-bg)] text-brand-500 text-2xl mb-3 shadow-sm">
-                    <i class="fa-solid fa-briefcase"></i>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                <div>
+                    <span class="text-xs font-extrabold text-brand-500 uppercase tracking-widest block" id="exp-subtitle">Track Record Karir</span>
+                    <h3 class="text-3xl sm:text-4xl font-black mt-1" id="exp-title">Pengalaman Kerja Strategis</h3>
                 </div>
-                <h2 class="text-xs font-extrabold text-brand-500 uppercase tracking-widest mb-2" id="exp-subtitle">Track Record Karir Profesional</h2>
-                <h3 class="text-3xl sm:text-4xl font-black" id="exp-title">Pengalaman Kerja Strategis</h3>
-                <p class="text-sm opacity-75 mt-2">Pengalaman profesional dalam kontrol likuiditas, audit keuangan, dan manajemen operasional instansi.</p>
-                <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
+                <button onclick="openExpModal()" class="mt-4 sm:mt-0 bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
+                    + Tambah Pengalaman Kerja
+                </button>
             </div>
 
-            <!-- Timeline -->
+            <!-- Timeline Container -->
             <div id="experience-container" class="max-w-4xl mx-auto space-y-8">
                 <!-- Job Item 1 -->
                 <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group hover:shadow-md transition">
@@ -408,24 +414,6 @@
                         <li>Mengaudit Laporan Pertanggungjawaban (LPJ) serta merumuskan strategi efisiensi biaya operasional yang berdampak langsung pada peningkatan margin laba.</li>
                     </ul>
                 </div>
-
-                <!-- Job Item 3 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group hover:shadow-md transition">
-                    <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1 rounded-md shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                        <div>
-                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-brand-500 text-base"></i> Asisten Dosen Statistika & Staff Prodi</h4>
-                            <div class="text-brand-500 font-bold text-sm editable">Universitas Muhammadiyah Yogyakarta & Universitas Siber Muhammadiyah</div>
-                        </div>
-                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-bold px-3 py-1 rounded-full editable">Sep 2021 - Apr 2025</span>
-                    </div>
-                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
-                        <li>Mengampu mata kuliah Statistika dan Aplikasi Komputer Manajemen bagi 95+ mahasiswa dengan perolehan indeks kepuasan sangat tinggi.</li>
-                        <li>Berperan aktif dalam tim inti akreditasi program studi yang sukses mengantar pencapaian Akreditasi UNGGUL.</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </section>
@@ -433,13 +421,14 @@
     <!-- EDUCATION SECTION -->
     <section id="education" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <div class="inline-block p-3 rounded-2xl bg-[var(--badge-bg)] text-brand-500 text-2xl mb-3 shadow-sm">
-                    <i class="fa-solid fa-graduation-cap"></i>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                <div>
+                    <span class="text-xs font-extrabold text-brand-500 uppercase tracking-widest block" id="edu-subtitle">Pondasi Intelektual</span>
+                    <h3 class="text-3xl sm:text-4xl font-black mt-1" id="edu-title">Pendidikan Formal</h3>
                 </div>
-                <h2 class="text-xs font-extrabold text-brand-500 uppercase tracking-widest mb-2" id="edu-subtitle">Pondasi Intelektual</h2>
-                <h3 class="text-3xl sm:text-4xl font-black" id="edu-title">Pendidikan Formal</h3>
-                <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
+                <button onclick="openEduModal()" class="mt-4 sm:mt-0 bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
+                    + Tambah Pendidikan
+                </button>
             </div>
 
             <div id="education-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -474,7 +463,7 @@
                         <h4 class="text-xl font-extrabold mt-3 editable">Sarjana Manajemen (S.E.) - IPK 3.93 / 4.00</h4>
                         <p class="font-bold text-sm text-brand-500 mt-1 editable">Universitas Muhammadiyah Yogyakarta (UMY), Bantul - Indonesia</p>
                         <p class="text-sm opacity-80 mt-4 leading-relaxed editable">
-                            <strong>Wisudawan Terbaik & Tercepat Tingkat Universitas.</strong> Penerima Beasiswa Prestasi Akademik. Skripsi: Analisis <em>Intellectual Capital terhadap Nilai Perusahaan dengan Profitabilitas sebagai Variabel Intervening</em>.
+                            <strong>Wisudawan Terbaik & Tercepat Tingkat Universitas.</strong> Penerima Beasiswa Prestasi Akademik. Skripsi: Analisis <em>Intellectual Capital terhadap Nilai Perusahaan</em>.
                         </p>
                     </div>
                 </div>
@@ -482,7 +471,7 @@
         </div>
     </section>
 
-    <!-- HARD SKILLS & SOFT SKILLS SECTION (DYNAMIC MANAGED) -->
+    <!-- HARD SKILLS & SOFT SKILLS SECTION -->
     <section id="skills" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
@@ -491,25 +480,22 @@
                 </div>
                 <h2 class="text-xs font-extrabold text-brand-500 uppercase tracking-widest mb-2">Kompetensi Teruji</h2>
                 <h3 class="text-3xl sm:text-4xl font-black">Hard Skills & Soft Skills</h3>
-                <p class="text-sm opacity-75 mt-2">Daftar keahlian teknis dan interpersonal yang mendukung efektivitas kerja eksekutif.</p>
                 <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
-                
                 <!-- Hard Skills Box -->
                 <div class="bg-[var(--bg-main)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative">
                     <div class="flex items-center justify-between mb-6 border-b border-[var(--border-color)] pb-4">
                         <h4 class="text-lg font-black flex items-center gap-2">
-                            <i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills (Teknis & Alat)
+                            <i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills
                         </h4>
                         <button onclick="openSkillModal('Hard Skill')" class="text-xs bg-brand-500 hover:bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg admin-action-btn hidden transition">
-                            + Tambah Hard Skill
+                            + Tambah
                         </button>
                     </div>
 
                     <div id="hard-skills-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Default Hard Skill Items -->
                         <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
                             <div class="flex items-center gap-2.5">
                                 <i class="fa-solid fa-chart-line text-brand-500 text-xs"></i>
@@ -517,35 +503,10 @@
                             </div>
                             <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-
                         <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
                             <div class="flex items-center gap-2.5">
                                 <i class="fa-solid fa-file-excel text-brand-500 text-xs"></i>
                                 <span class="text-xs font-bold editable">Microsoft Office Specialist (MOS)</span>
-                            </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-calculator text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Brevet Pajak A & B</span>
-                            </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-chart-pie text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Statistical Analysis (SPSS/Excel)</span>
-                            </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-code text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">WordPress Dev & CorelDRAW</span>
                             </div>
                             <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
                         </div>
@@ -556,15 +517,14 @@
                 <div class="bg-[var(--bg-main)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative">
                     <div class="flex items-center justify-between mb-6 border-b border-[var(--border-color)] pb-4">
                         <h4 class="text-lg font-black flex items-center gap-2">
-                            <i class="fa-solid fa-users text-brand-500"></i> Soft Skills (Interpersonal & Leadership)
+                            <i class="fa-solid fa-users text-brand-500"></i> Soft Skills
                         </h4>
                         <button onclick="openSkillModal('Soft Skill')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg admin-action-btn hidden transition">
-                            + Tambah Soft Skill
+                            + Tambah
                         </button>
                     </div>
 
                     <div id="soft-skills-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Default Soft Skill Items -->
                         <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
                             <div class="flex items-center gap-2.5">
                                 <i class="fa-solid fa-chess-king text-brand-500 text-xs"></i>
@@ -572,7 +532,6 @@
                             </div>
                             <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-
                         <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
                             <div class="flex items-center gap-2.5">
                                 <i class="fa-solid fa-microphone text-brand-500 text-xs"></i>
@@ -580,45 +539,27 @@
                             </div>
                             <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-clipboard-check text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Financial Auditing & Verification</span>
-                            </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-people-group text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Cross-functional Teamwork</span>
-                            </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ACHIEVEMENTS SECTION (DYNAMIC WITH PHOTO UPLOAD & DELETE) -->
+    <!-- ACHIEVEMENTS SECTION -->
     <section id="achievements" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <div class="inline-block p-3 rounded-2xl bg-amber-500/10 text-amber-500 text-2xl mb-3 shadow-sm">
-                    <i class="fa-solid fa-trophy"></i>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                <div>
+                    <span class="text-xs font-extrabold text-amber-500 uppercase tracking-widest block">Pencapaian Terbaik</span>
+                    <h3 class="text-3xl sm:text-4xl font-black mt-1">Prestasi & Karya Riset</h3>
                 </div>
-                <h2 class="text-xs font-extrabold text-amber-500 uppercase tracking-widest mb-2">Pencapaian Terbaik</h2>
-                <h3 class="text-3xl sm:text-4xl font-black">Prestasi & Karya Riset</h3>
-                <p class="text-sm opacity-75 mt-2">Daftar penghargaan formal dan kontribusi akademis tingkat nasional maupun internasional.</p>
-                <div class="w-16 h-1 bg-amber-500 mx-auto mt-4 rounded-full"></div>
+                <button onclick="openAchievementModal()" class="mt-4 sm:mt-0 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
+                    + Tambah Prestasi
+                </button>
             </div>
 
             <div id="achievements-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <!-- Achievement Item 1 -->
+                <!-- Item 1 -->
                 <div class="bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition relative group">
                     <div class="absolute top-3 right-3 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
                         <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
@@ -627,60 +568,15 @@
                         </label>
                         <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
                     </div>
-                    
                     <div class="aspect-video overflow-hidden relative bg-slate-200">
                         <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600" alt="Wisudawan Terbaik" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
-                    
                     <div class="p-6">
-                        <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-md">Penghargaan Utama</span>
+                        <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-md editable">Penghargaan Utama</span>
                         <h4 class="font-extrabold text-lg mt-2 editable">Wisudawan Terbaik UMY (2021)</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Predikat Wisudawan Terbaik, Tercepat, dan Termuda se-Universitas Muhammadiyah Yogyakarta dengan IPK 3.93.</p>
+                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Wisudawan Terbaik, Tercepat, dan Termuda UMY dengan IPK 3.93.</p>
                     </div>
                 </div>
-
-                <!-- Achievement Item 2 -->
-                <div class="bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition relative group">
-                    <div class="absolute top-3 right-3 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=600" alt="Dosen Terbaik" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    
-                    <div class="p-6">
-                        <span class="text-[10px] font-black text-brand-600 uppercase tracking-widest bg-[var(--badge-bg)] px-2.5 py-1 rounded-md">Penghargaan Akademik</span>
-                        <h4 class="font-extrabold text-lg mt-2 editable">Dosen Tutor Terbaik SiberMu (2026)</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Penghargaan dedikasi tinggi dalam bimbingan statistik interaktif dan inovasi metode pengajaran digital.</p>
-                    </div>
-                </div>
-
-                <!-- Achievement Item 3 -->
-                <div class="bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition relative group">
-                    <div class="absolute top-3 right-3 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=600" alt="Riset Internasional" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    
-                    <div class="p-6">
-                        <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-500/10 px-2.5 py-1 rounded-md">Riset Internasional</span>
-                        <h4 class="font-extrabold text-lg mt-2 editable">Presenter ICBEAT Conference (2026)</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Mempresentasikan makalah mengenai <em>AI-Based Personalization Marketing, Consumer Trust, And E-Commerce Decisions</em>.</p>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
@@ -688,17 +584,16 @@
     <!-- CERTIFICATIONS & PORTFOLIO GALLERY -->
     <section id="portfolio-gallery" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <div class="inline-block p-3 rounded-2xl bg-[var(--badge-bg)] text-brand-500 text-2xl mb-3 shadow-sm">
-                    <i class="fa-solid fa-certificate"></i>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                <div>
+                    <span class="text-xs font-extrabold text-brand-500 uppercase tracking-widest block">Legalitas & Dokumentasi</span>
+                    <h3 class="text-3xl sm:text-4xl font-black mt-1">Sertifikasi & Portfolio</h3>
                 </div>
-                <h2 class="text-xs font-extrabold text-brand-500 uppercase tracking-widest mb-2">Legalitas & Dokumentasi</h2>
-                <h3 class="text-3xl sm:text-4xl font-black">Sertifikasi Internasional & Portfolio</h3>
-                <p class="text-sm opacity-75 mt-2">Koleksi sertifikat keahlian dan bukti karya proyek sistem informasi finansial.</p>
-                <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
+                <button onclick="openCertificateModal()" class="mt-4 sm:mt-0 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
+                    + Tambah Sertifikat
+                </button>
             </div>
 
-            <!-- Gallery Grid -->
             <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Cert 1 -->
                 <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition group relative">
@@ -710,49 +605,32 @@
                         <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
                     </div>
                     <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" alt="Sertifikasi MOS" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" alt="MOS" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-6">
                         <h4 class="font-extrabold text-lg editable">Microsoft Office Specialist (MOS)</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Penguasaan tingkat lanjut ekosistem Microsoft Excel & Office untuk analisis data keuangan korporat.</p>
+                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Penguasaan tingkat lanjut ekosistem Microsoft Excel & Office untuk analisis data keuangan.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Cert 2 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition group relative">
-                    <div class="absolute top-4 right-4 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Ganti Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" alt="Sistem AAAIIM" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-extrabold text-lg editable">Sistem Web "AAAIIM One Finance"</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Pengembangan platform web terpadu untuk manajemen arus kas, pelaporan keuangan, dan budgeting.</p>
-                    </div>
+    <!-- DYNAMIC CUSTOM SECTIONS (BEBAS DITAMBAH OLEH PENGGUNA) -->
+    <section id="custom-sections" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
+                <div>
+                    <span class="text-xs font-extrabold text-emerald-500 uppercase tracking-widest block">Seksi & Kolom Bebas</span>
+                    <h3 class="text-3xl sm:text-4xl font-black mt-1">Atribut Tambahan Khusus</h3>
                 </div>
+                <button onclick="openCustomSectionModal()" class="mt-4 sm:mt-0 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
+                    <i class="fa-solid fa-plus-circle mr-1"></i> Buat Seksi / Kolom Baru
+                </button>
+            </div>
 
-                <!-- Cert 3 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition group relative">
-                    <div class="absolute top-4 right-4 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Ganti Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800" alt="Brevet Pajak" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-extrabold text-lg editable">Sertifikasi Brevet Pajak A & B</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Kualifikasi resmi perencanaan dan pelaporan perpajakan perorangan maupun entitas badan usaha.</p>
-                    </div>
-                </div>
+            <div id="custom-sections-container" class="space-y-12">
+                <!-- Seksi dinamis buatan pengguna akan muncul di sini -->
             </div>
         </div>
     </section>
@@ -770,11 +648,10 @@
                     Terbuka untuk peluang konsultasi audit finansial, posisi manajemen strategis korporat, pembicara akademis, maupun kolaborasi riset.
                 </p>
 
-                <!-- Contact Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6">
                     <a href="https://wa.me/62895363155826" target="_blank" class="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 hover:border-brand-500 transition duration-300 text-center group shadow-md hover:-translate-y-1">
                         <i class="fa-solid fa-phone text-3xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
-                        <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Telepon / WhatsApp</div>
+                        <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">WhatsApp</div>
                         <div class="text-sm font-bold mt-1 text-slate-200 editable" id="contact-phone">0895363155826</div>
                     </a>
                     
@@ -802,7 +679,7 @@
             </div>
             <div>
                 <button onclick="openLoginModal()" class="hover:text-slate-300 transition-colors">
-                    <i class="fa-solid fa-lock text-[10px] mr-1"></i> Area Login Admin
+                    <i class="fa-solid fa-lock text-[10px] mr-1"></i> Mode Admin Editor
                 </button>
             </div>
         </div>
@@ -819,8 +696,8 @@
                 <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl mx-auto flex items-center justify-center text-xl mb-3 shadow-md">
                     <i class="fa-solid fa-user-shield"></i>
                 </div>
-                <h3 class="text-xl font-bold">Login Administrator</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan password admin untuk mengelola skill, foto prestasi, dan perubahan konten secara permanen.</p>
+                <h3 class="text-xl font-bold">Akses Admin Editor</h3>
+                <p class="text-xs text-slate-500 mt-1">Masukkan password admin untuk mengaktifkan seluruh alat edit, tambah, dan hapus kolom.</p>
             </div>
 
             <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -836,108 +713,130 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD SKILL -->
-    <div id="skill-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <!-- MODAL: TAMBAH CUSTOM SECTION / KOLOM BARU -->
+    <div id="custom-section-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeSkillModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
+            <button onclick="closeCustomSectionModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             
             <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-bolt text-indigo-600"></i> Tambah Keahlan Baru
+                <i class="fa-solid fa-folder-plus text-emerald-600"></i> Buat Seksi / Kolom Baru
             </h3>
 
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul Seksi Baru</label>
+                    <input type="text" id="custom-sec-title" placeholder="Contoh: Publikasi Buku & Jurnal" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Sub-judul / Deskripsi Seksi</label>
+                    <input type="text" id="custom-sec-sub" placeholder="Contoh: Koleksi ilmiah nasional..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul Item Pertama</label>
+                    <input type="text" id="custom-item-title" placeholder="Contoh: Jurnal Terindeks Scopus Q2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Isi / Detail Ringkas</label>
+                    <textarea id="custom-item-desc" rows="2" placeholder="Tuliskan keterangan rinci di sini..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Foto Sampul (Opsional)</label>
+                    <input type="file" id="custom-item-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700">
+                </div>
+                <button onclick="submitNewCustomSection()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">
+                    Buat & Tampilkan Seksi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD EXPERENCE -->
+    <div id="exp-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
+            <button onclick="closeExpModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-briefcase text-brand-500"></i> Tambah Karir Baru</h3>
+            <div class="space-y-3">
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Posisi / Jabatan</label><input type="text" id="exp-position" placeholder="Contoh: Senior Financial Auditor" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Perusahaan & Lokasi</label><input type="text" id="exp-company" placeholder="Contoh: PT Bank Central, Jakarta" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Periode Kerja</label><input type="text" id="exp-period" placeholder="Contoh: Jan 2024 - Present" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Tugas (Pisahkan dengan koma)</label><textarea id="exp-desc" rows="2" placeholder="Tugas 1, Tugas 2, Tugas 3..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
+                <button onclick="submitNewExp()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Karir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD EDU -->
+    <div id="edu-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
+            <button onclick="closeEduModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-brand-500"></i> Tambah Pendidikan</h3>
+            <div class="space-y-3">
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Gelar / Tingkat</label><input type="text" id="edu-degree" placeholder="Contoh: Doktor Ekonomi (S3)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Universitas / Institusi</label><input type="text" id="edu-univ" placeholder="Contoh: Universitas Gadjah Mada" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Periode Tahun</label><input type="text" id="edu-period" placeholder="Contoh: 2026 - 2029" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Keterangan / IPK</label><textarea id="edu-desc" rows="2" placeholder="Detail fokus studi..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
+                <button onclick="submitNewEdu()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Pendidikan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD SKILL -->
+    <div id="skill-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
+            <button onclick="closeSkillModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-bolt text-indigo-600"></i> Tambah Keahlian</h3>
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Kategori Skill</label>
                     <select id="new-skill-type" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                        <option value="Hard Skill">Hard Skill (Teknis & Alat)</option>
+                        <option value="Hard Skill">Hard Skill (Teknis)</option>
                         <option value="Soft Skill">Soft Skill (Interpersonal)</option>
                     </select>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Skill / Kompetensi</label>
-                    <input type="text" id="new-skill-name" placeholder="Contoh: Strategic Budgeting" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                </div>
-                <button onclick="submitNewSkill()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition text-sm shadow-md">
-                    Simpan Skill Baru
-                </button>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Nama Skill</label><input type="text" id="new-skill-name" placeholder="Contoh: Strategic Budgeting" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></div>
+                <button onclick="submitNewSkill()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition text-sm shadow-md">Simpan Skill</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ADD ACHIEVEMENT WITH PHOTO -->
+    <!-- MODAL: ADD ACHIEVEMENT -->
     <div id="achievement-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeAchievementModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-trophy text-amber-500"></i> Tambah Prestasi Baru
-            </h3>
-
+            <button onclick="closeAchievementModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-500"></i> Tambah Prestasi</h3>
             <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Kategori Badge</label>
-                    <input type="text" id="ach-badge" placeholder="Contoh: Penghargaan Utama" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul Prestasi</label>
-                    <input type="text" id="ach-title" placeholder="Contoh: Juara 1 Riset Akuntansi" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label>
-                    <textarea id="ach-desc" rows="2" placeholder="Deskripsi ringkas..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Foto Bukti / Dokumentasi</label>
-                    <input type="file" id="ach-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
-                </div>
-                <button onclick="submitNewAchievement()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">
-                    Simpan Prestasi
-                </button>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Badge / Kategori</label><input type="text" id="ach-badge" placeholder="Contoh: Penghargaan Riset" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Judul Prestasi</label><input type="text" id="ach-title" placeholder="Judul prestasi..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="ach-desc" rows="2" placeholder="Deskripsi ringkas..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Foto Bukti / Dokumentasi</label><input type="file" id="ach-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700"></div>
+                <button onclick="submitNewAchievement()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Prestasi</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: ADD CERTIFICATE WITH PHOTO -->
+    <!-- MODAL: ADD CERTIFICATE -->
     <div id="certificate-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeCertificateModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-certificate text-rose-600"></i> Tambah Sertifikat Baru
-            </h3>
-
+            <button onclick="closeCertificateModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-certificate text-rose-600"></i> Tambah Sertifikat</h3>
             <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul Sertifikasi / Dokumen</label>
-                    <input type="text" id="cert-title" placeholder="Contoh: Sertifikasi CFA Level 1" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label>
-                    <textarea id="cert-desc" rows="2" placeholder="Deskripsi ringkas keahlian..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Foto Sertifikat / Karya</label>
-                    <input type="file" id="cert-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
-                </div>
-                <button onclick="submitNewCertificate()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">
-                    Simpan Sertifikat
-                </button>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Judul Sertifikasi / Dokumen</label><input type="text" id="cert-title" placeholder="Judul sertifikat..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="cert-desc" rows="2" placeholder="Deskripsi ringkas..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
+                <div><label class="block text-xs font-bold text-slate-700 mb-1">Foto Sertifikat</label><input type="file" id="cert-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700"></div>
+                <button onclick="submitNewCertificate()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Sertifikat</button>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE REALTIME DATABASE SYNC LOGIC -->
+    <!-- FIREBASE REALTIME DATABASE SYNC ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Konfigurasi Firebase Realtime Database
         const firebaseConfig = {
             apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
             authDomain: "portofolio-ku-6446b.firebaseapp.com",
@@ -952,7 +851,6 @@
         const db = getDatabase(app);
 
         let isAdminLoggedIn = false;
-        let isEditMode = false;
         let autoSaveTimer = null;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -964,12 +862,15 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
-        /* --- LOGIN & SESSION SYSTEM --- */
+        window.formatText = function(command) {
+            if (!isAdminLoggedIn) return;
+            document.execCommand(command, false, null);
+            handleTypingAutoSave();
+        }
+
+        /* --- AUTH SYSTEM --- */
         window.openLoginModal = function() {
-            if (isAdminLoggedIn) {
-                alert('Anda sudah berada dalam mode Admin!');
-                return;
-            }
+            if (isAdminLoggedIn) { alert('Sesi Admin sudah aktif!'); return; }
             document.getElementById('login-modal').classList.remove('hidden');
             document.getElementById('admin-password').focus();
         }
@@ -981,17 +882,15 @@
 
         window.handleLogin = function(e) {
             e.preventDefault();
-            const passwordInput = document.getElementById('admin-password').value;
-            
-            if (passwordInput === 'admin123') {
+            if (document.getElementById('admin-password').value === 'admin123') {
                 isAdminLoggedIn = true;
                 sessionStorage.setItem('admin_auth', 'true');
                 closeLoginModal();
                 showAdminBar();
                 enableEditing();
-                alert('Akses Admin Diberikan! Anda dapat mengedit teks, menambah/menghapus skill, serta mengunggah foto prestasi & sertifikat.');
+                alert('Akses Admin Editor Aktif! Anda kini dapat mengubah teks, menghapus item, serta menambah kolom custom.');
             } else {
-                alert('Password salah! Akses ditolak.');
+                alert('Password salah!');
             }
         }
 
@@ -1010,16 +909,10 @@
         }
 
         window.logoutAdmin = async function() {
-            if (confirm('Keluar dari sesi Admin? Semua perubahan akan tersimpan ke cloud.')) {
-                if (isAdminLoggedIn) {
-                    await window.saveChangesToFirebase(false);
-                }
+            if (confirm('Keluar dari sesi Admin Editor? Data akan otomatis tersimpan.')) {
+                if (isAdminLoggedIn) await window.saveChangesToFirebase(false);
                 isAdminLoggedIn = false;
                 sessionStorage.removeItem('admin_auth');
-                disableEditing();
-                document.getElementById('admin-bar').classList.add('hidden');
-                document.getElementById('nav-login-btn').classList.remove('hidden');
-                document.querySelectorAll('.admin-action-btn').forEach(el => el.classList.add('hidden'));
                 location.reload();
             }
         }
@@ -1035,24 +928,9 @@
             if (isAdminLoggedIn) window.saveChangesToFirebase(false);
         }
 
-        /* --- EDIT MODE TOGGLE --- */
-        window.toggleEditMode = async function() {
-            if (!isAdminLoggedIn) return;
-            isEditMode = !isEditMode;
-            const btnText = document.getElementById('edit-status-text');
-            if (isEditMode) {
-                btnText.textContent = "Edit Teks: ON";
-                enableEditing();
-            } else {
-                btnText.textContent = "Edit Teks: OFF";
-                disableEditing();
-                await window.saveChangesToFirebase(false);
-            }
-        }
-
+        /* --- EDITING ENGINE --- */
         function enableEditing() {
             if (!isAdminLoggedIn) return;
-            isEditMode = true;
             document.querySelectorAll('.editable').forEach(el => {
                 el.contentEditable = "true";
                 el.classList.add('editable-active');
@@ -1062,32 +940,23 @@
             document.querySelectorAll('.admin-action-btn').forEach(el => el.classList.remove('hidden'));
         }
 
-        function disableEditing() {
-            isEditMode = false;
-            document.querySelectorAll('.editable').forEach(el => {
-                el.contentEditable = "false";
-                el.classList.remove('editable-active');
-                el.removeEventListener('input', handleTypingAutoSave);
-            });
-        }
-
         function handleTypingAutoSave() {
             if (!isAdminLoggedIn) return;
             const indicator = document.getElementById('autosave-indicator');
-            if(indicator) indicator.textContent = "Menyimpan perubahan secara otomatis...";
+            if(indicator) indicator.textContent = "Menyimpan perubahan...";
 
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(async () => {
                 await window.saveChangesToFirebase(false);
-                if(indicator) indicator.textContent = "Perubahan tersimpan otomatis.";
-            }, 600);
+                if(indicator) indicator.textContent = "Tersimpan otomatis ke database.";
+            }, 700);
         }
 
         /* --- ITEM DELETION --- */
         window.deleteItem = async function(buttonEl) {
             if (!isAdminLoggedIn) return;
-            if (confirm('Apakah Anda yakin ingin menghapus item/konten ini?')) {
-                const targetCard = buttonEl.closest('.group') || buttonEl.closest('div.bg-\\[var\\(--bg-card\\)\\]') || buttonEl.closest('.bg-\\[var\\(--bg-main\\)\\]');
+            if (confirm('Yakin ingin menghapus item/kolom ini?')) {
+                const targetCard = buttonEl.closest('.group') || buttonEl.closest('div.bg-\\[var\\(--bg-card\\)\\]') || buttonEl.closest('.bg-\\[var\\(--bg-main\\)\\]') || buttonEl.closest('.custom-section-item');
                 if (targetCard) {
                     targetCard.remove();
                     await window.saveChangesToFirebase(true);
@@ -1119,85 +988,174 @@
                     if (cardImg) {
                         cardImg.src = e.target.result;
                         await window.saveChangesToFirebase(true);
-                        alert('Foto berhasil diperbarui!');
                     }
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        /* --- SKILL MODAL & MANAGEMENT --- */
+        /* --- CUSTOM SECTIONS & COLUMNS MODAL --- */
+        window.openCustomSectionModal = function() {
+            if (!isAdminLoggedIn) return;
+            document.getElementById('custom-section-modal').classList.remove('hidden');
+        }
+
+        window.closeCustomSectionModal = function() {
+            document.getElementById('custom-section-modal').classList.add('hidden');
+        }
+
+        window.submitNewCustomSection = function() {
+            const title = document.getElementById('custom-sec-title').value.trim() || 'Seksi Tambahan Baru';
+            const sub = document.getElementById('custom-sec-sub').value.trim() || 'Atribut Informasi';
+            const itemTitle = document.getElementById('custom-item-title').value.trim() || 'Judul Item';
+            const itemDesc = document.getElementById('custom-item-desc').value.trim() || 'Keterangan detail...';
+            const fileInput = document.getElementById('custom-item-photo');
+
+            const defaultImg = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=600";
+
+            const createSectionHtml = async (imgSrc) => {
+                const container = document.getElementById('custom-sections-container');
+                const newSection = document.createElement('div');
+                newSection.className = 'custom-section-item bg-[var(--bg-main)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative group';
+                newSection.innerHTML = `
+                    <div class="absolute top-6 right-6 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
+                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-trash"></i> Hapus Seksi Ini</button>
+                    </div>
+                    <div class="mb-6 border-b border-[var(--border-color)] pb-4">
+                        <span class="text-xs font-black text-emerald-500 uppercase tracking-widest editable">${sub}</span>
+                        <h4 class="text-2xl font-black mt-1 editable">${title}</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] p-5 relative group/item">
+                            <div class="aspect-video overflow-hidden rounded-xl bg-slate-200 mb-4 relative">
+                                <img src="${imgSrc}" class="card-img w-full h-full object-cover">
+                                <label class="absolute top-2 right-2 bg-indigo-600 text-white text-[10px] px-2 py-1 rounded shadow cursor-pointer admin-action-btn hidden">
+                                    <i class="fa-solid fa-camera"></i>
+                                    <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
+                                </label>
+                            </div>
+                            <h5 class="font-extrabold text-base editable">${itemTitle}</h5>
+                            <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">${itemDesc}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(newSection);
+                closeCustomSectionModal();
+                enableEditing();
+                await window.saveChangesToFirebase(true);
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => createSectionHtml(e.target.result);
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                createSectionHtml(defaultImg);
+            }
+        }
+
+        /* --- OTHER MODALS IMPLEMENTATION --- */
+        window.openExpModal = () => { if(isAdminLoggedIn) document.getElementById('exp-modal').classList.remove('hidden'); }
+        window.closeExpModal = () => document.getElementById('exp-modal').classList.add('hidden');
+        window.submitNewExp = async () => {
+            const pos = document.getElementById('exp-position').value.trim();
+            const comp = document.getElementById('exp-company').value.trim();
+            const period = document.getElementById('exp-period').value.trim();
+            const desc = document.getElementById('exp-desc').value.trim().split(',');
+
+            if (!pos) return alert('Posisi harus diisi!');
+
+            const container = document.getElementById('experience-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group hover:shadow-md transition';
+            
+            let listHtml = desc.map(item => `<li>${item.trim()}</li>`).join('');
+
+            newItem.innerHTML = `
+                <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
+                    <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1 rounded-md shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+                    <div>
+                        <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-briefcase text-brand-500 text-base"></i> ${pos}</h4>
+                        <div class="text-brand-500 font-bold text-sm editable">${comp}</div>
+                    </div>
+                    <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-bold px-3 py-1 rounded-full editable">${period}</span>
+                </div>
+                <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">${listHtml}</ul>
+            `;
+            container.prepend(newItem);
+            closeExpModal();
+            enableEditing();
+            await window.saveChangesToFirebase(true);
+        }
+
+        window.openEduModal = () => { if(isAdminLoggedIn) document.getElementById('edu-modal').classList.remove('hidden'); }
+        window.closeEduModal = () => document.getElementById('edu-modal').classList.add('hidden');
+        window.submitNewEdu = async () => {
+            const degree = document.getElementById('edu-degree').value.trim();
+            const univ = document.getElementById('edu-univ').value.trim();
+            const period = document.getElementById('edu-period').value.trim();
+            const desc = document.getElementById('edu-desc').value.trim();
+
+            if (!degree) return alert('Gelar harus diisi!');
+
+            const container = document.getElementById('education-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between relative group hover:shadow-lg transition';
+            newItem.innerHTML = `
+                <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
+                    <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
+                </div>
+                <div>
+                    <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <span class="text-xs font-bold text-brand-600 bg-[var(--badge-bg)] px-3 py-1 rounded-full editable">${period}</span>
+                    <h4 class="text-xl font-extrabold mt-3 editable">${degree}</h4>
+                    <p class="font-bold text-sm text-brand-500 mt-1 editable">${univ}</p>
+                    <p class="text-sm opacity-80 mt-4 leading-relaxed editable">${desc}</p>
+                </div>
+            `;
+            container.prepend(newItem);
+            closeEduModal();
+            enableEditing();
+            await window.saveChangesToFirebase(true);
+        }
+
         window.openSkillModal = function(defaultType = 'Hard Skill') {
             if (!isAdminLoggedIn) return;
             document.getElementById('new-skill-type').value = defaultType;
             document.getElementById('skill-modal').classList.remove('hidden');
-            document.getElementById('new-skill-name').focus();
         }
-
-        window.closeSkillModal = function() {
-            document.getElementById('skill-modal').classList.add('hidden');
-            document.getElementById('new-skill-name').value = '';
-        }
-
+        window.closeSkillModal = () => document.getElementById('skill-modal').classList.add('hidden');
         window.submitNewSkill = async function() {
             const type = document.getElementById('new-skill-type').value;
             const name = document.getElementById('new-skill-name').value.trim();
-            
-            if (!name) {
-                alert('Nama skill tidak boleh kosong!');
-                return;
-            }
+            if (!name) return alert('Nama skill wajib diisi!');
 
-            const container = (type === 'Hard Skill') 
-                ? document.getElementById('hard-skills-container')
-                : document.getElementById('soft-skills-container');
-
-            const iconClass = (type === 'Hard Skill') ? 'fa-solid fa-code' : 'fa-solid fa-star';
-
+            const container = (type === 'Hard Skill') ? document.getElementById('hard-skills-container') : document.getElementById('soft-skills-container');
             const newItem = document.createElement('div');
             newItem.className = 'bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm';
             newItem.innerHTML = `
-                <div class="flex items-center gap-2.5">
-                    <i class="${iconClass} text-brand-500 text-xs"></i>
-                    <span class="text-xs font-bold editable">${name}</span>
-                </div>
+                <div class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brand-500 text-xs"></i><span class="text-xs font-bold editable">${name}</span></div>
                 <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
             `;
-
             container.appendChild(newItem);
             closeSkillModal();
             enableEditing();
             await window.saveChangesToFirebase(true);
         }
 
-        /* --- ACHIEVEMENT MODAL & MANAGEMENT --- */
-        window.openAchievementModal = function() {
-            if (!isAdminLoggedIn) return;
-            document.getElementById('achievement-modal').classList.remove('hidden');
-        }
-
-        window.closeAchievementModal = function() {
-            document.getElementById('achievement-modal').classList.add('hidden');
-            document.getElementById('ach-badge').value = '';
-            document.getElementById('ach-title').value = '';
-            document.getElementById('ach-desc').value = '';
-            document.getElementById('ach-photo').value = '';
-        }
-
+        window.openAchievementModal = () => { if(isAdminLoggedIn) document.getElementById('achievement-modal').classList.remove('hidden'); }
+        window.closeAchievementModal = () => document.getElementById('achievement-modal').classList.add('hidden');
         window.submitNewAchievement = function() {
             const badge = document.getElementById('ach-badge').value.trim() || 'Penghargaan Baru';
             const title = document.getElementById('ach-title').value.trim();
             const desc = document.getElementById('ach-desc').value.trim();
             const fileInput = document.getElementById('ach-photo');
 
-            if (!title) {
-                alert('Judul prestasi tidak boleh kosong!');
-                return;
-            }
+            if (!title) return alert('Judul harus diisi!');
 
-            const defaultImg = "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600";
-
-            const appendAchievement = async (imgSrc) => {
+            const appendFn = async (imgSrc) => {
                 const container = document.getElementById('achievements-container');
                 const newItem = document.createElement('div');
                 newItem.className = 'bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition relative group';
@@ -1210,7 +1168,7 @@
                         <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
                     </div>
                     <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="${imgSrc}" alt="${title}" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="${imgSrc}" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-6">
                         <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-md editable">${badge}</span>
@@ -1226,39 +1184,21 @@
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = e => appendAchievement(e.target.result);
+                reader.onload = e => appendFn(e.target.result);
                 reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                appendAchievement(defaultImg);
-            }
+            } else appendFn("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600");
         }
 
-        /* --- CERTIFICATE MODAL & MANAGEMENT --- */
-        window.openCertificateModal = function() {
-            if (!isAdminLoggedIn) return;
-            document.getElementById('certificate-modal').classList.remove('hidden');
-        }
-
-        window.closeCertificateModal = function() {
-            document.getElementById('certificate-modal').classList.add('hidden');
-            document.getElementById('cert-title').value = '';
-            document.getElementById('cert-desc').value = '';
-            document.getElementById('cert-photo').value = '';
-        }
-
+        window.openCertificateModal = () => { if(isAdminLoggedIn) document.getElementById('certificate-modal').classList.remove('hidden'); }
+        window.closeCertificateModal = () => document.getElementById('certificate-modal').classList.add('hidden');
         window.submitNewCertificate = function() {
             const title = document.getElementById('cert-title').value.trim();
             const desc = document.getElementById('cert-desc').value.trim();
             const fileInput = document.getElementById('cert-photo');
 
-            if (!title) {
-                alert('Judul sertifikat tidak boleh kosong!');
-                return;
-            }
+            if (!title) return alert('Judul sertifikat harus diisi!');
 
-            const defaultImg = "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800";
-
-            const appendCertificate = async (imgSrc) => {
+            const appendFn = async (imgSrc) => {
                 const container = document.getElementById('gallery-container');
                 const newItem = document.createElement('div');
                 newItem.className = 'bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition group relative';
@@ -1271,7 +1211,7 @@
                         <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
                     </div>
                     <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="${imgSrc}" alt="${title}" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img src="${imgSrc}" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-6">
                         <h4 class="font-extrabold text-lg editable">${title}</h4>
@@ -1286,11 +1226,9 @@
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
-                reader.onload = e => appendCertificate(e.target.result);
+                reader.onload = e => appendFn(e.target.result);
                 reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                appendCertificate(defaultImg);
-            }
+            } else appendFn("https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800");
         }
 
         /* --- FIREBASE DATA PERSISTENCE --- */
@@ -1325,17 +1263,14 @@
                 softSkillsHtml: getCleanHTML('soft-skills-container'),
                 achievementsHtml: getCleanHTML('achievements-container'),
                 galleryHtml: getCleanHTML('gallery-container'),
+                customSectionsHtml: getCleanHTML('custom-sections-container'),
                 theme: document.documentElement.getAttribute('data-theme') || 'blue',
                 font: getComputedStyle(document.documentElement).getPropertyValue('--current-font').trim() || 'Plus Jakarta Sans'
             };
 
             return set(ref(db, 'portfolio/executive_data'), portfolioData)
-                .then(() => {
-                    if (showAlert) alert('Berhasil! Seluruh data, foto baru, dan perubahan tersimpan di cloud.');
-                })
-                .catch((error) => {
-                    console.error('Gagal menyimpan data ke Firebase: ' + error.message);
-                });
+                .then(() => { if (showAlert) alert('Data dan perubahan seksi berhasil tersimpan di Cloud!'); })
+                .catch((err) => { console.error('Gagal menyimpan: ' + err.message); });
         }
 
         function loadFromFirebase() {
@@ -1349,13 +1284,11 @@
                 if (data) {
                     if (data.theme) {
                         document.documentElement.setAttribute('data-theme', data.theme);
-                        const themeSelect = document.getElementById('theme-selector');
-                        if (themeSelect) themeSelect.value = data.theme;
+                        if (document.getElementById('theme-selector')) document.getElementById('theme-selector').value = data.theme;
                     }
                     if (data.font) {
                         document.documentElement.style.setProperty('--current-font', data.font);
-                        const fontSelect = document.getElementById('font-selector');
-                        if (fontSelect) fontSelect.value = data.font;
+                        if (document.getElementById('font-selector')) document.getElementById('font-selector').value = data.font;
                     }
                     if (data.profileImg) {
                         document.getElementById('profile-img').src = data.profileImg;
@@ -1379,6 +1312,9 @@
                     }
                     if (data.galleryHtml && !document.getElementById('gallery-container')?.contains(activeEl)) {
                         document.getElementById('gallery-container').innerHTML = data.galleryHtml;
+                    }
+                    if (data.customSectionsHtml && !document.getElementById('custom-sections-container')?.contains(activeEl)) {
+                        document.getElementById('custom-sections-container').innerHTML = data.customSectionsHtml;
                     }
 
                     if (data.texts) {
