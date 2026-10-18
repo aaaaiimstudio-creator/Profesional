@@ -1,1334 +1,1095 @@
-```html
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth" data-theme="blue">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hikarinaim Aistimas, S.E., M.M. (cand.), MOS - Executive Portfolio</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Hikarinaim Aistimas, S.E., MOS | Finance Professional & Executive Academic Portfolio</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK (Modular CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'hikarinaim-portfolio-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
+                authDomain: "portofolio-ku-6446b.firebaseapp.com",
+                databaseURL: "https://portofolio-ku-6446b-default-rtdb.firebaseio.com",
+                projectId: "portofolio-ku-6446b",
+                storageBucket: "portofolio-ku-6446b.firebasestorage.app",
+                messagingSenderId: "489665741012",
+                appId: "1:489665741012:web:03fdf378fabdb24fa27b41",
+                measurementId: "G-WH5DBX02TF"
+            };
+
+        let app, db, auth;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (e) {
+            console.warn("Firebase Fallback Mode Enabled:", e);
+        }
+
+        window.db = db;
+        window.auth = auth;
+        window.appId = appId;
+        window.signInAnonymously = signInAnonymously;
+        window.setDoc = setDoc;
+        window.doc = doc;
+        window.getDoc = getDoc;
+    </script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['var(--current-font)', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                        heading: ['Outfit', 'sans-serif']
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        space: ['Space Grotesk', 'monospace'],
+                        playfair: ['Playfair Display', 'serif']
                     },
                     colors: {
-                        brand: {
-                            50: 'var(--brand-50)',
-                            100: 'var(--brand-100)',
-                            500: 'var(--brand-500)',
-                            600: 'var(--brand-600)',
-                            800: 'var(--brand-800)',
-                            900: 'var(--brand-900)',
+                        theme: {
+                            50: 'var(--c-50)',
+                            100: 'var(--c-100)',
+                            400: 'var(--c-400)',
+                            500: 'var(--c-500)',
+                            600: 'var(--c-600)',
+                            700: 'var(--c-700)',
+                            900: 'var(--c-900)',
                         }
                     },
-                    boxShadow: {
-                        'glow': '0 0 25px -5px var(--brand-500)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.08)'
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
         }
     </script>
-    
+
     <style>
         :root {
-            --current-font: 'Plus Jakarta Sans';
-            --bg-main: #f8fafc;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f1f5f9;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --brand-50: #eff6ff;
-            --brand-100: #dbeafe;
-            --brand-500: #2563eb;
-            --brand-600: #1d4ed8;
-            --brand-800: #1e40af;
-            --brand-900: #1e3a8a;
-            --badge-bg: rgba(37, 99, 235, 0.1);
+            --c-50: #ecfdf5; --c-100: #d1fae5; --c-400: #34d399; --c-500: #10b981;
+            --c-600: #059669; --c-700: #047857; --c-900: #064e3b;
+            --bg-main: #06110d; --panel-bg: rgba(6, 26, 19, 0.75);
+            --panel-border: rgba(52, 211, 153, 0.15); --text-main: #f0fdf4;
+            --glow-color: rgba(16, 185, 129, 0.3);
         }
 
-        [data-theme="emerald"] {
-            --bg-main: #f0fdf4;
-            --bg-card: #ffffff;
-            --bg-card-hover: #e8f5e9;
-            --text-main: #064e3b;
-            --text-muted: #047857;
-            --border-color: #cbd5e1;
-            --brand-50: #ecfdf5;
-            --brand-100: #d1fae5;
-            --brand-500: #059669;
-            --brand-600: #047857;
-            --brand-800: #065f46;
-            --brand-900: #022c22;
-            --badge-bg: rgba(5, 150, 105, 0.1);
+        body.theme-cyan {
+            --c-50: #ecfeff; --c-100: #cffaff; --c-400: #22d3ee; --c-500: #06b6d4;
+            --c-600: #0891b2; --c-700: #0e7490; --c-900: #164e63;
+            --bg-main: #050b14; --panel-bg: rgba(10, 22, 40, 0.75);
+            --panel-border: rgba(34, 211, 238, 0.15); --text-main: #f0f9ff;
+            --glow-color: rgba(6, 182, 212, 0.3);
         }
 
-        [data-theme="amber"] {
-            --bg-main: #fffbeb;
-            --bg-card: #ffffff;
-            --bg-card-hover: #fef3c7;
-            --text-main: #451a03;
-            --text-muted: #b45309;
-            --border-color: #fde68a;
-            --brand-50: #fffbeb;
-            --brand-100: #fef3c7;
-            --brand-500: #d97706;
-            --brand-600: #b45309;
-            --brand-800: #78350f;
-            --brand-900: #451a03;
-            --badge-bg: rgba(217, 119, 6, 0.1);
+        body.theme-violet {
+            --c-50: #f5f3ff; --c-100: #ede9fe; --c-400: #a78bfa; --c-500: #8b5cf6;
+            --c-600: #7c3aed; --c-700: #6d28d9; --c-900: #4c1d95;
+            --bg-main: #0d081a; --panel-bg: rgba(22, 13, 41, 0.75);
+            --panel-border: rgba(167, 139, 250, 0.18); --text-main: #f5f3ff;
+            --glow-color: rgba(139, 92, 246, 0.3);
         }
 
-        [data-theme="rose"] {
-            --bg-main: #fff1f2;
-            --bg-card: #ffffff;
-            --bg-card-hover: #ffe4e6;
-            --text-main: #881337;
-            --text-muted: #be123c;
-            --border-color: #fecdd3;
-            --brand-50: #fff1f2;
-            --brand-100: #ffe4e6;
-            --brand-500: #e11d48;
-            --brand-600: #be123c;
-            --brand-800: #9f1239;
-            --brand-900: #4c0519;
-            --badge-bg: rgba(225, 29, 72, 0.1);
+        body.theme-sapphire {
+            --c-50: #eff6ff; --c-100: #dbeafe; --c-400: #60a5fa; --c-500: #3b82f6;
+            --c-600: #2563eb; --c-700: #1d4ed8; --c-900: #1e3a8a;
+            --bg-main: #070d19; --panel-bg: rgba(12, 25, 48, 0.75);
+            --panel-border: rgba(96, 165, 250, 0.15); --text-main: #f0f7ff;
+            --glow-color: rgba(59, 130, 246, 0.3);
         }
 
-        [data-theme="violet"] {
-            --bg-main: #f5f3ff;
-            --bg-card: #ffffff;
-            --bg-card-hover: #ede9fe;
-            --text-main: #3b0764;
-            --text-muted: #6d28d9;
-            --border-color: #ddd6fe;
-            --brand-50: #f5f3ff;
-            --brand-100: #ede9fe;
-            --brand-500: #7c3aed;
-            --brand-600: #6d28d9;
-            --brand-800: #5b21b6;
-            --brand-900: #2e1065;
-            --badge-bg: rgba(124, 58, 237, 0.1);
-        }
-
-        [data-theme="dark"] {
-            --bg-main: #090d16;
-            --bg-card: #131b2e;
-            --bg-card-hover: #1c2942;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #1e293b;
-            --brand-50: #1e293b;
-            --brand-100: #334155;
-            --brand-500: #38bdf8;
-            --brand-600: #0284c7;
-            --brand-800: #0369a1;
-            --brand-900: #f8fafc;
-            --badge-bg: rgba(56, 189, 248, 0.15);
+        body.theme-amber {
+            --c-50: #fffbeb; --c-100: #fef3c7; --c-400: #fbbf24; --c-500: #f59e0b;
+            --c-600: #d97706; --c-700: #b45309; --c-900: #78350f;
+            --bg-main: #120b02; --panel-bg: rgba(28, 18, 5, 0.8);
+            --panel-border: rgba(251, 191, 36, 0.18); --text-main: #fffbeb;
+            --glow-color: rgba(245, 158, 11, 0.3);
         }
 
         body {
-            font-family: var(--current-font), sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        .editable-active {
-            outline: 2px dashed var(--brand-500) !important;
-            outline-offset: 3px;
-            background-color: rgba(37, 99, 235, 0.08);
+        .glass-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: var(--c-400);
+            box-shadow: 0 25px 50px -12px var(--glow-color);
+            transform: translateY(-4px);
+        }
+
+        .editable[contenteditable="true"] {
+            transition: all 0.2s ease;
+        }
+        .editable[contenteditable="true"]:hover {
+            outline: 2px dashed var(--c-400);
+            outline-offset: 4px;
             border-radius: 6px;
-            padding: 2px 4px;
+            cursor: text;
+        }
+        .editable[contenteditable="true"]:focus {
+            outline: 2px solid var(--c-500);
+            outline-offset: 4px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .glass-nav {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-        }
-        [data-theme="dark"] .glass-nav {
-            background-color: rgba(19, 27, 46, 0.85);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .animate-modal {
-            animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--c-500); }
     </style>
 </head>
-<body class="antialiased selection:bg-brand-500 selection:text-white pb-12">
+<body id="bodyRoot" class="theme-emerald font-jakarta antialiased min-h-screen flex flex-col selection:bg-emerald-500 selection:text-black">
 
-    <!-- ADMIN CONTROL PANEL (SUPER ADMIN TOOLBAR ADVANCED) -->
-    <div id="admin-bar" class="hidden fixed top-0 left-0 right-0 bg-slate-950/95 backdrop-blur-md text-white px-4 py-2.5 z-50 shadow-2xl flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
-        <div class="flex items-center space-x-3">
-            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-shield-halved"></i> Super Editor Active
-            </span>
-            <span class="text-xs text-slate-400 hidden lg:inline" id="autosave-indicator">Klik langsung teks untuk mengedit atau gunakan alat tambah di samping.</span>
-        </div>
-        
-        <div class="flex flex-wrap items-center gap-2">
-            <!-- Format Tools -->
-            <div class="flex items-center bg-slate-900 rounded-lg border border-slate-700 p-0.5">
-                <button onclick="formatText('bold')" title="Tebal (Bold)" class="px-2 py-1 hover:bg-slate-800 rounded text-xs font-bold text-slate-200">B</button>
-                <button onclick="formatText('italic')" title="Miring (Italic)" class="px-2 py-1 hover:bg-slate-800 rounded text-xs italic text-slate-200">I</button>
-                <button onclick="formatText('underline')" title="Garis Bawah" class="px-2 py-1 hover:bg-slate-800 rounded text-xs underline text-slate-200">U</button>
+    <!-- ADMIN FLOATING TOOLBAR -->
+    <div id="adminBar" class="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 border-b border-white/10 text-white px-4 py-3 hidden shadow-2xl backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <span class="bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 text-[10px] sm:text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider animate-pulse flex items-center gap-1.5 shadow-lg">
+                    <i class="fa-solid fa-shield-halved text-xs"></i> SUPER ADMIN ACTIVE
+                </span>
+                <span class="text-xs text-slate-400 hidden lg:inline">Klik teks langsung untuk edit • Ganti foto • Atur tata letak & simpan permanen</span>
             </div>
-
-            <!-- Theme Switcher -->
-            <select id="theme-selector" onchange="changeTheme(this.value)" class="bg-slate-900 text-slate-200 text-xs px-2 py-1.5 rounded-lg border border-slate-700 focus:outline-none">
-                <option value="blue">🎨 Tema: Sapphire</option>
-                <option value="emerald">🎨 Tema: Emerald</option>
-                <option value="amber">🎨 Tema: Amber</option>
-                <option value="rose">🎨 Tema: Rose</option>
-                <option value="violet">🎨 Tema: Violet</option>
-                <option value="dark">🎨 Tema: Dark Pro</option>
-            </select>
-
-            <!-- Font Switcher -->
-            <select id="font-selector" onchange="changeFont(this.value)" class="bg-slate-900 text-slate-200 text-xs px-2 py-1.5 rounded-lg border border-slate-700 focus:outline-none">
-                <option value="Plus Jakarta Sans">🔤 Font: Jakarta</option>
-                <option value="Outfit">🔤 Font: Outfit</option>
-                <option value="Inter">🔤 Font: Inter</option>
-                <option value="Playfair Display">🔤 Font: Playfair</option>
-                <option value="Space Grotesk">🔤 Font: Space</option>
-            </select>
-
-            <!-- Add Tools Dropdown / Quick Buttons -->
-            <button onclick="openCustomSectionModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1">
-                <i class="fa-solid fa-plus-circle"></i> + Seksi Baru
-            </button>
-            <button onclick="openExpModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1">
-                <i class="fa-solid fa-briefcase"></i> + Karir
-            </button>
-            <button onclick="openSkillModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1">
-                <i class="fa-solid fa-bolt"></i> + Skill
-            </button>
-            <button onclick="openAchievementModal()" class="bg-amber-600 hover:bg-amber-500 text-white text-xs px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1">
-                <i class="fa-solid fa-trophy"></i> + Prestasi
-            </button>
-
-            <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-2.5 py-1.5 rounded-lg transition font-medium cursor-pointer flex items-center gap-1 border border-slate-700">
-                <i class="fa-solid fa-camera text-brand-500"></i> Foto Utama
-                <input type="file" id="profile-upload" accept="image/*" class="hidden" onchange="uploadProfilePhoto(event)">
-            </label>
-
-            <button onclick="saveChangesToFirebase(true)" class="bg-teal-600 hover:bg-teal-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 shadow-md">
-                <i class="fa-solid fa-floppy-disk"></i> Simpan
-            </button>
             
-            <button onclick="logoutAdmin()" class="bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs px-2.5 py-1.5 rounded-lg font-semibold border border-rose-700/50">
-                <i class="fa-solid fa-power-off"></i> Keluar
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Theme Select -->
+                <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-white/10">
+                    <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-palette"></i> Tema:</span>
+                    <button onclick="setTheme('theme-emerald')" class="w-6 h-6 rounded-lg bg-emerald-500 hover:scale-110 transition shadow" title="Emerald Wealth"></button>
+                    <button onclick="setTheme('theme-cyan')" class="w-6 h-6 rounded-lg bg-cyan-500 hover:scale-110 transition shadow" title="Electric Cyan"></button>
+                    <button onclick="setTheme('theme-violet')" class="w-6 h-6 rounded-lg bg-violet-500 hover:scale-110 transition shadow" title="Royal Violet"></button>
+                    <button onclick="setTheme('theme-sapphire')" class="w-6 h-6 rounded-lg bg-blue-500 hover:scale-110 transition shadow" title="Ocean Sapphire"></button>
+                    <button onclick="setTheme('theme-amber')" class="w-6 h-6 rounded-lg bg-amber-500 hover:scale-110 transition shadow" title="Sunset Gold"></button>
+                </div>
+
+                <!-- Font Select -->
+                <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-white/10">
+                    <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-font"></i> Font:</span>
+                    <button onclick="setFont('font-jakarta')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold">Jakarta</button>
+                    <button onclick="setFont('font-outfit')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold">Outfit</button>
+                    <button onclick="setFont('font-space')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold">Mono</button>
+                </div>
+
+                <!-- Actions -->
+                <button onclick="savePortfolioToCloud()" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold px-3.5 py-1.5 rounded-xl text-xs shadow-lg transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Permanen
+                </button>
+
+                <button onclick="logoutAdmin()" class="bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- NAVBAR -->
-    <nav class="sticky top-0 z-40 glass-nav border-b border-[var(--border-color)] transition-all duration-300" id="main-navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <!-- Logo Brand -->
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-900 to-brand-500 text-white font-black flex items-center justify-center text-xl shadow-glow">
-                        HA
-                    </div>
-                    <div>
-                        <span class="text-lg font-extrabold tracking-tight block leading-tight editable" id="nav-title">Hikarinaim Aistimas</span>
-                        <span class="text-xs text-brand-500 font-semibold editable" id="nav-subtitle">Finance Professional & M.M. Candidate</span>
-                    </div>
+    <!-- HEADER & NAVIGATION -->
+    <header id="navHeader" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-slate-950/70 backdrop-blur-2xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#hero" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-theme-600 to-theme-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-theme-500/20 group-hover:scale-105 transition-transform">
+                    <span class="editable" data-key="brandInitials">HA</span>
                 </div>
-                
-                <!-- Desktop Navigation -->
-                <div class="hidden lg:flex items-center space-x-6 text-xs font-bold tracking-wide uppercase opacity-90" id="nav-links">
-                    <a href="#about" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-user text-brand-500 mr-1"></i> Tentang</a>
-                    <a href="#experience" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-briefcase text-brand-500 mr-1"></i> Karir</a>
-                    <a href="#education" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-graduation-cap text-brand-500 mr-1"></i> Pendidikan</a>
-                    <a href="#skills" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-layer-group text-brand-500 mr-1"></i> Skills</a>
-                    <a href="#achievements" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-trophy text-brand-500 mr-1"></i> Prestasi</a>
-                    <a href="#portfolio-gallery" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-certificate text-brand-500 mr-1"></i> Sertifikat</a>
-                    <a href="#custom-sections" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-folder-plus text-brand-500 mr-1"></i> Custom</a>
-                    <a href="#contact" class="hover:text-brand-500 transition-colors py-2"><i class="fa-solid fa-envelope text-brand-500 mr-1"></i> Kontak</a>
-                    
-                    <button onclick="openLoginModal()" id="nav-login-btn" class="bg-brand-900 text-white dark:bg-brand-500 dark:text-slate-950 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all duration-300 shadow-md hover:shadow-glow">
-                        <i class="fa-solid fa-lock text-xs mr-1.5"></i> Admin
-                    </button>
+                <div>
+                    <h1 class="font-extrabold text-sm sm:text-base tracking-tight editable leading-none text-white" data-key="brandName">Hikarinaim Aistimas, S.E., MOS</h1>
+                    <p class="text-[11px] text-theme-400 font-semibold mt-1 editable" data-key="brandSub">Finance Professional | M.M. Candidate</p>
                 </div>
+            </a>
 
-                <!-- Mobile menu button -->
-                <div class="lg:hidden flex items-center gap-2">
-                    <button onclick="openLoginModal()" class="p-2 text-sm font-semibold text-brand-500">
-                        <i class="fa-solid fa-lock"></i>
-                    </button>
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 focus:outline-none text-xl">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
+            <!-- Desktop Nav Menu -->
+            <nav class="hidden lg:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-300">
+                <a href="#about" class="hover:text-theme-400 transition">Profil</a>
+                <a href="#experience" class="hover:text-theme-400 transition">Pengalaman</a>
+                <a href="#education" class="hover:text-theme-400 transition">Pendidikan</a>
+                <a href="#portfolio" class="hover:text-theme-400 transition">Riset & Karya</a>
+                <a href="#skills" class="hover:text-theme-400 transition">Tools & Kompetensi</a>
+                <a href="#organizations" class="hover:text-theme-400 transition">Organisasi</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-3">
+                <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-theme-500 to-theme-600 hover:from-theme-400 hover:to-theme-500 text-slate-950 font-extrabold text-xs px-4 py-2.5 rounded-2xl shadow-xl shadow-theme-500/20 transition hover:scale-105">
+                    <i class="fa-solid fa-envelope text-xs"></i> <span class="editable" data-key="navCta">Kontak Langsung</span>
+                </a>
+
+                <!-- Admin Lock Toggle -->
+                <button onclick="openLoginModal()" class="w-10 h-10 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:border-theme-400 transition shadow" title="Admin Login">
+                    <i class="fa-solid fa-lock text-xs"></i>
+                </button>
+
+                <!-- Mobile Drawer Toggle -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-bars-staggered text-sm"></i>
+                </button>
             </div>
         </div>
-        
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-[var(--bg-card)] border-b border-[var(--border-color)] px-6 pt-3 pb-6 space-y-3 font-semibold text-sm">
-            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-user mr-2 text-brand-500"></i> Tentang Saya</a>
-            <a href="#experience" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-briefcase mr-2 text-brand-500"></i> Karir</a>
-            <a href="#education" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-graduation-cap mr-2 text-brand-500"></i> Pendidikan</a>
-            <a href="#skills" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-layer-group mr-2 text-brand-500"></i> Skills</a>
-            <a href="#achievements" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-trophy mr-2 text-brand-500"></i> Prestasi</a>
-            <a href="#portfolio-gallery" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-certificate mr-2 text-brand-500"></i> Sertifikasi</a>
-            <a href="#custom-sections" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-folder-plus mr-2 text-brand-500"></i> Seksi Tambahan</a>
-            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-500"><i class="fa-solid fa-envelope mr-2 text-brand-500"></i> Kontak</a>
-        </div>
-    </nav>
 
-    <!-- HERO SECTION -->
-    <section id="about" class="pt-12 pb-20 lg:pt-16 lg:pb-28 overflow-hidden relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Hero Text -->
+        <!-- Mobile Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-slate-950/95 border-b border-white/10 px-6 py-5 space-y-3 text-sm font-semibold">
+            <a href="#about" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Profil Eksekutif</a>
+            <a href="#experience" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Pengalaman Kerja</a>
+            <a href="#education" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Pendidikan Formal</a>
+            <a href="#portfolio" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Riset & Portofolio</a>
+            <a href="#skills" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Keahlian & Sertifikasi</a>
+            <a href="#organizations" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Kepemimpinan & Organisasi</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block text-theme-400 font-bold py-1">Hubungi Hikarinaim →</a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-20 flex-grow">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-16 sm:py-24 px-4 sm:px-6">
+            <div class="absolute -top-32 -right-32 w-96 h-96 bg-theme-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+            <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
                 <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--badge-bg)] border border-brand-500/20 text-brand-600 dark:text-brand-500 text-xs font-extrabold uppercase tracking-widest shadow-sm">
-                        <i class="fa-solid fa-award"></i>
-                        <span class="editable" id="hero-badge">Financial Strategy & Governance Specialist</span>
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-theme-500/10 border border-theme-500/20 text-theme-400 text-xs font-bold tracking-wider uppercase">
+                        <span class="w-2 h-2 rounded-full bg-theme-400 animate-ping"></span>
+                        <span class="editable" data-key="heroBadge">Finance Professional & Master of Management Candidate</span>
                     </div>
-                    
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-                        <span class="editable" id="hero-name">Hikarinaim Aistimas</span><br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 via-brand-600 to-brand-900 editable" id="hero-title">S.E., M.M. (cand.), MOS</span>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none">
+                        <span class="editable text-white" data-key="heroTitle1">Hikarinaim Aistimas,</span> <br class="hidden sm:inline"/>
+                        <span class="bg-gradient-to-r from-theme-400 via-teal-300 to-blue-400 bg-clip-text text-transparent editable" data-key="heroTitle2">S.E., MOS</span>
                     </h1>
-                    
-                    <p class="text-base sm:text-lg opacity-85 leading-relaxed editable" id="hero-summary">
-                        Praktisi keuangan korporat dan akademisi visioner dengan keahlian strategis dalam mitigasi risiko finansial, verifikasi klaim medis instansi kesehatan, dan optimalisasi likuiditas bisnis. Peraih predikat Wisudawan Terbaik UMY (IPK 3.93) serta kandidat Magister Manajemen UNNES (IPK 3.93). Saya memadukan ketepatan analisis data akuntansi dengan kepemimpinan transformatif untuk memastikan keputusan bisnis memberikan nilai tambah yang berkelanjutan.
+
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 editable" data-key="heroDesc">
+                        Praktisi Keuangan & Akademisi Muda berpengalaman dalam verifikasi finansial rumah sakit, tata kelola arus kas Holding Company, serta pengajaran Statistika & Aplikasi Komputer Manajemen. Peraih predikat <strong>Wisudawan Terbaik, Tercepat, dan Termuda UMY (IPK 3.93)</strong> yang berdedikasi tinggi pada efisiensi operasional dan analisis data presisi.
                     </p>
 
-                    <div class="pt-4 flex flex-wrap justify-center lg:justify-start gap-4">
-                        <a href="#contact" class="bg-gradient-to-r from-brand-900 to-brand-600 dark:from-brand-500 dark:to-brand-600 text-white dark:text-slate-950 hover:opacity-95 px-8 py-4 rounded-2xl font-bold shadow-lg transition-all duration-300 flex items-center gap-2 hover:-translate-y-0.5">
-                            <i class="fa-solid fa-paper-plane text-xs"></i>
-                            <span>Diskusikan Peluang</span>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#experience" class="bg-gradient-to-r from-theme-500 to-theme-600 hover:from-theme-400 hover:to-theme-500 text-slate-950 font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-xl shadow-theme-500/25 transition hover:scale-105 flex items-center gap-2">
+                            <span class="editable" data-key="btnExplore">Lihat Rekam Jejak</span> <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
-                        <a href="https://linkedin.com/in/hikarinaim-aistimas3194" target="_blank" id="hero-linkedin-btn" class="bg-[var(--bg-card)] hover:bg-[var(--bg-card-hover)] border border-[var(--border-color)] px-7 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center gap-2 shadow-sm">
-                            <i class="fa-brands fa-linkedin text-brand-500 text-lg"></i>
-                            <span>Profil LinkedIn</span>
+                        <a href="https://linkedin.com/in/hikarinaim-aistimas3194" target="_blank" class="bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-slate-200 font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl transition flex items-center gap-2">
+                            <i class="fa-brands fa-linkedin text-theme-400"></i> <span class="editable" data-key="btnLinkedin">Profil LinkedIn</span>
                         </a>
                     </div>
 
-                    <!-- Executive Stats -->
-                    <div class="pt-8 border-t border-[var(--border-color)] grid grid-cols-3 gap-4 text-center lg:text-left">
-                        <div>
-                            <div class="text-3xl font-black text-brand-500 editable" id="stat-1-num">3.93</div>
-                            <div class="text-xs opacity-75 font-semibold mt-0.5 editable" id="stat-1-desc">IPK S1 (Wisudawan Terbaik UMY)</div>
+                    <!-- Live Metrics Cards -->
+                    <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-8 border-t border-white/10 max-w-lg mx-auto lg:mx-0">
+                        <div class="glass-card p-3.5 rounded-2xl text-center lg:text-left">
+                            <h4 class="text-xl sm:text-3xl font-black text-white editable" data-key="m1Num">3.93</h4>
+                            <p class="text-[10px] sm:text-xs text-slate-400 mt-1 font-semibold editable" data-key="m1Label">IPK S1 Wisudawan Terbaik UMY</p>
                         </div>
-                        <div>
-                            <div class="text-3xl font-black text-brand-500 editable" id="stat-2-num">3.93</div>
-                            <div class="text-xs opacity-75 font-semibold mt-0.5 editable" id="stat-2-desc">IPK S2 (Magister UNNES)</div>
+                        <div class="glass-card p-3.5 rounded-2xl text-center lg:text-left">
+                            <h4 class="text-xl sm:text-3xl font-black text-white editable" data-key="m2Num">95+</h4>
+                            <p class="text-[10px] sm:text-xs text-slate-400 mt-1 font-semibold editable" data-key="m2Label">Mahasiswa Bimbingan Statistik</p>
                         </div>
-                        <div>
-                            <div class="text-3xl font-black text-brand-500 editable" id="stat-3-num">MOS</div>
-                            <div class="text-xs opacity-75 font-semibold mt-0.5 editable" id="stat-3-desc">Sertifikasi Internasional Microsoft</div>
+                        <div class="glass-card p-3.5 rounded-2xl text-center lg:text-left">
+                            <h4 class="text-xl sm:text-3xl font-black text-white editable" data-key="m3Num">MOS</h4>
+                            <p class="text-[10px] sm:text-xs text-slate-400 mt-1 font-semibold editable" data-key="m3Label">Sertifikasi Internasional Microsoft</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Hero Photo Card -->
+                <!-- Hero Photo Box -->
                 <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative w-full max-w-md">
-                        <div class="absolute -inset-2 bg-gradient-to-tr from-brand-500 to-indigo-600 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
-                        <div class="relative bg-[var(--bg-card)] p-4 rounded-3xl shadow-2xl border border-[var(--border-color)]">
-                            <div class="overflow-hidden rounded-2xl bg-slate-200 aspect-[3/4] relative shadow-inner">
-                                <img id="profile-img" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" alt="Hikarinaim Aistimas" class="w-full h-full object-cover object-center transform hover:scale-105 transition duration-700">
+                    <div class="relative w-full max-w-sm sm:max-w-md animate-float">
+                        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-theme-500 to-blue-600 opacity-40 blur-2xl"></div>
+                        <div class="relative glass-card rounded-3xl p-5 shadow-2xl border border-white/10">
+                            <div class="relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden bg-slate-900 group">
+                                <img id="heroImg" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" alt="Hikarinaim Aistimas" class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                                
+                                <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                                    <div>
+                                        <span class="inline-block px-2.5 py-1 rounded-lg bg-theme-500/20 text-theme-400 font-bold text-[10px] border border-theme-500/30 mb-1">PROFIL DOKUMENTASI</span>
+                                        <h3 class="font-extrabold text-white text-base sm:text-lg editable" data-key="heroCardName">Hikarinaim Aistimas, S.E.</h3>
+                                        <p class="text-xs text-slate-300 font-medium editable" data-key="heroCardSub">Kandidat Magister Manajemen UNNES</p>
+                                    </div>
+                                    <button onclick="triggerFileInput('heroImgInput')" id="btnHeroImg" class="hidden bg-theme-500 text-slate-950 p-2.5 rounded-xl shadow-lg hover:scale-110 transition" title="Ganti Foto Profil">
+                                        <i class="fa-solid fa-camera text-xs"></i>
+                                    </button>
+                                    <input type="file" id="heroImgInput" accept="image/*" class="hidden" onchange="updateImageSrc(event, 'heroImg')">
+                                </div>
                             </div>
-                            <div class="mt-4 p-2 text-center">
-                                <h3 class="font-extrabold text-lg editable" id="card-photo-name">Hikarinaim Aistimas, S.E., M.M. (cand.)</h3>
-                                <p class="text-xs font-semibold text-brand-500 mt-1 editable" id="card-photo-sub">Finance Professional & Academic Expert</p>
-                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- WORK EXPERIENCE SECTION -->
-    <section id="experience" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
-                <div>
-                    <span class="text-xs font-extrabold text-brand-500 uppercase tracking-widest block" id="exp-subtitle">Track Record Karir</span>
-                    <h3 class="text-3xl sm:text-4xl font-black mt-1" id="exp-title">Pengalaman Kerja Strategis</h3>
+        <!-- ABOUT SECTION -->
+        <section id="about" class="py-20 px-4 sm:px-6 border-t border-white/10 bg-slate-950/40">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-6 space-y-5">
+                    <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="abTag">RINGKASAN EKSEKUTIF</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight editable" data-key="abTitle">Dedikasi Tinggi pada Tata Kelola Keuangan & Transparansi Akademik</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed editable" data-key="abDesc1">
+                        Memiliki rekam jejak solid dalam verifikasi tagihan medis rawat inap dan rawat jalan di RSI Sunan Kudus, pengelolaan likuiditas serta efisiensi anggaran Holding Company UMY (PT UMB), serta pengampuan akademik mata kuliah Aplikasi Komputer Manajemen dan Statistika.
+                    </p>
+                    <p class="text-slate-300 text-sm leading-relaxed editable" data-key="abDesc2">
+                        Terbiasa bekerja dengan ketelitian tinggi, pemikiran analitis, serta kolaborasi lintas divisi untuk mendukung efektivitas operasional instansi kesehatan maupun korporasi bisnis.
+                    </p>
                 </div>
-                <button onclick="openExpModal()" class="mt-4 sm:mt-0 bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
-                    + Tambah Pengalaman Kerja
-                </button>
-            </div>
 
-            <!-- Timeline Container -->
-            <div id="experience-container" class="max-w-4xl mx-auto space-y-8">
-                <!-- Job Item 1 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group hover:shadow-md transition">
-                    <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1 rounded-md shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                        <div>
-                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-hospital text-brand-500 text-base"></i> Verifikator Keuangan Rumah Sakit</h4>
-                            <div class="text-brand-500 font-bold text-sm editable">Rumah Sakit Islam Sunan Kudus, Kudus – Indonesia</div>
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="glass-card p-6 rounded-2xl relative">
+                        <div class="w-10 h-10 rounded-xl bg-theme-500/10 border border-theme-500/20 text-theme-400 flex items-center justify-center text-lg mb-3">
+                            <i class="fa-solid fa-hospital"></i>
                         </div>
-                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-bold px-3 py-1 rounded-full editable">Apr 2025 - Present</span>
+                        <h3 class="text-base font-bold text-white mb-1 editable" data-key="abC1Title">Verifikasi Keuangan RS</h3>
+                        <p class="text-xs text-slate-400 editable" data-key="abC1Desc">Akurasi tinggi verifikasi klaim BPJS, Umum, Asuransi, Jasa Raharja & BPJSTK di RSI Sunan Kudus.</p>
                     </div>
-                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
-                        <li>Memverifikasi presisi tagihan medis Rawat Inap & Jalan (BPJS, Asuransi, Umum) guna menekan risiko selisih klaim hingga 0%.</li>
-                        <li>Mengelola sistem pelaporan pendapatan harian lintas kanal (EDC, transfer, tunai) dengan standar audit akuntansi yang ketat.</li>
-                        <li>Mengakselerasi pencairan dana klaim Jasa Raharja dan BPJSTK melalui verifikasi dokumen yang terstruktur dan responsif.</li>
-                    </ul>
-                </div>
 
-                <!-- Job Item 2 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group hover:shadow-md transition">
-                    <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1 rounded-md shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                        <div>
-                            <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-building-columns text-brand-500 text-base"></i> Kepala Urusan Keuangan</h4>
-                            <div class="text-brand-500 font-bold text-sm editable">PT Umat Mandiri Berkemajuan (Holding Company UMY), Bantul – Indonesia</div>
+                    <div class="glass-card p-6 rounded-2xl relative">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-lg mb-3">
+                            <i class="fa-solid fa-building-columns"></i>
                         </div>
-                        <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-bold px-3 py-1 rounded-full editable">Sep 2023 - Apr 2025</span>
+                        <h3 class="text-base font-bold text-white mb-1 editable" data-key="abC2Title">Manajemen Kas Holding</h3>
+                        <p class="text-xs text-slate-400 editable" data-key="abC2Desc">Pengendalian arus kas, pengawasan LPJ, dan efisiensi biaya multi-unit bisnis PT UMB UMY.</p>
                     </div>
-                    <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">
-                        <li>Memimpin likuiditas korporat dan menyusun proyeksi anggaran operasional tahunan secara komprehensif untuk multi-unit bisnis.</li>
-                        <li>Mengaudit Laporan Pertanggungjawaban (LPJ) serta merumuskan strategi efisiensi biaya operasional yang berdampak langsung pada peningkatan margin laba.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- EDUCATION SECTION -->
-    <section id="education" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
-                <div>
-                    <span class="text-xs font-extrabold text-brand-500 uppercase tracking-widest block" id="edu-subtitle">Pondasi Intelektual</span>
-                    <h3 class="text-3xl sm:text-4xl font-black mt-1" id="edu-title">Pendidikan Formal</h3>
-                </div>
-                <button onclick="openEduModal()" class="mt-4 sm:mt-0 bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
-                    + Tambah Pendidikan
-                </button>
-            </div>
-
-            <div id="education-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <!-- S2 -->
-                <div class="bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between relative group hover:shadow-lg transition">
-                    <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div>
-                        <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
-                            <i class="fa-solid fa-user-graduate"></i>
+                    <div class="glass-card p-6 rounded-2xl relative">
+                        <div class="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center text-lg mb-3">
+                            <i class="fa-solid fa-chalkboard-user"></i>
                         </div>
-                        <span class="text-xs font-bold text-brand-600 bg-[var(--badge-bg)] px-3 py-1 rounded-full editable">Jan 2026 - Present</span>
-                        <h4 class="text-xl font-extrabold mt-3 editable">Magister Manajemen (S2) - Candidate</h4>
-                        <p class="font-bold text-sm text-brand-500 mt-1 editable">Universitas Negeri Semarang (UNNES), Semarang - Indonesia</p>
-                        <p class="text-sm opacity-80 mt-4 leading-relaxed editable">
-                            IPK Sementara: <strong>3.93</strong>. Fokus pendalaman pada manajemen strategis korporat, pengambilan keputusan eksekutif, dan inovasi bisnis berbasis riset empiris.
-                        </p>
+                        <h3 class="text-base font-bold text-white mb-1 editable" data-key="abC3Title">Asisten Dosen Statistika</h3>
+                        <p class="text-xs text-slate-400 editable" data-key="abC3Desc">Membimbing 95+ mahasiswa dalam analisis kuantitatif dan aplikasi komputer manajemen.</p>
                     </div>
-                </div>
 
-                <!-- S1 -->
-                <div class="bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between relative group hover:shadow-lg transition">
-                    <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div>
-                        <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm">
+                    <div class="glass-card p-6 rounded-2xl relative">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-lg mb-3">
                             <i class="fa-solid fa-award"></i>
                         </div>
-                        <span class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full editable">Sep 2018 - Des 2021</span>
-                        <h4 class="text-xl font-extrabold mt-3 editable">Sarjana Manajemen (S.E.) - IPK 3.93 / 4.00</h4>
-                        <p class="font-bold text-sm text-brand-500 mt-1 editable">Universitas Muhammadiyah Yogyakarta (UMY), Bantul - Indonesia</p>
-                        <p class="text-sm opacity-80 mt-4 leading-relaxed editable">
-                            <strong>Wisudawan Terbaik & Tercepat Tingkat Universitas.</strong> Penerima Beasiswa Prestasi Akademik. Skripsi: Analisis <em>Intellectual Capital terhadap Nilai Perusahaan</em>.
+                        <h3 class="text-base font-bold text-white mb-1 editable" data-key="abC4Title">Wisudawan Terbaik UMY</h3>
+                        <p class="text-xs text-slate-400 editable" data-key="abC4Desc">Lulusan terbaik, tercepat, dan termuda se-Universitas dengan predikat IPK 3.93.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORK EXPERIENCE SECTION -->
+        <section id="experience" class="py-20 px-4 sm:px-6 border-t border-white/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="expTag">REKAM JEJAK KARIR</span>
+                        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 editable" data-key="expTitle">Pengalaman Kerja Profesional</h2>
+                    </div>
+                    <button onclick="addExperienceCard()" id="btnAddJourney" class="hidden mt-4 md:mt-0 bg-theme-500/20 hover:bg-theme-500 border border-theme-500/30 text-theme-300 hover:text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Tambah Pengalaman
+                    </button>
+                </div>
+
+                <div id="journeyContainer" class="relative border-l-2 border-white/10 ml-4 sm:ml-8 space-y-8">
+                    
+                    <!-- Exp 1 -->
+                    <div class="relative pl-6 sm:pl-8 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-theme-500 border-4 border-slate-950"></div>
+                        <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
+                            <span class="text-xs text-theme-400 font-extrabold editable" data-key="e1Period">Apr 2025 - Present</span>
+                            <h3 class="text-xl font-black text-white mt-1 editable" data-key="e1Role">Verifikator Keuangan Rumah Sakit</h3>
+                            <h4 class="text-sm font-bold text-slate-300 editable" data-key="e1Company">Rumah Sakit Islam Sunan Kudus, Kudus – Indonesia</h4>
+                            <ul class="mt-3 space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-4 leading-relaxed editable" data-key="e1Bullets">
+                                <li>Memverifikasi tagihan pasien Rawat Inap dan Rawat Jalan untuk pasien BPJS Kesehatan, Umum, dan Asuransi lainnya secara presisi.</li>
+                                <li>Menyusun dan mengimplementasikan strategi pelayanan keuangan agar proses administrasi berjalan lebih efektif, efisien, dan minim kesalahan.</li>
+                                <li>Bertanggung jawab atas pelaporan pendapatan harian, termasuk penerimaan tunai, EDC, transfer, dan pembayaran pihak ketiga.</li>
+                                <li>Melakukan verifikasi dan kelengkapan berkas klaim untuk pasien Jasa Raharja dan BPJS Ketenagakerjaan (BPJSTK).</li>
+                                <li>Berkoordinasi dengan bagian penata rekening, pembayaran, dan klaim untuk memastikan ketepatan data dan waktu penyelesaian.</li>
+                            </ul>
+                            <button onclick="removeCard(this)" class="delete-btn hidden absolute top-4 right-4 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white p-2 rounded-lg text-xs transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exp 2 -->
+                    <div class="relative pl-6 sm:pl-8 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-950"></div>
+                        <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
+                            <span class="text-xs text-blue-400 font-extrabold editable" data-key="e2Period">Sep 2023 - Apr 2025</span>
+                            <h3 class="text-xl font-black text-white mt-1 editable" data-key="e2Role">Kepala Urusan Keuangan</h3>
+                            <h4 class="text-sm font-bold text-slate-300 editable" data-key="e2Company">PT Umat Mandiri Berkemajuan (Holding Company UMY), Bantul – Indonesia</h4>
+                            <ul class="mt-3 space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-4 leading-relaxed editable" data-key="e2Bullets">
+                                <li>Mengelola arus kas perusahaan dan memastikan stabilitas keuangan di seluruh unit bisnis holding.</li>
+                                <li>Menyusun dan mengimplementasikan strategi efisiensi biaya untuk mencapai target keuangan setiap unit bisnis.</li>
+                                <li>Mengawasi serta mengontrol penerimaan dan pengeluaran dana melalui laporan pertanggungjawaban (LPJ).</li>
+                                <li>Menyusun laporan keuangan bulanan secara akurat untuk mendukung pengambilan keputusan strategis jajaran pimpinan.</li>
+                            </ul>
+                            <button onclick="removeCard(this)" class="delete-btn hidden absolute top-4 right-4 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white p-2 rounded-lg text-xs transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exp 3 -->
+                    <div class="relative pl-6 sm:pl-8 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-teal-400 border-4 border-slate-950"></div>
+                        <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
+                            <span class="text-xs text-teal-400 font-extrabold editable" data-key="e3Period">Sep 2021 - Apr 2025</span>
+                            <h3 class="text-xl font-black text-white mt-1 editable" data-key="e3Role">Asisten Dosen Statistika (Dosen Payung) & Staff Prodi</h3>
+                            <h4 class="text-sm font-bold text-slate-300 editable" data-key="e3Company">Program Studi Manajemen - Universitas Muhammadiyah Yogyakarta</h4>
+                            <ul class="mt-3 space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-4 leading-relaxed editable" data-key="e3Bullets">
+                                <li>Mengajar dan membimbing 95 mahasiswa dalam mata kuliah Aplikasi Komputer Manajemen dan Statistika.</li>
+                                <li>Berperan sebagai tim data inti dalam proses akreditasi program studi yang sukses meraih pencapaian Akreditasi UNGGUL.</li>
+                                <li>Menyusun dan mengurus book chapter serta hak cipta naskah publikasi mahasiswa untuk meningkatkan reputasi akademik.</li>
+                                <li>Mengoordinasikan program magang MBKM serta mengelola administrasi ujian sidang skripsi mahasiswa.</li>
+                            </ul>
+                            <button onclick="removeCard(this)" class="delete-btn hidden absolute top-4 right-4 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white p-2 rounded-lg text-xs transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EDUCATION SECTION -->
+        <section id="education" class="py-20 px-4 sm:px-6 border-t border-white/10 bg-slate-950/40">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12">
+                    <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="eduTag">PONDASI AKADEMIK</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 editable" data-key="eduTitle">Riwayat Pendidikan Formal</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- S2 -->
+                    <div class="glass-card p-8 rounded-3xl relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-theme-500/10 border border-theme-500/20 text-theme-400 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid fa-user-graduate"></i>
+                            </div>
+                            <span class="text-xs font-extrabold text-theme-400 bg-theme-500/10 px-3 py-1 rounded-full border border-theme-500/20 editable" data-key="s2Year">Jan 2026 - Present</span>
+                            <h3 class="text-2xl font-black text-white mt-4 editable" data-key="s2Degree">Master of Management (Candidate)</h3>
+                            <h4 class="text-sm font-bold text-slate-300 mt-1 editable" data-key="s2Univ">Universitas Negeri Semarang (UNNES), Semarang - Indonesia</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 mt-4 leading-relaxed editable" data-key="s2Desc">
+                                Mengembangkan pemikiran strategis dalam manajemen keuangan korporasi, tata kelola risiko, serta inovasi pengambilan keputusan kepemimpinan berbasis riset empiris.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- S1 -->
+                    <div class="glass-card p-8 rounded-3xl relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <span class="text-xs font-extrabold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 editable" data-key="s1Year">Sep 2018 - Dec 2021</span>
+                            <h3 class="text-2xl font-black text-white mt-4 editable" data-key="s1Degree">Sarjana Manajemen (S.E.) - IPK 3.93 / 4.00</h3>
+                            <h4 class="text-sm font-bold text-slate-300 mt-1 editable" data-key="s1Univ">Universitas Muhammadiyah Yogyakarta (UMY), Bantul - Indonesia</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 mt-4 leading-relaxed editable" data-key="s1Desc">
+                                <strong>Wisudawan Terbaik, Tercepat, dan Termuda se-Universitas (2021).</strong> Penerima Beasiswa Prestasi Akademik. Skripsi: <em>Pengaruh Intellectual Capital terhadap Nilai Perusahaan dengan Profitabilitas sebagai Variabel Intervening pada Sektor Perbankan BEI</em>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO & RESEARCH SECTION -->
+        <section id="portfolio" class="py-20 px-4 sm:px-6 border-t border-white/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="pfTag">KARYA & RISET</span>
+                        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 editable" data-key="pfTitle">Riset Repository & Praktik Bisnis</h2>
+                    </div>
+                    <button onclick="addPortfolioCard()" id="btnAddPortfolio" class="hidden mt-4 md:mt-0 bg-theme-500/20 hover:bg-theme-500 border border-theme-500/30 text-theme-300 hover:text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Tambah Karya
+                    </button>
+                </div>
+
+                <div id="portfolioGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-48 bg-slate-900 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Riset Repository">
+                                <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-theme-400 text-[10px] font-bold px-2.5 py-1 rounded-full editable" data-key="p1Tag">SKRIPSI & RISET BEI</span>
+                                <button onclick="triggerCardImgUpload(this)" class="img-upload-btn hidden absolute bottom-3 right-3 bg-theme-500 text-slate-950 p-2 rounded-xl text-xs shadow hover:scale-110 transition">
+                                    <i class="fa-solid fa-camera"></i>
+                                </button>
+                                <input type="file" accept="image/*" class="hidden" onchange="updateCardImg(event, this)">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-lg font-bold text-white editable" data-key="p1Title">Intellectual Capital & Nilai Perusahaan Perbankan</h3>
+                                <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="p1Desc">
+                                    Analisis empiris mengenai peran profitabilitas sebagai variabel intervening dalam memediasi modal intelektual terhadap peningkatan nilai saham bank di BEI.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 mt-4">
+                            <span class="editable" data-key="p1Stat"><i class="fa-solid fa-link text-theme-400 mr-1"></i> ETD Repository UMY</span>
+                            <a href="https://etd.umy.ac.id/id/eprint/6872/" target="_blank" class="text-theme-400 font-bold hover:underline">Akses Dokumen →</a>
+                        </div>
+                        <button onclick="removeCard(this)" class="delete-btn hidden absolute top-3 right-3 bg-rose-500/80 text-white p-2 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-48 bg-slate-900 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Praktik Perencanaan Bisnis">
+                                <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-theme-400 text-[10px] font-bold px-2.5 py-1 rounded-full editable" data-key="p2Tag">SIMULASI BISNIS REAL</span>
+                                <button onclick="triggerCardImgUpload(this)" class="img-upload-btn hidden absolute bottom-3 right-3 bg-theme-500 text-slate-950 p-2 rounded-xl text-xs shadow hover:scale-110 transition">
+                                    <i class="fa-solid fa-camera"></i>
+                                </button>
+                                <input type="file" accept="image/*" class="hidden" onchange="updateCardImg(event, this)">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-lg font-bold text-white editable" data-key="p2Title">Praktik Perencanaan Bisnis & Entrepreneurship</h3>
+                                <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="p2Desc">
+                                    Merealisasikan konsep bisnis kuliner inovatif dengan keberhasilan mencatatkan omzet omzet penjualan Rp3.000.000 hanya dalam waktu 1 bulan.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 mt-4">
+                            <span class="editable" data-key="p2Stat"><i class="fa-solid fa-chart-line text-theme-400 mr-1"></i> Omzet Rp3.000.000</span>
+                            <span class="text-theme-400 font-bold">Terverifikasi</span>
+                        </div>
+                        <button onclick="removeCard(this)" class="delete-btn hidden absolute top-3 right-3 bg-rose-500/80 text-white p-2 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
+                        <div>
+                            <div class="relative h-48 bg-slate-900 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Simulasi Perbankan Syariah">
+                                <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-theme-400 text-[10px] font-bold px-2.5 py-1 rounded-full editable" data-key="p3Tag">SIMULASI BANK SYARIAH</span>
+                                <button onclick="triggerCardImgUpload(this)" class="img-upload-btn hidden absolute bottom-3 right-3 bg-theme-500 text-slate-950 p-2 rounded-xl text-xs shadow hover:scale-110 transition">
+                                    <i class="fa-solid fa-camera"></i>
+                                </button>
+                                <input type="file" accept="image/*" class="hidden" onchange="updateCardImg(event, this)">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-lg font-bold text-white editable" data-key="p3Title">Praktik Sistem Perbankan BRI Syariah</h3>
+                                <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="p3Desc">
+                                    Mengendalikan peran Teller, Supervisor (SPV), dan Customer Service dalam simulasi sistem perbankan syariah mencakup manajemen rekening dan kas.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 mt-4">
+                            <span class="editable" data-key="p3Stat"><i class="fa-solid fa-building-columns text-theme-400 mr-1"></i> Teller & Supervisor</span>
+                            <span class="text-theme-400 font-bold">Simulasi Interaktif</span>
+                        </div>
+                        <button onclick="removeCard(this)" class="delete-btn hidden absolute top-3 right-3 bg-rose-500/80 text-white p-2 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS, TOOLS & CERTIFICATIONS SECTION -->
+        <section id="skills" class="py-20 px-4 sm:px-6 border-t border-white/10 bg-slate-950/40">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="tlsTag">KOMPETENSI & LEGALITAS</span>
+                        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 editable" data-key="tlsTitle">Hard Skills, Soft Skills & Sertifikasi</h2>
+                    </div>
+                    <button onclick="addToolCard()" id="btnAddTool" class="hidden mt-4 md:mt-0 bg-theme-500/20 hover:bg-theme-500 border border-theme-500/30 text-theme-300 hover:text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Tambah Atribut
+                    </button>
+                </div>
+
+                <!-- Grid Skills & Sertifikat -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Hard Skills -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                        <div class="w-10 h-10 rounded-2xl bg-theme-500/10 text-theme-400 flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-4 editable" data-key="hsTitle">Hard Skills & Software</h3>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-300 editable" data-key="hsList">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-file-excel text-emerald-400"></i> Microsoft Office (Excel, Word, PowerPoint) Advanced</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-pen-nib text-blue-400"></i> Desain Grafis CorelDRAW</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-globe text-teal-400"></i> Pengelolaan Website Berbasis WordPress</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-chart-pie text-amber-400"></i> Olah Data Statistik & MyKlass E-Learning</li>
+                        </ul>
+                    </div>
+
+                    <!-- Soft Skills -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                        <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-users text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-4 editable" data-key="ssTitle">Soft Skills & Kepemimpinan</h3>
+                        <ul class="space-y-3 text-xs sm:text-sm text-slate-300 editable" data-key="ssList">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-microphone text-theme-400"></i> Public Speaking & MC Acara Formal</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-user-shield text-theme-400"></i> Leadership & Manajemen Tim Multi-Divisi</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-clipboard-check text-theme-400"></i> Analisis Verifikasi Finansial Teliti</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-handshake text-theme-400"></i> Negosiasi & Komunikasi Persuasif</li>
+                        </ul>
+                    </div>
+
+                    <!-- Sertifikasi -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-4 editable" data-key="certTitle">Sertifikasi Kompetensi</h3>
+                        <div class="space-y-4 text-xs sm:text-sm text-slate-300 editable" data-key="certList">
+                            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/10">
+                                <h4 class="font-bold text-white"><i class="fa-solid fa-award text-amber-400 mr-1"></i> Microsoft Office Specialist (MOS)</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Sertifikasi Standar Internasional Microsoft</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/10">
+                                <h4 class="font-bold text-white"><i class="fa-solid fa-file-invoice-dollar text-theme-400 mr-1"></i> Pelatihan Brevet Pajak A & B</h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Pemahaman Perpajakan Lanjutan & Regulasi Resmi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORGANIZATIONAL & AGENDA EXPERIENCE SECTION -->
+        <section id="organizations" class="py-20 px-4 sm:px-6 border-t border-white/10">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12">
+                    <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="orgTag">KEPEMIMPINAN & ORGANISASI</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 editable" data-key="orgTitle">Pengalaman Organisasi & Koordinator Acara</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- BEM -->
+                    <div class="glass-card p-6 rounded-3xl relative">
+                        <span class="text-xs text-theme-400 font-bold editable" data-key="o1Year">Oct 2020 - Dec 2021</span>
+                        <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o1Role">Staff Kementerian Sekretariat Negara</h3>
+                        <h4 class="text-xs text-slate-400 font-semibold editable" data-key="o1Org">Badan Eksekutif Mahasiswa (BEM KM UMY)</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="o1Desc">
+                            Mengelola dan menginventarisasi seluruh aset BEM KM UMY, menjadi MC formal kegiatan resmi, serta menyukseskan workshop kepemimpinan tingkat universitas.
+                        </p>
+                    </div>
+
+                    <!-- IMM -->
+                    <div class="glass-card p-6 rounded-3xl relative">
+                        <span class="text-xs text-blue-400 font-bold editable" data-key="o2Year">Oct 2019 - Sep 2020</span>
+                        <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o2Role">Sekretaris 1</h3>
+                        <h4 class="text-xs text-slate-400 font-semibold editable" data-key="o2Org">Ikatan Mahasiswa Muhammadiyah (IMM FEB UMY)</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="o2Desc">
+                            Mengelola persuratan organisasi, mengevaluasi proposal dan Laporan Pertanggungjawaban (LPJ) seluruh kegiatan bidang, serta mengoordinasikan dokumen akademik.
+                        </p>
+                    </div>
+
+                    <!-- Komting -->
+                    <div class="glass-card p-6 rounded-3xl relative">
+                        <span class="text-xs text-teal-400 font-bold editable" data-key="o3Year">Aug 2018 - 2021</span>
+                        <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o3Role">Ketua Angkatan (Komting 2018)</h3>
+                        <h4 class="text-xs text-slate-400 font-semibold editable" data-key="o3Org">Program Studi Manajemen UMY</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="o3Desc">
+                            Penghubung utama antara mahasiswa angkatan 2018 dengan pimpinan prodi, menyampaikan aspirasi akademik, dan mengoordinasikan kebijakan perkuliahan.
+                        </p>
+                    </div>
+
+                    <!-- Entrepreneur Day Korlap -->
+                    <div class="glass-card p-6 rounded-3xl relative">
+                        <span class="text-xs text-amber-400 font-bold editable" data-key="o4Year">Agenda Pengalaman</span>
+                        <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o4Role">Koordinator Lapangan Entrepreneur Day</h3>
+                        <h4 class="text-xs text-slate-400 font-semibold editable" data-key="o4Org">Universitas Muhammadiyah Yogyakarta</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="o4Desc">
+                            Merancang tata letak (layout) tenant praktik berjualan mahasiswa, memimpin tim pelaksana di lapangan, dan memberikan solusi cepat terhadap kendala operasional.
                         </p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- HARD SKILLS & SOFT SKILLS SECTION -->
-    <section id="skills" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <div class="inline-block p-3 rounded-2xl bg-[var(--badge-bg)] text-brand-500 text-2xl mb-3 shadow-sm">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <h2 class="text-xs font-extrabold text-brand-500 uppercase tracking-widest mb-2">Kompetensi Teruji</h2>
-                <h3 class="text-3xl sm:text-4xl font-black">Hard Skills & Soft Skills</h3>
-                <div class="w-16 h-1 bg-brand-500 mx-auto mt-4 rounded-full"></div>
-            </div>
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-20 px-4 sm:px-6 border-t border-white/10 bg-slate-950/50">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="cntTag">SALURAN KOMUNIKASI</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white leading-tight editable" data-key="cntTitle">Mari Berdiskusi & Berkolaborasi</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed editable" data-key="cntDesc">
+                        Terbuka untuk peluang karir profesional keuangan, posisi pengajaran akademis, konsultasi verifikasi finansial, maupun sinergi kepemimpinan organisasi.
+                    </p>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
-                <!-- Hard Skills Box -->
-                <div class="bg-[var(--bg-main)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative">
-                    <div class="flex items-center justify-between mb-6 border-b border-[var(--border-color)] pb-4">
-                        <h4 class="text-lg font-black flex items-center gap-2">
-                            <i class="fa-solid fa-laptop-code text-brand-500"></i> Hard Skills
-                        </h4>
-                        <button onclick="openSkillModal('Hard Skill')" class="text-xs bg-brand-500 hover:bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg admin-action-btn hidden transition">
-                            + Tambah
-                        </button>
-                    </div>
-
-                    <div id="hard-skills-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-chart-line text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Financial Analysis & Cashflow Control</span>
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-2xl bg-theme-500/10 border border-theme-500/20 text-theme-400 flex items-center justify-center shrink-0 text-lg">
+                                <i class="fa-solid fa-envelope"></i>
                             </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
+                            <div>
+                                <p class="text-[11px] text-slate-400 font-medium">Email Resmi</p>
+                                <p class="font-bold text-white text-sm editable" data-key="cntEmail">hikarinaimaistimas.work@gmail.com</p>
+                            </div>
                         </div>
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-file-excel text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Microsoft Office Specialist (MOS)</span>
-                            </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Soft Skills Box -->
-                <div class="bg-[var(--bg-main)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative">
-                    <div class="flex items-center justify-between mb-6 border-b border-[var(--border-color)] pb-4">
-                        <h4 class="text-lg font-black flex items-center gap-2">
-                            <i class="fa-solid fa-users text-brand-500"></i> Soft Skills
-                        </h4>
-                        <button onclick="openSkillModal('Soft Skill')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg admin-action-btn hidden transition">
-                            + Tambah
-                        </button>
-                    </div>
-
-                    <div id="soft-skills-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-chess-king text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Strategic Leadership</span>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 text-lg">
+                                <i class="fa-solid fa-phone"></i>
                             </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
+                            <div>
+                                <p class="text-[11px] text-slate-400 font-medium">Telepon / WhatsApp</p>
+                                <p class="font-bold text-white text-sm editable" data-key="cntPhone">0895363155826</p>
+                            </div>
                         </div>
-                        <div class="bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm">
-                            <div class="flex items-center gap-2.5">
-                                <i class="fa-solid fa-microphone text-brand-500 text-xs"></i>
-                                <span class="text-xs font-bold editable">Public Speaking & Mentoring</span>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center shrink-0 text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
                             </div>
-                            <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn hidden opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
+                            <div>
+                                <p class="text-[11px] text-slate-400 font-medium">Domisili</p>
+                                <p class="font-bold text-white text-sm editable" data-key="cntLoc">Kecamatan Kota, Kabupaten Kudus, Jawa Tengah</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ACHIEVEMENTS SECTION -->
-    <section id="achievements" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
-                <div>
-                    <span class="text-xs font-extrabold text-amber-500 uppercase tracking-widest block">Pencapaian Terbaik</span>
-                    <h3 class="text-3xl sm:text-4xl font-black mt-1">Prestasi & Karya Riset</h3>
-                </div>
-                <button onclick="openAchievementModal()" class="mt-4 sm:mt-0 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
-                    + Tambah Prestasi
-                </button>
-            </div>
-
-            <div id="achievements-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Item 1 -->
-                <div class="bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition relative group">
-                    <div class="absolute top-3 right-3 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600" alt="Wisudawan Terbaik" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-md editable">Penghargaan Utama</span>
-                        <h4 class="font-extrabold text-lg mt-2 editable">Wisudawan Terbaik UMY (2021)</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Wisudawan Terbaik, Tercepat, dan Termuda UMY dengan IPK 3.93.</p>
+                <div class="lg:col-span-7">
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
+                        <h3 class="text-xl font-bold text-white mb-4 editable" data-key="formTitle">Kirim Pesan Langsung</h3>
+                        <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Lengkap</label>
+                                    <input type="text" required placeholder="Nama Anda" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-theme-400 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1">Email</label>
+                                    <input type="email" required placeholder="nama@email.com" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-theme-400 transition">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Subjek Pesan</label>
+                                <input type="text" required placeholder="Subjek kolaborasi / tawaran karir" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-theme-400 transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Pesan Lengkap</label>
+                                <textarea rows="4" required placeholder="Tuliskan pesan Anda..." class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-theme-400 transition"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gradient-to-r from-theme-500 to-theme-600 hover:from-theme-400 hover:to-theme-500 text-slate-950 font-black py-3.5 rounded-2xl shadow-xl shadow-theme-500/20 text-xs transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sekarang
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CERTIFICATIONS & PORTFOLIO GALLERY -->
-    <section id="portfolio-gallery" class="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
-                <div>
-                    <span class="text-xs font-extrabold text-brand-500 uppercase tracking-widest block">Legalitas & Dokumentasi</span>
-                    <h3 class="text-3xl sm:text-4xl font-black mt-1">Sertifikasi & Portfolio</h3>
-                </div>
-                <button onclick="openCertificateModal()" class="mt-4 sm:mt-0 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
-                    + Tambah Sertifikat
-                </button>
-            </div>
-
-            <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Cert 1 -->
-                <div class="bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition group relative">
-                    <div class="absolute top-4 right-4 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Ganti Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" alt="MOS" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-extrabold text-lg editable">Microsoft Office Specialist (MOS)</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">Penguasaan tingkat lanjut ekosistem Microsoft Excel & Office untuk analisis data keuangan.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- DYNAMIC CUSTOM SECTIONS (BEBAS DITAMBAH OLEH PENGGUNA) -->
-    <section id="custom-sections" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-12">
-                <div>
-                    <span class="text-xs font-extrabold text-emerald-500 uppercase tracking-widest block">Seksi & Kolom Bebas</span>
-                    <h3 class="text-3xl sm:text-4xl font-black mt-1">Atribut Tambahan Khusus</h3>
-                </div>
-                <button onclick="openCustomSectionModal()" class="mt-4 sm:mt-0 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition admin-action-btn hidden shadow-md">
-                    <i class="fa-solid fa-plus-circle mr-1"></i> Buat Seksi / Kolom Baru
-                </button>
-            </div>
-
-            <div id="custom-sections-container" class="space-y-12">
-                <!-- Seksi dinamis buatan pengguna akan muncul di sini -->
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="py-20 bg-slate-950 text-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="max-w-4xl mx-auto text-center space-y-8">
-                <div class="inline-block p-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-brand-500 text-2xl shadow-sm">
-                    <i class="fa-solid fa-headset"></i>
-                </div>
-                <h2 class="text-xs font-black text-brand-500 uppercase tracking-widest editable" id="contact-subtitle">Kemitraan & Kolaborasi</h2>
-                <h3 class="text-3xl sm:text-5xl font-black tracking-tight editable" id="contact-title">Mari Berdiskusi & Bekerja Sama</h3>
-                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed editable" id="contact-desc">
-                    Terbuka untuk peluang konsultasi audit finansial, posisi manajemen strategis korporat, pembicara akademis, maupun kolaborasi riset.
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-6">
-                    <a href="https://wa.me/62895363155826" target="_blank" class="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 hover:border-brand-500 transition duration-300 text-center group shadow-md hover:-translate-y-1">
-                        <i class="fa-solid fa-phone text-3xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
-                        <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">WhatsApp</div>
-                        <div class="text-sm font-bold mt-1 text-slate-200 editable" id="contact-phone">0895363155826</div>
-                    </a>
-                    
-                    <a href="mailto:hikarinaimaistimas.work@gmail.com" class="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 hover:border-brand-500 transition duration-300 text-center group shadow-md hover:-translate-y-1">
-                        <i class="fa-solid fa-envelope text-3xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
-                        <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Email Resmi</div>
-                        <div class="text-xs sm:text-sm font-bold mt-1 text-slate-200 editable break-all" id="contact-email">hikarinaimaistimas.work@gmail.com</div>
-                    </a>
-                    
-                    <a href="https://www.instagram.com/hikarinaim/" target="_blank" class="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 hover:border-brand-500 transition duration-300 text-center group shadow-md hover:-translate-y-1">
-                        <i class="fa-brands fa-instagram text-3xl text-brand-500 mb-3 group-hover:scale-110 transition duration-300"></i>
-                        <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Instagram</div>
-                        <div class="text-sm font-bold mt-1 text-slate-200 editable" id="contact-ig">@hikarinaim</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-500 py-8 border-t border-slate-900 text-xs text-center">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                © 2026 Hikarinaim Aistimas, S.E., M.M. (cand.), MOS. All rights reserved.
-            </div>
-            <div>
-                <button onclick="openLoginModal()" class="hover:text-slate-300 transition-colors">
-                    <i class="fa-solid fa-lock text-[10px] mr-1"></i> Mode Admin Editor
-                </button>
+    <footer class="py-8 px-4 sm:px-6 border-t border-white/10 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p class="editable" data-key="ftrText">© 2026 Hikarinaim Aistimas, S.E., MOS. Executive Portfolio & Academic CMS System.</p>
+            <div class="flex items-center space-x-4">
+                <a href="#hero" class="hover:text-slate-300 transition">Kembali Ke Atas ↑</a>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL: LOGIN ADMIN -->
-    <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-6 sm:p-8 rounded-3xl relative border border-white/10 shadow-2xl">
             <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl mx-auto flex items-center justify-center text-xl mb-3 shadow-md">
-                    <i class="fa-solid fa-user-shield"></i>
+                <div class="w-12 h-12 rounded-2xl bg-theme-500/20 border border-theme-500/30 text-theme-400 flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fa-solid fa-lock"></i>
                 </div>
-                <h3 class="text-xl font-bold">Akses Admin Editor</h3>
-                <p class="text-xs text-slate-500 mt-1">Masukkan password admin untuk mengaktifkan seluruh alat edit, tambah, dan hapus kolom.</p>
+                <h3 class="text-lg font-extrabold text-white">Login Admin Editor</h3>
+                <p class="text-xs text-slate-400 mt-1">Kata sandi default: <span class="font-bold text-theme-400">admin123</span></p>
             </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Password Admin</label>
-                    <input type="password" id="admin-password" placeholder="Masukkan password" required class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                    <p class="text-[11px] text-slate-400 mt-1.5">Password default: <code class="bg-slate-100 px-1.5 py-0.5 rounded font-mono font-bold text-slate-700">admin123</code></p>
+                    <input type="password" id="adminPasswordInput" required placeholder="Masukkan kata sandi..." class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-theme-400 transition">
                 </div>
-                <button type="submit" class="w-full bg-slate-900 hover:bg-brand-500 text-white font-bold py-3 rounded-xl transition duration-300 text-sm shadow-md">
-                    Masuk Sebagai Admin
-                </button>
+                <div class="flex space-x-2">
+                    <button type="button" onclick="closeLoginModal()" class="w-1/2 bg-slate-900 hover:bg-slate-800 border border-white/10 text-slate-300 font-bold py-2.5 rounded-xl text-xs transition">Batal</button>
+                    <button type="submit" class="w-1/2 bg-theme-500 hover:bg-theme-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition shadow-lg shadow-theme-500/20">Masuk CMS</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL: TAMBAH CUSTOM SECTION / KOLOM BARU -->
-    <div id="custom-section-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeCustomSectionModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-folder-plus text-emerald-600"></i> Buat Seksi / Kolom Baru
-            </h3>
-
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul Seksi Baru</label>
-                    <input type="text" id="custom-sec-title" placeholder="Contoh: Publikasi Buku & Jurnal" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Sub-judul / Deskripsi Seksi</label>
-                    <input type="text" id="custom-sec-sub" placeholder="Contoh: Koleksi ilmiah nasional..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Judul Item Pertama</label>
-                    <input type="text" id="custom-item-title" placeholder="Contoh: Jurnal Terindeks Scopus Q2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Isi / Detail Ringkas</label>
-                    <textarea id="custom-item-desc" rows="2" placeholder="Tuliskan keterangan rinci di sini..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Foto Sampul (Opsional)</label>
-                    <input type="file" id="custom-item-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700">
-                </div>
-                <button onclick="submitNewCustomSection()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">
-                    Buat & Tampilkan Seksi
-                </button>
-            </div>
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 border border-white/10 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 max-w-xs">
+        <div id="toastIcon" class="w-8 h-8 rounded-xl bg-theme-500/20 text-theme-400 flex items-center justify-center text-sm shrink-0">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <h4 id="toastTitle" class="text-xs font-bold">Berhasil</h4>
+            <p id="toastMsg" class="text-[11px] text-slate-400">Tindakan telah diproses.</p>
         </div>
     </div>
 
-    <!-- MODAL: ADD EXPERENCE -->
-    <div id="exp-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeExpModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-briefcase text-brand-500"></i> Tambah Karir Baru</h3>
-            <div class="space-y-3">
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Posisi / Jabatan</label><input type="text" id="exp-position" placeholder="Contoh: Senior Financial Auditor" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Perusahaan & Lokasi</label><input type="text" id="exp-company" placeholder="Contoh: PT Bank Central, Jakarta" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Periode Kerja</label><input type="text" id="exp-period" placeholder="Contoh: Jan 2024 - Present" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Tugas (Pisahkan dengan koma)</label><textarea id="exp-desc" rows="2" placeholder="Tugas 1, Tugas 2, Tugas 3..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
-                <button onclick="submitNewExp()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Karir</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD EDU -->
-    <div id="edu-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeEduModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-brand-500"></i> Tambah Pendidikan</h3>
-            <div class="space-y-3">
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Gelar / Tingkat</label><input type="text" id="edu-degree" placeholder="Contoh: Doktor Ekonomi (S3)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Universitas / Institusi</label><input type="text" id="edu-univ" placeholder="Contoh: Universitas Gadjah Mada" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Periode Tahun</label><input type="text" id="edu-period" placeholder="Contoh: 2026 - 2029" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Keterangan / IPK</label><textarea id="edu-desc" rows="2" placeholder="Detail fokus studi..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
-                <button onclick="submitNewEdu()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Pendidikan</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD SKILL -->
-    <div id="skill-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeSkillModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-bolt text-indigo-600"></i> Tambah Keahlian</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Kategori Skill</label>
-                    <select id="new-skill-type" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                        <option value="Hard Skill">Hard Skill (Teknis)</option>
-                        <option value="Soft Skill">Soft Skill (Interpersonal)</option>
-                    </select>
-                </div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Nama Skill</label><input type="text" id="new-skill-name" placeholder="Contoh: Strategic Budgeting" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></div>
-                <button onclick="submitNewSkill()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition text-sm shadow-md">Simpan Skill</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD ACHIEVEMENT -->
-    <div id="achievement-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeAchievementModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-500"></i> Tambah Prestasi</h3>
-            <div class="space-y-3">
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Badge / Kategori</label><input type="text" id="ach-badge" placeholder="Contoh: Penghargaan Riset" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Judul Prestasi</label><input type="text" id="ach-title" placeholder="Judul prestasi..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="ach-desc" rows="2" placeholder="Deskripsi ringkas..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Foto Bukti / Dokumentasi</label><input type="file" id="ach-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700"></div>
-                <button onclick="submitNewAchievement()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Prestasi</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD CERTIFICATE -->
-    <div id="certificate-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-100 max-w-md w-full p-7 relative animate-modal">
-            <button onclick="closeCertificateModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-xl font-black mb-4 flex items-center gap-2"><i class="fa-solid fa-certificate text-rose-600"></i> Tambah Sertifikat</h3>
-            <div class="space-y-3">
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Judul Sertifikasi / Dokumen</label><input type="text" id="cert-title" placeholder="Judul sertifikat..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Singkat</label><textarea id="cert-desc" rows="2" placeholder="Deskripsi ringkas..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none"></textarea></div>
-                <div><label class="block text-xs font-bold text-slate-700 mb-1">Foto Sertifikat</label><input type="file" id="cert-photo" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700"></div>
-                <button onclick="submitNewCertificate()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition text-xs shadow-md mt-2">Simpan Sertifikat</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- FIREBASE REALTIME DATABASE SYNC ENGINE -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
-            authDomain: "portofolio-ku-6446b.firebaseapp.com",
-            projectId: "portofolio-ku-6446b",
-            storageBucket: "portofolio-ku-6446b.firebasestorage.app",
-            messagingSenderId: "489665741012",
-            appId: "1:489665741012:web:80f9d7aa2e201c5aa27b41",
-            measurementId: "G-ELDPNEQDPC"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
+    <!-- MAIN INTERACTIVE JS LOGIC -->
+    <script>
         let isAdminLoggedIn = false;
-        let autoSaveTimer = null;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadFromFirebase();
-            checkAdminSession();
-        });
-
-        window.toggleMobileMenu = function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
         }
 
-        window.formatText = function(command) {
-            if (!isAdminLoggedIn) return;
-            document.execCommand(command, false, null);
-            handleTypingAutoSave();
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('adminPasswordInput').focus();
         }
 
-        /* --- AUTH SYSTEM --- */
-        window.openLoginModal = function() {
-            if (isAdminLoggedIn) { alert('Sesi Admin sudah aktif!'); return; }
-            document.getElementById('login-modal').classList.remove('hidden');
-            document.getElementById('admin-password').focus();
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('adminPasswordInput').value = '';
         }
 
-        window.closeLoginModal = function() {
-            document.getElementById('login-modal').classList.add('hidden');
-            document.getElementById('admin-password').value = '';
-        }
-
-        window.handleLogin = function(e) {
+        function handleLoginSubmit(e) {
             e.preventDefault();
-            if (document.getElementById('admin-password').value === 'admin123') {
-                isAdminLoggedIn = true;
-                sessionStorage.setItem('admin_auth', 'true');
+            const pass = document.getElementById('adminPasswordInput').value;
+            if (pass === 'admin123') {
                 closeLoginModal();
-                showAdminBar();
-                enableEditing();
-                alert('Akses Admin Editor Aktif! Anda kini dapat mengubah teks, menghapus item, serta menambah kolom custom.');
+                enableSuperAdminMode();
+                showToast("Admin Aktif", "Akses editor penuh diaktifkan.", "success");
             } else {
-                alert('Password salah!');
+                showToast("Sandi Salah", "Kata sandi default adalah admin123", "error");
             }
         }
 
-        function checkAdminSession() {
-            if (sessionStorage.getItem('admin_auth') === 'true') {
-                isAdminLoggedIn = true;
-                showAdminBar();
-                enableEditing();
-            }
-        }
+        function enableSuperAdminMode() {
+            isAdminLoggedIn = true;
+            document.getElementById('adminBar').classList.remove('hidden');
+            document.body.classList.add('pt-12');
 
-        function showAdminBar() {
-            document.getElementById('admin-bar').classList.remove('hidden');
-            document.getElementById('nav-login-btn').classList.add('hidden');
-            document.querySelectorAll('.admin-action-btn').forEach(el => el.classList.remove('hidden'));
-        }
-
-        window.logoutAdmin = async function() {
-            if (confirm('Keluar dari sesi Admin Editor? Data akan otomatis tersimpan.')) {
-                if (isAdminLoggedIn) await window.saveChangesToFirebase(false);
-                isAdminLoggedIn = false;
-                sessionStorage.removeItem('admin_auth');
-                location.reload();
-            }
-        }
-
-        /* --- THEME & FONT CHANGERS --- */
-        window.changeTheme = function(themeName) {
-            document.documentElement.setAttribute('data-theme', themeName);
-            if (isAdminLoggedIn) window.saveChangesToFirebase(false);
-        }
-
-        window.changeFont = function(fontName) {
-            document.documentElement.style.setProperty('--current-font', fontName);
-            if (isAdminLoggedIn) window.saveChangesToFirebase(false);
-        }
-
-        /* --- EDITING ENGINE --- */
-        function enableEditing() {
-            if (!isAdminLoggedIn) return;
-            document.querySelectorAll('.editable').forEach(el => {
-                el.contentEditable = "true";
-                el.classList.add('editable-active');
-                el.removeEventListener('input', handleTypingAutoSave);
-                el.addEventListener('input', handleTypingAutoSave);
+            ['btnAddJourney', 'btnAddPortfolio', 'btnAddTool', 'btnHeroImg'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('hidden');
             });
-            document.querySelectorAll('.admin-action-btn').forEach(el => el.classList.remove('hidden'));
+
+            document.querySelectorAll('.delete-btn, .img-upload-btn').forEach(btn => btn.classList.remove('hidden'));
+
+            document.querySelectorAll('.editable').forEach(el => {
+                el.setAttribute('contenteditable', 'true');
+            });
         }
 
-        function handleTypingAutoSave() {
-            if (!isAdminLoggedIn) return;
-            const indicator = document.getElementById('autosave-indicator');
-            if(indicator) indicator.textContent = "Menyimpan perubahan...";
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminBar').classList.add('hidden');
+            document.body.classList.remove('pt-12');
 
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(async () => {
-                await window.saveChangesToFirebase(false);
-                if(indicator) indicator.textContent = "Tersimpan otomatis ke database.";
-            }, 700);
+            ['btnAddJourney', 'btnAddPortfolio', 'btnAddTool', 'btnHeroImg'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            document.querySelectorAll('.delete-btn, .img-upload-btn').forEach(btn => btn.classList.add('hidden'));
+
+            document.querySelectorAll('.editable').forEach(el => {
+                el.removeAttribute('contenteditable');
+            });
+
+            showToast("Keluar", "Sesi admin telah diakhiri.", "info");
         }
 
-        /* --- ITEM DELETION --- */
-        window.deleteItem = async function(buttonEl) {
-            if (!isAdminLoggedIn) return;
-            if (confirm('Yakin ingin menghapus item/kolom ini?')) {
-                const targetCard = buttonEl.closest('.group') || buttonEl.closest('div.bg-\\[var\\(--bg-card\\)\\]') || buttonEl.closest('.bg-\\[var\\(--bg-main\\)\\]') || buttonEl.closest('.custom-section-item');
-                if (targetCard) {
-                    targetCard.remove();
-                    await window.saveChangesToFirebase(true);
-                }
-            }
+        function setTheme(themeClass) {
+            const root = document.getElementById('bodyRoot');
+            root.className = root.className.replace(/theme-\w+/g, '').trim();
+            root.classList.add(themeClass);
+            showToast("Tema Diubah", "Tema visual diperbarui.", "success");
         }
 
-        /* --- PHOTO CHANGERS --- */
-        window.uploadProfilePhoto = async function(event) {
-            if (!isAdminLoggedIn) return;
+        function setFont(fontClass) {
+            const root = document.getElementById('bodyRoot');
+            root.classList.remove('font-jakarta', 'font-outfit', 'font-space');
+            root.classList.add(fontClass);
+            showToast("Font Diubah", "Tipografi diperbarui.", "success");
+        }
+
+        function triggerFileInput(id) {
+            document.getElementById(id).click();
+        }
+
+        function updateImageSrc(event, targetId) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = async function(e) {
-                    document.getElementById('profile-img').src = e.target.result;
-                    await window.saveChangesToFirebase(true);
-                }
+                reader.onload = function(e) {
+                    document.getElementById(targetId).src = e.target.result;
+                    showToast("Foto Diperbarui", "Foto berhasil diganti.", "success");
+                };
                 reader.readAsDataURL(file);
             }
         }
 
-        window.changeCardPhoto = function(event) {
-            if (!isAdminLoggedIn) return;
+        function triggerCardImgUpload(btn) {
+            const fileInput = btn.nextElementSibling;
+            if (fileInput) fileInput.click();
+        }
+
+        function updateCardImg(event, inputEl) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const cardImg = event.target.closest('.group').querySelector('.card-img');
-                    if (cardImg) {
-                        cardImg.src = e.target.result;
-                        await window.saveChangesToFirebase(true);
-                    }
-                }
+                reader.onload = function(e) {
+                    const imgEl = inputEl.parentElement.querySelector('img');
+                    if (imgEl) imgEl.src = e.target.result;
+                    showToast("Gambar Diperbarui", "Foto berhasil diganti.", "success");
+                };
                 reader.readAsDataURL(file);
             }
         }
 
-        /* --- CUSTOM SECTIONS & COLUMNS MODAL --- */
-        window.openCustomSectionModal = function() {
-            if (!isAdminLoggedIn) return;
-            document.getElementById('custom-section-modal').classList.remove('hidden');
+        function removeCard(btn) {
+            const card = btn.closest('.glass-card') || btn.closest('.group');
+            if (card) {
+                card.remove();
+                showToast("Elemen Dihapus", "Kartu berhasil dihapus.", "info");
+            }
         }
 
-        window.closeCustomSectionModal = function() {
-            document.getElementById('custom-section-modal').classList.add('hidden');
+        function addExperienceCard() {
+            const container = document.getElementById('journeyContainer');
+            const tpl = `
+                <div class="relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-theme-500 border-4 border-slate-950"></div>
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
+                        <span class="text-xs text-theme-400 font-extrabold editable" contenteditable="true">Periode Baru</span>
+                        <h3 class="text-xl font-black text-white mt-1 editable" contenteditable="true">Jabatan Baru</h3>
+                        <h4 class="text-sm font-bold text-slate-300 editable" contenteditable="true">Nama Perusahaan / Institusi</h4>
+                        <ul class="mt-3 space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-4 leading-relaxed editable" contenteditable="true">
+                            <li>Tuliskan pencapaian utama dan rincian tanggung jawab pekerjaan di sini...</li>
+                        </ul>
+                        <button onclick="removeCard(this)" class="delete-btn absolute top-4 right-4 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white p-2 rounded-lg text-xs transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('afterbegin', tpl);
+            showToast("Ditambahkan", "Pengalaman baru ditambahkan.", "success");
         }
 
-        window.submitNewCustomSection = function() {
-            const title = document.getElementById('custom-sec-title').value.trim() || 'Seksi Tambahan Baru';
-            const sub = document.getElementById('custom-sec-sub').value.trim() || 'Atribut Informasi';
-            const itemTitle = document.getElementById('custom-item-title').value.trim() || 'Judul Item';
-            const itemDesc = document.getElementById('custom-item-desc').value.trim() || 'Keterangan detail...';
-            const fileInput = document.getElementById('custom-item-photo');
-
-            const defaultImg = "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=600";
-
-            const createSectionHtml = async (imgSrc) => {
-                const container = document.getElementById('custom-sections-container');
-                const newSection = document.createElement('div');
-                newSection.className = 'custom-section-item bg-[var(--bg-main)] p-8 rounded-3xl border border-[var(--border-color)] shadow-sm relative group';
-                newSection.innerHTML = `
-                    <div class="absolute top-6 right-6 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1.5 rounded-lg shadow"><i class="fa-solid fa-trash"></i> Hapus Seksi Ini</button>
-                    </div>
-                    <div class="mb-6 border-b border-[var(--border-color)] pb-4">
-                        <span class="text-xs font-black text-emerald-500 uppercase tracking-widest editable">${sub}</span>
-                        <h4 class="text-2xl font-black mt-1 editable">${title}</h4>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] p-5 relative group/item">
-                            <div class="aspect-video overflow-hidden rounded-xl bg-slate-200 mb-4 relative">
-                                <img src="${imgSrc}" class="card-img w-full h-full object-cover">
-                                <label class="absolute top-2 right-2 bg-indigo-600 text-white text-[10px] px-2 py-1 rounded shadow cursor-pointer admin-action-btn hidden">
-                                    <i class="fa-solid fa-camera"></i>
-                                    <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                                </label>
-                            </div>
-                            <h5 class="font-extrabold text-base editable">${itemTitle}</h5>
-                            <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">${itemDesc}</p>
+        function addPortfolioCard() {
+            const container = document.getElementById('portfolioGrid');
+            const tpl = `
+                <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 bg-slate-900 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Karya Baru">
+                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-theme-400 text-[10px] font-bold px-2.5 py-1 rounded-full editable" contenteditable="true">KATEGORI KARYA</span>
+                            <button onclick="triggerCardImgUpload(this)" class="img-upload-btn absolute bottom-3 right-3 bg-theme-500 text-slate-950 p-2 rounded-xl text-xs shadow hover:scale-110 transition">
+                                <i class="fa-solid fa-camera"></i>
+                            </button>
+                            <input type="file" accept="image/*" class="hidden" onchange="updateCardImg(event, this)">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-white editable" contenteditable="true">Judul Portofolio Baru</h3>
+                            <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" contenteditable="true">Deskripsikan ringkasan riset atau hasil proyek ini...</p>
                         </div>
                     </div>
-                `;
-                container.appendChild(newSection);
-                closeCustomSectionModal();
-                enableEditing();
-                await window.saveChangesToFirebase(true);
-            };
+                    <div class="p-6 pt-0 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 mt-4">
+                        <span class="editable" contenteditable="true"><i class="fa-solid fa-check-circle text-theme-400 mr-1"></i> Terverifikasi</span>
+                        <a href="#contact" class="text-theme-400 font-bold hover:underline">Detail →</a>
+                    </div>
+                    <button onclick="removeCard(this)" class="delete-btn absolute top-3 right-3 bg-rose-500/80 text-white p-2 rounded-xl text-xs transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.insertAdjacentHTML('afterbegin', tpl);
+            showToast("Ditambahkan", "Kartu portofolio baru ditambahkan.", "success");
+        }
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => createSectionHtml(e.target.result);
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                createSectionHtml(defaultImg);
+        async function savePortfolioToCloud() {
+            if (!window.db || !window.auth) {
+                showToast("Simpan Tampilan", "Perubahan tersimpan pada halaman aktif ini.", "success");
+                return;
+            }
+
+            try {
+                if (!window.auth.currentUser) {
+                    await window.signInAnonymously(window.auth);
+                }
+
+                const dataToSave = {};
+                document.querySelectorAll('.editable').forEach(el => {
+                    const key = el.getAttribute('data-key');
+                    if (key) {
+                        dataToSave[key] = el.innerHTML;
+                    }
+                });
+
+                const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
+                await window.setDoc(docRef, {
+                    content: dataToSave,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+
+                showToast("Tersimpan Cloud", "Seluruh isi CV & perubahan disinkronkan ke Cloud.", "success");
+            } catch (err) {
+                console.error("Save Error:", err);
+                showToast("Tersimpan Tampilan", "Perubahan tersimpan pada browser.", "info");
             }
         }
 
-        /* --- OTHER MODALS IMPLEMENTATION --- */
-        window.openExpModal = () => { if(isAdminLoggedIn) document.getElementById('exp-modal').classList.remove('hidden'); }
-        window.closeExpModal = () => document.getElementById('exp-modal').classList.add('hidden');
-        window.submitNewExp = async () => {
-            const pos = document.getElementById('exp-position').value.trim();
-            const comp = document.getElementById('exp-company').value.trim();
-            const period = document.getElementById('exp-period').value.trim();
-            const desc = document.getElementById('exp-desc').value.trim().split(',');
-
-            if (!pos) return alert('Posisi harus diisi!');
-
-            const container = document.getElementById('experience-container');
-            const newItem = document.createElement('div');
-            newItem.className = 'bg-[var(--bg-main)] rounded-2xl p-6 sm:p-8 border border-[var(--border-color)] shadow-sm relative group hover:shadow-md transition';
-            
-            let listHtml = desc.map(item => `<li>${item.trim()}</li>`).join('');
-
-            newItem.innerHTML = `
-                <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                    <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-3 py-1 rounded-md shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                </div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                    <div>
-                        <h4 class="text-xl font-bold editable flex items-center gap-2"><i class="fa-solid fa-briefcase text-brand-500 text-base"></i> ${pos}</h4>
-                        <div class="text-brand-500 font-bold text-sm editable">${comp}</div>
-                    </div>
-                    <span class="bg-[var(--bg-card)] border border-[var(--border-color)] text-xs font-bold px-3 py-1 rounded-full editable">${period}</span>
-                </div>
-                <ul class="space-y-2 text-sm opacity-85 list-disc pl-5 editable">${listHtml}</ul>
-            `;
-            container.prepend(newItem);
-            closeExpModal();
-            enableEditing();
-            await window.saveChangesToFirebase(true);
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            showToast("Terkirim", "Pesan Anda berhasil dikirim ke email Hikarinaim.", "success");
+            e.target.reset();
         }
 
-        window.openEduModal = () => { if(isAdminLoggedIn) document.getElementById('edu-modal').classList.remove('hidden'); }
-        window.closeEduModal = () => document.getElementById('edu-modal').classList.add('hidden');
-        window.submitNewEdu = async () => {
-            const degree = document.getElementById('edu-degree').value.trim();
-            const univ = document.getElementById('edu-univ').value.trim();
-            const period = document.getElementById('edu-period').value.trim();
-            const desc = document.getElementById('edu-desc').value.trim();
+        function showToast(title, msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
 
-            if (!degree) return alert('Gelar harus diisi!');
+            toastTitle.innerText = title;
+            toastMsg.innerText = msg;
 
-            const container = document.getElementById('education-container');
-            const newItem = document.createElement('div');
-            newItem.className = 'bg-[var(--bg-card)] p-8 rounded-2xl border border-[var(--border-color)] shadow-sm flex flex-col justify-between relative group hover:shadow-lg transition';
-            newItem.innerHTML = `
-                <div class="absolute top-4 right-4 hidden group-hover:flex items-center gap-2 admin-action-btn z-10">
-                    <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                </div>
-                <div>
-                    <div class="w-12 h-12 bg-brand-50 text-brand-500 rounded-xl flex items-center justify-center text-xl mb-6 font-bold shadow-sm"><i class="fa-solid fa-graduation-cap"></i></div>
-                    <span class="text-xs font-bold text-brand-600 bg-[var(--badge-bg)] px-3 py-1 rounded-full editable">${period}</span>
-                    <h4 class="text-xl font-extrabold mt-3 editable">${degree}</h4>
-                    <p class="font-bold text-sm text-brand-500 mt-1 editable">${univ}</p>
-                    <p class="text-sm opacity-80 mt-4 leading-relaxed editable">${desc}</p>
-                </div>
-            `;
-            container.prepend(newItem);
-            closeEduModal();
-            enableEditing();
-            await window.saveChangesToFirebase(true);
-        }
+            if (type === 'success') {
+                toastIcon.className = "w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm shrink-0";
+                toastIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else if (type === 'info') {
+                toastIcon.className = "w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm shrink-0";
+                toastIcon.innerHTML = '<i class="fa-solid fa-info"></i>';
+            } else if (type === 'error') {
+                toastIcon.className = "w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-sm shrink-0";
+                toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            }
 
-        window.openSkillModal = function(defaultType = 'Hard Skill') {
-            if (!isAdminLoggedIn) return;
-            document.getElementById('new-skill-type').value = defaultType;
-            document.getElementById('skill-modal').classList.remove('hidden');
-        }
-        window.closeSkillModal = () => document.getElementById('skill-modal').classList.add('hidden');
-        window.submitNewSkill = async function() {
-            const type = document.getElementById('new-skill-type').value;
-            const name = document.getElementById('new-skill-name').value.trim();
-            if (!name) return alert('Nama skill wajib diisi!');
-
-            const container = (type === 'Hard Skill') ? document.getElementById('hard-skills-container') : document.getElementById('soft-skills-container');
-            const newItem = document.createElement('div');
-            newItem.className = 'bg-[var(--bg-card)] p-3.5 rounded-xl border border-[var(--border-color)] flex items-center justify-between group shadow-sm';
-            newItem.innerHTML = `
-                <div class="flex items-center gap-2.5"><i class="fa-solid fa-check text-brand-500 text-xs"></i><span class="text-xs font-bold editable">${name}</span></div>
-                <button onclick="deleteItem(this)" class="text-rose-500 hover:text-rose-700 text-xs admin-action-btn opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-xmark"></i></button>
-            `;
-            container.appendChild(newItem);
-            closeSkillModal();
-            enableEditing();
-            await window.saveChangesToFirebase(true);
-        }
-
-        window.openAchievementModal = () => { if(isAdminLoggedIn) document.getElementById('achievement-modal').classList.remove('hidden'); }
-        window.closeAchievementModal = () => document.getElementById('achievement-modal').classList.add('hidden');
-        window.submitNewAchievement = function() {
-            const badge = document.getElementById('ach-badge').value.trim() || 'Penghargaan Baru';
-            const title = document.getElementById('ach-title').value.trim();
-            const desc = document.getElementById('ach-desc').value.trim();
-            const fileInput = document.getElementById('ach-photo');
-
-            if (!title) return alert('Judul harus diisi!');
-
-            const appendFn = async (imgSrc) => {
-                const container = document.getElementById('achievements-container');
-                const newItem = document.createElement('div');
-                newItem.className = 'bg-[var(--bg-card)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition relative group';
-                newItem.innerHTML = `
-                    <div class="absolute top-3 right-3 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="${imgSrc}" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest bg-amber-500/10 px-2.5 py-1 rounded-md editable">${badge}</span>
-                        <h4 class="font-extrabold text-lg mt-2 editable">${title}</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">${desc}</p>
-                    </div>
-                `;
-                container.prepend(newItem);
-                closeAchievementModal();
-                enableEditing();
-                await window.saveChangesToFirebase(true);
-            };
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => appendFn(e.target.result);
-                reader.readAsDataURL(fileInput.files[0]);
-            } else appendFn("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600");
-        }
-
-        window.openCertificateModal = () => { if(isAdminLoggedIn) document.getElementById('certificate-modal').classList.remove('hidden'); }
-        window.closeCertificateModal = () => document.getElementById('certificate-modal').classList.add('hidden');
-        window.submitNewCertificate = function() {
-            const title = document.getElementById('cert-title').value.trim();
-            const desc = document.getElementById('cert-desc').value.trim();
-            const fileInput = document.getElementById('cert-photo');
-
-            if (!title) return alert('Judul sertifikat harus diisi!');
-
-            const appendFn = async (imgSrc) => {
-                const container = document.getElementById('gallery-container');
-                const newItem = document.createElement('div');
-                newItem.className = 'bg-[var(--bg-main)] rounded-2xl overflow-hidden border border-[var(--border-color)] shadow-sm hover:shadow-lg transition group relative';
-                newItem.innerHTML = `
-                    <div class="absolute top-4 right-4 z-20 hidden group-hover:flex items-center gap-2 admin-action-btn">
-                        <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1 rounded shadow cursor-pointer">
-                            <i class="fa-solid fa-camera"></i> Ganti Foto
-                            <input type="file" accept="image/*" class="hidden" onchange="changeCardPhoto(event)">
-                        </label>
-                        <button onclick="deleteItem(this)" class="bg-rose-500 hover:bg-rose-600 text-white text-xs px-2.5 py-1 rounded shadow"><i class="fa-solid fa-trash"></i> Hapus</button>
-                    </div>
-                    <div class="aspect-video overflow-hidden relative bg-slate-200">
-                        <img src="${imgSrc}" class="card-img w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-extrabold text-lg editable">${title}</h4>
-                        <p class="text-xs opacity-80 mt-1.5 leading-relaxed editable">${desc}</p>
-                    </div>
-                `;
-                container.prepend(newItem);
-                closeCertificateModal();
-                enableEditing();
-                await window.saveChangesToFirebase(true);
-            };
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => appendFn(e.target.result);
-                reader.readAsDataURL(fileInput.files[0]);
-            } else appendFn("https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800");
-        }
-
-        /* --- FIREBASE DATA PERSISTENCE --- */
-        function getCleanHTML(elementId) {
-            const container = document.getElementById(elementId);
-            if (!container) return '';
-            const clone = container.cloneNode(true);
-            clone.querySelectorAll('.editable').forEach(el => {
-                el.removeAttribute('contenteditable');
-                el.classList.remove('editable-active');
-            });
-            clone.querySelectorAll('.admin-action-btn').forEach(el => el.remove());
-            return clone.innerHTML;
-        }
-
-        window.saveChangesToFirebase = function(showAlert = false) {
-            document.querySelectorAll('.editable').forEach((el, idx) => {
-                if (!el.id) el.id = 'editable_dyn_' + idx;
-            });
-
-            const savedTexts = {};
-            document.querySelectorAll('.editable').forEach((el) => {
-                savedTexts[el.id] = el.innerHTML;
-            });
-
-            const portfolioData = {
-                texts: savedTexts,
-                profileImg: document.getElementById('profile-img').src,
-                experienceHtml: getCleanHTML('experience-container'),
-                educationHtml: getCleanHTML('education-container'),
-                hardSkillsHtml: getCleanHTML('hard-skills-container'),
-                softSkillsHtml: getCleanHTML('soft-skills-container'),
-                achievementsHtml: getCleanHTML('achievements-container'),
-                galleryHtml: getCleanHTML('gallery-container'),
-                customSectionsHtml: getCleanHTML('custom-sections-container'),
-                theme: document.documentElement.getAttribute('data-theme') || 'blue',
-                font: getComputedStyle(document.documentElement).getPropertyValue('--current-font').trim() || 'Plus Jakarta Sans'
-            };
-
-            return set(ref(db, 'portfolio/executive_data'), portfolioData)
-                .then(() => { if (showAlert) alert('Data dan perubahan seksi berhasil tersimpan di Cloud!'); })
-                .catch((err) => { console.error('Gagal menyimpan: ' + err.message); });
-        }
-
-        function loadFromFirebase() {
-            const dbRef = ref(db, 'portfolio/executive_data');
-            get(dbRef).then((snapshot) => {
-                if (!snapshot.exists()) window.saveChangesToFirebase(false);
-            });
-
-            onValue(dbRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    if (data.theme) {
-                        document.documentElement.setAttribute('data-theme', data.theme);
-                        if (document.getElementById('theme-selector')) document.getElementById('theme-selector').value = data.theme;
-                    }
-                    if (data.font) {
-                        document.documentElement.style.setProperty('--current-font', data.font);
-                        if (document.getElementById('font-selector')) document.getElementById('font-selector').value = data.font;
-                    }
-                    if (data.profileImg) {
-                        document.getElementById('profile-img').src = data.profileImg;
-                    }
-
-                    const activeEl = document.activeElement;
-                    if (data.experienceHtml && !document.getElementById('experience-container')?.contains(activeEl)) {
-                        document.getElementById('experience-container').innerHTML = data.experienceHtml;
-                    }
-                    if (data.educationHtml && !document.getElementById('education-container')?.contains(activeEl)) {
-                        document.getElementById('education-container').innerHTML = data.educationHtml;
-                    }
-                    if (data.hardSkillsHtml && !document.getElementById('hard-skills-container')?.contains(activeEl)) {
-                        document.getElementById('hard-skills-container').innerHTML = data.hardSkillsHtml;
-                    }
-                    if (data.softSkillsHtml && !document.getElementById('soft-skills-container')?.contains(activeEl)) {
-                        document.getElementById('soft-skills-container').innerHTML = data.softSkillsHtml;
-                    }
-                    if (data.achievementsHtml && !document.getElementById('achievements-container')?.contains(activeEl)) {
-                        document.getElementById('achievements-container').innerHTML = data.achievementsHtml;
-                    }
-                    if (data.galleryHtml && !document.getElementById('gallery-container')?.contains(activeEl)) {
-                        document.getElementById('gallery-container').innerHTML = data.galleryHtml;
-                    }
-                    if (data.customSectionsHtml && !document.getElementById('custom-sections-container')?.contains(activeEl)) {
-                        document.getElementById('custom-sections-container').innerHTML = data.customSectionsHtml;
-                    }
-
-                    if (data.texts) {
-                        Object.keys(data.texts).forEach(key => {
-                            const el = document.getElementById(key);
-                            if (el && document.activeElement !== el) el.innerHTML = data.texts[key];
-                        });
-                    }
-
-                    if (isAdminLoggedIn) enableEditing();
-                }
-            });
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
         }
     </script>
 </body>
 </html>
-```
