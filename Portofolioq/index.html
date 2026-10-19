@@ -827,7 +827,7 @@
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <h3 class="text-lg font-extrabold text-white">Login Admin Editor</h3>
-                <p class="text-xs text-slate-400 mt-1">Kata sandi default: <span class="font-bold text-theme-400">admin123</span></p>
+                <p class="text-xs text-slate-400 mt-1">Kulonuwun Namung Kulo: <span class="font-bold text-theme-400">kulonuwunsalah</span></p>
             </div>
             <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div>
@@ -873,12 +873,12 @@
         function handleLoginSubmit(e) {
             e.preventDefault();
             const pass = document.getElementById('adminPasswordInput').value;
-            if (pass === 'admin123') {
+            if (pass === 'adminq123') {
                 closeLoginModal();
                 enableSuperAdminMode();
                 showToast("Admin Aktif", "Akses editor penuh diaktifkan.", "success");
             } else {
-                showToast("Sandi Salah", "Kata sandi default adalah admin123", "error");
+                showToast("Sandi Salah", "Kata sandi default adalah adminq123", "error");
             }
         }
 
