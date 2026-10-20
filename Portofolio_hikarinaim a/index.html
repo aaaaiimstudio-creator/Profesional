@@ -53,10 +53,10 @@
         window.doc = doc;
         window.getDoc = getDoc;
 
-        // Auto load data setelah Firebase siap
-        window.addEventListener('DOMContentLoaded', () => {
+        // Auto load data dari Cloud/LocalStorage setelah halaman siap
+        window.addEventListener('DOMContentLoaded', async () => {
             if (window.loadPortfolioData) {
-                window.loadPortfolioData();
+                await window.loadPortfolioData();
             }
         });
     </script>
@@ -1081,11 +1081,10 @@
             showToast("Ditambahkan", "Kartu portofolio baru ditambahkan.", "success");
         }
 
-        // SIMPAN PERMANEN
+        // SIMPAN KE CLOUD & LOCALSTORAGE
         async function savePortfolioToCloud() {
             const dataToSave = {};
             
-            // Simpan konten teks
             document.querySelectorAll('.editable').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (key) {
@@ -1093,7 +1092,6 @@
                 }
             });
 
-            // Simpan foto utama & foto-foto kartu
             const heroImg = document.getElementById('heroImg');
             if (heroImg) dataToSave['heroImgSrc'] = heroImg.src;
 
@@ -1103,15 +1101,14 @@
             const journeyContainer = document.getElementById('journeyContainer');
             if (journeyContainer) dataToSave['journeyContainerHTML'] = journeyContainer.innerHTML;
 
-            // Simpan Tema & Font
             const root = document.getElementById('bodyRoot');
             dataToSave['activeTheme'] = localStorage.getItem('portfolio_theme') || root.className;
             dataToSave['activeFont'] = localStorage.getItem('portfolio_font') || 'font-jakarta';
 
-            // 1. Simpan ke LocalStorage sebagai backup cepat
+            // Simpan lokal sebagai backup browser
             localStorage.setItem('portfolio_saved_data', JSON.stringify(dataToSave));
 
-            // 2. Simpan ke Firestore
+            // Simpan ke Firestore Cloud agar bisa dibuka dan sinkron di browser lain
             if (window.db && window.doc && window.setDoc) {
                 try {
                     if (window.auth && !window.auth.currentUser && window.signInAnonymously) {
@@ -1124,28 +1121,21 @@
                         updatedAt: new Date().toISOString()
                     }, { merge: true });
 
-                    showToast("Tersimpan Permanen", "Semua perubahan disinkronkan ke Cloud & Browser.", "success");
+                    showToast("Tersimpan Permanen", "Data berhasil disinkronkan ke Cloud & dapat diakses di browser lain.", "success");
                     return;
                 } catch (err) {
-                    console.warn("Firestore save failed, fallback to LocalStorage:", err);
+                    console.warn("Firestore save failed:", err);
                 }
             }
 
-            showToast("Tersimpan Lokal", "Perubahan berhasil disimpan permanen di browser ini.", "success");
+            showToast("Tersimpan Lokal", "Perubahan disimpan di browser ini.", "success");
         }
 
-        // MEMUAT DATA SAAT REFRESH
+        // MEMUAT DATA LINTAS BROWSER DARI FIRESTORE & LOCALSTORAGE
         async function loadPortfolioData() {
             let loadedData = null;
 
-            // Load Tema & Font Awal jika ada
-            const savedTheme = localStorage.getItem('portfolio_theme');
-            if (savedTheme) setTheme(savedTheme);
-
-            const savedFont = localStorage.getItem('portfolio_font');
-            if (savedFont) setFont(savedFont);
-
-            // 1. Ambil dari Firestore Cloud terlebih dahulu
+            // 1. Coba ambil data dari Firebase Cloud (agar browser lain dapat data yang sama)
             if (window.db && window.doc && window.getDoc) {
                 try {
                     const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
@@ -1154,11 +1144,11 @@
                         loadedData = snap.data().content;
                     }
                 } catch (err) {
-                    console.warn("Firestore load failed, checking LocalStorage:", err);
+                    console.warn("Gagal memuat dari Cloud, beralih ke LocalStorage:", err);
                 }
             }
 
-            // 2. Jika Cloud kosong/gagal, ambil dari LocalStorage
+            // 2. Jika Cloud kosong/gagal, ambil dari LocalStorage perangkat
             if (!loadedData) {
                 const localStr = localStorage.getItem('portfolio_saved_data');
                 if (localStr) {
@@ -1166,9 +1156,8 @@
                 }
             }
 
-            // Apply data ke tampilan jika ditemukan
+            // Terapkan data ke elemen halaman
             if (loadedData) {
-                // Restore kontainer dinamis (Pengalaman & Portofolio)
                 if (loadedData['journeyContainerHTML']) {
                     document.getElementById('journeyContainer').innerHTML = loadedData['journeyContainerHTML'];
                 }
@@ -1176,17 +1165,18 @@
                     document.getElementById('portfolioGrid').innerHTML = loadedData['portfolioContainerHTML'];
                 }
 
-                // Restore Foto
                 if (loadedData['heroImgSrc']) {
                     const heroImg = document.getElementById('heroImg');
                     if (heroImg) heroImg.src = loadedData['heroImgSrc'];
                 }
 
-                // Restore Tema & Font
-                if (loadedData['activeTheme']) setTheme(loadedData['activeTheme']);
-                if (loadedData['activeFont']) setFont(loadedData['activeFont']);
+                if (loadedData['activeTheme']) {
+                    setTheme(loadedData['activeTheme']);
+                }
+                if (loadedData['activeFont']) {
+                    setFont(loadedData['activeFont']);
+                }
 
-                // Restore Teks
                 document.querySelectorAll('.editable').forEach(el => {
                     const key = el.getAttribute('data-key');
                     if (key && loadedData[key] !== undefined) {
@@ -1232,4 +1222,3 @@
     </script>
 </body>
 </html>
-```
