@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-   <!-- Firebase SDK (Modular CDN) -->
+    <!-- Firebase SDK (Modular CDN) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -57,12 +57,6 @@
         window.addEventListener('DOMContentLoaded', async () => {
             if (window.loadPortfolioData) {
                 await window.loadPortfolioData();
-            }
-        });
-    </script>
-            }
-        });
-    </script>
             }
         });
     </script>
@@ -1131,10 +1125,11 @@
                     return;
                 } catch (err) {
                     console.warn("Firestore save failed:", err);
+                    showToast("Tersimpan Lokal", "Gagal ke cloud, tersimpan di browser ini.", "info");
                 }
+            } else {
+                showToast("Tersimpan Lokal", "Perubahan disimpan di browser ini.", "success");
             }
-
-            showToast("Tersimpan Lokal", "Perubahan disimpan di browser ini.", "success");
         }
 
         // MEMUAT DATA LINTAS BROWSER DARI FIRESTORE & LOCALSTORAGE
@@ -1150,7 +1145,7 @@
                         loadedData = snap.data().content;
                     }
                 } catch (err) {
-                    console.warn("Gagal memuat dari Cloud, beralih ke LocalStorage:", err);
+                    console.warn("Gagal memuat dari Cloud:", err);
                 }
             }
 
