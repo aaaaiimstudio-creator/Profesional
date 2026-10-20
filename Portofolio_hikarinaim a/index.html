@@ -16,25 +16,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK (Modular CDN) -->
+    <!-- Firebase SDK (Modular CDN v11) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'hikarinaim-portfolio-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
-                authDomain: "portofolio-ku-6446b.firebaseapp.com",
-                databaseURL: "https://portofolio-ku-6446b-default-rtdb.firebaseio.com",
-                projectId: "portofolio-ku-6446b",
-                storageBucket: "portofolio-ku-6446b.firebasestorage.app",
-                messagingSenderId: "489665741012",
-                appId: "1:489665741012:web:03fdf378fabdb24fa27b41",
-                measurementId: "G-WH5DBX02TF"
-            };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
+            authDomain: "portofolio-ku-6446b.firebaseapp.com",
+            databaseURL: "https://portofolio-ku-6446b-default-rtdb.firebaseio.com",
+            projectId: "portofolio-ku-6446b",
+            storageBucket: "portofolio-ku-6446b.firebasestorage.app",
+            messagingSenderId: "489665741012",
+            appId: "1:489665741012:web:03fdf378fabdb24fa27b41",
+            measurementId: "G-WH5DBX02TF"
+        };
             
         let app, db, auth;
         try {
@@ -42,18 +39,17 @@
             db = getFirestore(app);
             auth = getAuth(app);
         } catch (e) {
-            console.warn("Firebase Fallback Mode Enabled:", e);
+            console.warn("Firebase Init Warning:", e);
         }
 
         window.db = db;
         window.auth = auth;
-        window.appId = appId;
         window.signInAnonymously = signInAnonymously;
         window.setDoc = setDoc;
         window.doc = doc;
         window.getDoc = getDoc;
 
-        // Auto load data dari Cloud/LocalStorage setelah halaman siap
+        // Auto load data dari Cloud saat halaman siap
         window.addEventListener('DOMContentLoaded', async () => {
             if (window.loadPortfolioData) {
                 await window.loadPortfolioData();
@@ -174,14 +170,10 @@
             --nav-bg: rgba(255, 255, 255, 0.9); --card-subtext: #57534e;
         }
 
-        /* Penyesuaian Komponen Tema Cerah */
         body[class*="theme-light"] .text-white { color: #0f172a !important; }
         body[class*="theme-light"] .text-slate-300 { color: #334155 !important; }
         body[class*="theme-light"] .text-slate-400 { color: #64748b !important; }
         body[class*="theme-light"] .bg-slate-900 { background-color: #f1f5f9 !important; border-color: #cbd5e1 !important; }
-        body[class*="theme-light"] .bg-slate-950\/40 { background-color: rgba(241, 245, 249, 0.6) !important; }
-        body[class*="theme-light"] .bg-slate-950\/50 { background-color: rgba(241, 245, 249, 0.7) !important; }
-        body[class*="theme-light"] .bg-slate-950\/70 { background-color: rgba(255, 255, 255, 0.9) !important; }
 
         body {
             background-color: var(--bg-main);
@@ -277,7 +269,6 @@
     <!-- HEADER & NAVIGATION -->
     <header id="navHeader" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-slate-950/70 backdrop-blur-2xl border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
             <a href="#hero" class="flex items-center space-x-3 group">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-theme-600 to-theme-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-theme-500/20 group-hover:scale-105 transition-transform">
                     <span class="editable" data-key="brandInitials">HA</span>
@@ -288,7 +279,6 @@
                 </div>
             </a>
 
-            <!-- Desktop Nav Menu -->
             <nav class="hidden lg:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider text-slate-300">
                 <a href="#about" class="hover:text-theme-400 transition">Profil</a>
                 <a href="#experience" class="hover:text-theme-400 transition">Pengalaman</a>
@@ -298,25 +288,21 @@
                 <a href="#organizations" class="hover:text-theme-400 transition">Organisasi</a>
             </nav>
 
-            <!-- Actions -->
             <div class="flex items-center space-x-3">
                 <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-theme-500 to-theme-600 hover:from-theme-400 hover:to-theme-500 text-slate-950 font-extrabold text-xs px-4 py-2.5 rounded-2xl shadow-xl shadow-theme-500/20 transition hover:scale-105">
                     <i class="fa-solid fa-envelope text-xs"></i> <span class="editable" data-key="navCta">Kontak Langsung</span>
                 </a>
 
-                <!-- Admin Lock Toggle -->
                 <button onclick="openLoginModal()" class="w-10 h-10 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:border-theme-400 transition shadow" title="Admin Login">
                     <i class="fa-solid fa-lock text-xs"></i>
                 </button>
 
-                <!-- Mobile Drawer Toggle -->
                 <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white">
                     <i class="fa-solid fa-bars-staggered text-sm"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Drawer -->
         <div id="mobileMenu" class="hidden lg:hidden bg-slate-950/95 border-b border-white/10 px-6 py-5 space-y-3 text-sm font-semibold">
             <a href="#about" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Profil Eksekutif</a>
             <a href="#experience" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-theme-400 py-1">Pengalaman Kerja</a>
@@ -361,7 +347,6 @@
                         </a>
                     </div>
 
-                    <!-- Live Metrics Cards -->
                     <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-8 border-t border-white/10 max-w-lg mx-auto lg:mx-0">
                         <div class="glass-card p-3.5 rounded-2xl text-center lg:text-left">
                             <h4 class="text-xl sm:text-3xl font-black text-white editable" data-key="m1Num">3.93</h4>
@@ -378,7 +363,6 @@
                     </div>
                 </div>
 
-                <!-- Hero Photo Box -->
                 <div class="lg:col-span-5 flex justify-center">
                     <div class="relative w-full max-w-sm sm:max-w-md animate-float">
                         <div class="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-theme-500 to-blue-600 opacity-40 blur-2xl"></div>
@@ -469,8 +453,6 @@
                 </div>
 
                 <div id="journeyContainer" class="relative border-l-2 border-white/10 ml-4 sm:ml-8 space-y-8">
-                    
-                    <!-- Exp 1 -->
                     <div class="relative pl-6 sm:pl-8 group">
                         <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-theme-500 border-4 border-slate-950"></div>
                         <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
@@ -490,7 +472,6 @@
                         </div>
                     </div>
 
-                    <!-- Exp 2 -->
                     <div class="relative pl-6 sm:pl-8 group">
                         <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-950"></div>
                         <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
@@ -509,7 +490,6 @@
                         </div>
                     </div>
 
-                    <!-- Exp 3 -->
                     <div class="relative pl-6 sm:pl-8 group">
                         <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-teal-400 border-4 border-slate-950"></div>
                         <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
@@ -527,7 +507,6 @@
                             </button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -541,7 +520,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- S2 -->
                     <div class="glass-card p-8 rounded-3xl relative flex flex-col justify-between">
                         <div>
                             <div class="w-12 h-12 rounded-2xl bg-theme-500/10 border border-theme-500/20 text-theme-400 flex items-center justify-center text-xl mb-4">
@@ -556,7 +534,6 @@
                         </div>
                     </div>
 
-                    <!-- S1 -->
                     <div class="glass-card p-8 rounded-3xl relative flex flex-col justify-between">
                         <div>
                             <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-4">
@@ -588,7 +565,6 @@
                 </div>
 
                 <div id="portfolioGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Card 1 -->
                     <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
                         <div>
                             <div class="relative h-48 bg-slate-900 overflow-hidden">
@@ -615,7 +591,6 @@
                         </button>
                     </div>
 
-                    <!-- Card 2 -->
                     <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
                         <div>
                             <div class="relative h-48 bg-slate-900 overflow-hidden">
@@ -629,7 +604,7 @@
                             <div class="p-6">
                                 <h3 class="text-lg font-bold text-white editable" data-key="p2Title">Praktik Perencanaan Bisnis & Entrepreneurship</h3>
                                 <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" data-key="p2Desc">
-                                    Merealisasikan konsep bisnis kuliner inovatif dengan keberhasilan mencatatkan omzet omzet penjualan Rp3.000.000 hanya dalam waktu 1 bulan.
+                                    Merealisasikan konsep bisnis kuliner inovatif dengan keberhasilan mencatatkan omzet penjualan Rp3.000.000 hanya dalam waktu 1 bulan.
                                 </p>
                             </div>
                         </div>
@@ -642,7 +617,6 @@
                         </button>
                     </div>
 
-                    <!-- Card 3 -->
                     <div class="glass-card rounded-3xl overflow-hidden relative group flex flex-col justify-between">
                         <div>
                             <div class="relative h-48 bg-slate-900 overflow-hidden">
@@ -682,9 +656,7 @@
                     </div>
                 </div>
 
-                <!-- Grid Skills & Sertifikat -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Hard Skills -->
                     <div class="glass-card p-6 sm:p-8 rounded-3xl">
                         <div class="w-10 h-10 rounded-2xl bg-theme-500/10 text-theme-400 flex items-center justify-center text-lg mb-4">
                             <i class="fa-solid fa-laptop-code"></i>
@@ -698,7 +670,6 @@
                         </ul>
                     </div>
 
-                    <!-- Soft Skills -->
                     <div class="glass-card p-6 sm:p-8 rounded-3xl">
                         <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg mb-4">
                             <i class="fa-solid fa-users text-lg"></i>
@@ -712,7 +683,6 @@
                         </ul>
                     </div>
 
-                    <!-- Sertifikasi -->
                     <div class="glass-card p-6 sm:p-8 rounded-3xl">
                         <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg mb-4">
                             <i class="fa-solid fa-certificate"></i>
@@ -742,7 +712,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- BEM -->
                     <div class="glass-card p-6 rounded-3xl relative">
                         <span class="text-xs text-theme-400 font-bold editable" data-key="o1Year">Oct 2020 - Dec 2021</span>
                         <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o1Role">Staff Kementerian Sekretariat Negara</h3>
@@ -752,7 +721,6 @@
                         </p>
                     </div>
 
-                    <!-- IMM -->
                     <div class="glass-card p-6 rounded-3xl relative">
                         <span class="text-xs text-blue-400 font-bold editable" data-key="o2Year">Oct 2019 - Sep 2020</span>
                         <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o2Role">Sekretaris 1</h3>
@@ -762,7 +730,6 @@
                         </p>
                     </div>
 
-                    <!-- Komting -->
                     <div class="glass-card p-6 rounded-3xl relative">
                         <span class="text-xs text-teal-400 font-bold editable" data-key="o3Year">Aug 2018 - 2021</span>
                         <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o3Role">Ketua Angkatan (Komting 2018)</h3>
@@ -772,7 +739,6 @@
                         </p>
                     </div>
 
-                    <!-- Entrepreneur Day Korlap -->
                     <div class="glass-card p-6 rounded-3xl relative">
                         <span class="text-xs text-amber-400 font-bold editable" data-key="o4Year">Agenda Pengalaman</span>
                         <h3 class="text-lg font-bold text-white mt-1 editable" data-key="o4Role">Koordinator Lapangan Entrepreneur Day</h3>
@@ -990,15 +956,48 @@
             document.getElementById(id).click();
         }
 
+        // Fungsi kompresi gambar agar ukurannya tidak melebihi kuota dokumen Firestore (1MB)
+        function compressImage(file, maxWidth, maxHeight, quality, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    let canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                    callback(compressedDataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
         function updateImageSrc(event, targetId) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(targetId).src = e.target.result;
-                    showToast("Foto Diperbarui", "Foto berhasil diganti.", "success");
-                };
-                reader.readAsDataURL(file);
+                compressImage(file, 800, 800, 0.75, function(compressedUrl) {
+                    document.getElementById(targetId).src = compressedUrl;
+                    showToast("Foto Diperbarui", "Foto berhasil diganti & dikompresi.", "success");
+                });
             }
         }
 
@@ -1010,13 +1009,11 @@
         function updateCardImg(event, inputEl) {
             const file = event.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
+                compressImage(file, 800, 600, 0.75, function(compressedUrl) {
                     const imgEl = inputEl.parentElement.querySelector('img');
-                    if (imgEl) imgEl.src = e.target.result;
-                    showToast("Gambar Diperbarui", "Foto berhasil diganti.", "success");
-                };
-                reader.readAsDataURL(file);
+                    if (imgEl) imgEl.src = compressedUrl;
+                    showToast("Gambar Diperbarui", "Foto berhasil diganti & dikompresi.", "success");
+                });
             }
         }
 
@@ -1108,24 +1105,24 @@
             // Simpan lokal sebagai backup browser
             localStorage.setItem('portfolio_saved_data', JSON.stringify(dataToSave));
 
-            // Simpan ke Firestore Cloud agar bisa dibuka dan sinkron di browser lain
+            // Simpan ke Firestore Cloud (Jalur disederhanakan agar tidak terkendala aturan hak akses)
             if (window.db && window.doc && window.setDoc) {
                 try {
                     if (window.auth && !window.auth.currentUser && window.signInAnonymously) {
                         await window.signInAnonymously(window.auth);
                     }
 
-                    const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
+                    const docRef = window.doc(window.db, 'portfolio', 'main');
                     await window.setDoc(docRef, {
                         content: dataToSave,
                         updatedAt: new Date().toISOString()
                     }, { merge: true });
 
-                    showToast("Tersimpan Permanen", "Data berhasil disinkronkan ke Cloud & dapat diakses di browser lain.", "success");
+                    showToast("Tersimpan Permanen", "Data berhasil disinkronkan ke Cloud & dapat diakses di browser/HP lain.", "success");
                     return;
                 } catch (err) {
-                    console.warn("Firestore save failed:", err);
-                    showToast("Gagal Cloud", "Periksa kembali aturan Firestore Rules Anda.", "error");
+                    console.error("Firestore save error:", err);
+                    showToast("Gagal Cloud", "Gagal menyimpan ke Cloud. Periksa koneksi internet.", "error");
                 }
             } else {
                 showToast("Tersimpan Lokal", "Perubahan disimpan di browser ini.", "success");
@@ -1136,10 +1133,14 @@
         async function loadPortfolioData() {
             let loadedData = null;
 
-            // 1. Coba ambil data dari Firebase Cloud (agar browser lain dapat data yang sama)
+            // 1. Coba ambil data dari Firebase Cloud
             if (window.db && window.doc && window.getDoc) {
                 try {
-                    const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
+                    if (window.auth && !window.auth.currentUser && window.signInAnonymously) {
+                        await window.signInAnonymously(window.auth);
+                    }
+
+                    const docRef = window.doc(window.db, 'portfolio', 'main');
                     const snap = await window.getDoc(docRef);
                     if (snap.exists() && snap.data().content) {
                         loadedData = snap.data().content;
