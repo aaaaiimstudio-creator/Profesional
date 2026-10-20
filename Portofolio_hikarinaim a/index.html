@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK (Modular CDN) -->
+   <!-- Firebase SDK (Modular CDN) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -25,6 +25,7 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'hikarinaim-portfolio-app';
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
+            : {
                 apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
                 authDomain: "portofolio-ku-6446b.firebaseapp.com",
                 databaseURL: "https://portofolio-ku-6446b-default-rtdb.firebaseio.com",
@@ -34,7 +35,6 @@
                 appId: "1:489665741012:web:03fdf378fabdb24fa27b41",
                 measurementId: "G-WH5DBX02TF"
             };
-            
             
         let app, db, auth;
         try {
@@ -57,6 +57,12 @@
         window.addEventListener('DOMContentLoaded', async () => {
             if (window.loadPortfolioData) {
                 await window.loadPortfolioData();
+            }
+        });
+    </script>
+            }
+        });
+    </script>
             }
         });
     </script>
