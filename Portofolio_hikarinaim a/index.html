@@ -1125,7 +1125,7 @@
                     return;
                 } catch (err) {
                     console.warn("Firestore save failed:", err);
-                    showToast("Tersimpan Lokal", "Gagal ke cloud, tersimpan di browser ini.", "info");
+                    showToast("Gagal Cloud", "Periksa kembali aturan Firestore Rules Anda.", "error");
                 }
             } else {
                 showToast("Tersimpan Lokal", "Perubahan disimpan di browser ini.", "success");
