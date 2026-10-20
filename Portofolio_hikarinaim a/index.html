@@ -52,6 +52,13 @@
         window.setDoc = setDoc;
         window.doc = doc;
         window.getDoc = getDoc;
+
+        // Auto load data setelah Firebase siap
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.loadPortfolioData) {
+                window.loadPortfolioData();
+            }
+        });
     </script>
 
     <script>
@@ -93,12 +100,14 @@
     </script>
 
     <style>
-        :root {
+        /* TEMA GELAP (DARK THEMES) */
+        :root, body.theme-emerald {
             --c-50: #ecfdf5; --c-100: #d1fae5; --c-400: #34d399; --c-500: #10b981;
             --c-600: #059669; --c-700: #047857; --c-900: #064e3b;
             --bg-main: #06110d; --panel-bg: rgba(6, 26, 19, 0.75);
             --panel-border: rgba(52, 211, 153, 0.15); --text-main: #f0fdf4;
             --glow-color: rgba(16, 185, 129, 0.3);
+            --nav-bg: rgba(2, 6, 23, 0.85); --card-subtext: #94a3b8;
         }
 
         body.theme-cyan {
@@ -107,6 +116,7 @@
             --bg-main: #050b14; --panel-bg: rgba(10, 22, 40, 0.75);
             --panel-border: rgba(34, 211, 238, 0.15); --text-main: #f0f9ff;
             --glow-color: rgba(6, 182, 212, 0.3);
+            --nav-bg: rgba(2, 6, 23, 0.85); --card-subtext: #94a3b8;
         }
 
         body.theme-violet {
@@ -115,6 +125,7 @@
             --bg-main: #0d081a; --panel-bg: rgba(22, 13, 41, 0.75);
             --panel-border: rgba(167, 139, 250, 0.18); --text-main: #f5f3ff;
             --glow-color: rgba(139, 92, 246, 0.3);
+            --nav-bg: rgba(2, 6, 23, 0.85); --card-subtext: #94a3b8;
         }
 
         body.theme-sapphire {
@@ -123,6 +134,7 @@
             --bg-main: #070d19; --panel-bg: rgba(12, 25, 48, 0.75);
             --panel-border: rgba(96, 165, 250, 0.15); --text-main: #f0f7ff;
             --glow-color: rgba(59, 130, 246, 0.3);
+            --nav-bg: rgba(2, 6, 23, 0.85); --card-subtext: #94a3b8;
         }
 
         body.theme-amber {
@@ -131,7 +143,45 @@
             --bg-main: #120b02; --panel-bg: rgba(28, 18, 5, 0.8);
             --panel-border: rgba(251, 191, 36, 0.18); --text-main: #fffbeb;
             --glow-color: rgba(245, 158, 11, 0.3);
+            --nav-bg: rgba(2, 6, 23, 0.85); --card-subtext: #94a3b8;
         }
+
+        /* TEMA CERAH (LIGHT THEMES) */
+        body.theme-light-emerald {
+            --c-50: #ecfdf5; --c-100: #d1fae5; --c-400: #059669; --c-500: #10b981;
+            --c-600: #047857; --c-700: #064e3b; --c-900: #022c22;
+            --bg-main: #f8fafc; --panel-bg: rgba(255, 255, 255, 0.85);
+            --panel-border: rgba(16, 185, 129, 0.25); --text-main: #0f172a;
+            --glow-color: rgba(16, 185, 129, 0.15);
+            --nav-bg: rgba(255, 255, 255, 0.9); --card-subtext: #475569;
+        }
+
+        body.theme-light-cyan {
+            --c-50: #ecfeff; --c-100: #cffaff; --c-400: #0891b2; --c-500: #06b6d4;
+            --c-600: #0e7490; --c-700: #164e63; --c-900: #083344;
+            --bg-main: #f0f9ff; --panel-bg: rgba(255, 255, 255, 0.85);
+            --panel-border: rgba(6, 182, 212, 0.25); --text-main: #0c4a6e;
+            --glow-color: rgba(6, 182, 212, 0.15);
+            --nav-bg: rgba(255, 255, 255, 0.9); --card-subtext: #334155;
+        }
+
+        body.theme-light-gold {
+            --c-50: #fffbeb; --c-100: #fef3c7; --c-400: #d97706; --c-500: #f59e0b;
+            --c-600: #b45309; --c-700: #78350f; --c-900: #451a03;
+            --bg-main: #fffdf5; --panel-bg: rgba(255, 255, 255, 0.85);
+            --panel-border: rgba(245, 158, 11, 0.25); --text-main: #1c1917;
+            --glow-color: rgba(245, 158, 11, 0.15);
+            --nav-bg: rgba(255, 255, 255, 0.9); --card-subtext: #57534e;
+        }
+
+        /* Penyesuaian Komponen Tema Cerah */
+        body[class*="theme-light"] .text-white { color: #0f172a !important; }
+        body[class*="theme-light"] .text-slate-300 { color: #334155 !important; }
+        body[class*="theme-light"] .text-slate-400 { color: #64748b !important; }
+        body[class*="theme-light"] .bg-slate-900 { background-color: #f1f5f9 !important; border-color: #cbd5e1 !important; }
+        body[class*="theme-light"] .bg-slate-950\/40 { background-color: rgba(241, 245, 249, 0.6) !important; }
+        body[class*="theme-light"] .bg-slate-950\/50 { background-color: rgba(241, 245, 249, 0.7) !important; }
+        body[class*="theme-light"] .bg-slate-950\/70 { background-color: rgba(255, 255, 255, 0.9) !important; }
 
         body {
             background-color: var(--bg-main);
@@ -144,7 +194,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--panel-border);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -167,12 +217,12 @@
             outline: 2px solid var(--c-500);
             outline-offset: 4px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb { background: rgba(100, 100, 100, 0.2); border-radius: 999px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--c-500); }
     </style>
 </head>
@@ -189,22 +239,27 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2">
-                <!-- Theme Select -->
+                <!-- Theme Select Gelap & Cerah -->
                 <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-white/10">
-                    <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-palette"></i> Tema:</span>
-                    <button onclick="setTheme('theme-emerald')" class="w-6 h-6 rounded-lg bg-emerald-500 hover:scale-110 transition shadow" title="Emerald Wealth"></button>
-                    <button onclick="setTheme('theme-cyan')" class="w-6 h-6 rounded-lg bg-cyan-500 hover:scale-110 transition shadow" title="Electric Cyan"></button>
-                    <button onclick="setTheme('theme-violet')" class="w-6 h-6 rounded-lg bg-violet-500 hover:scale-110 transition shadow" title="Royal Violet"></button>
-                    <button onclick="setTheme('theme-sapphire')" class="w-6 h-6 rounded-lg bg-blue-500 hover:scale-110 transition shadow" title="Ocean Sapphire"></button>
-                    <button onclick="setTheme('theme-amber')" class="w-6 h-6 rounded-lg bg-amber-500 hover:scale-110 transition shadow" title="Sunset Gold"></button>
+                    <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-palette"></i> Gelap:</span>
+                    <button onclick="setTheme('theme-emerald')" class="w-5 h-5 rounded-lg bg-emerald-500 hover:scale-110 transition shadow" title="Emerald Wealth"></button>
+                    <button onclick="setTheme('theme-cyan')" class="w-5 h-5 rounded-lg bg-cyan-500 hover:scale-110 transition shadow" title="Electric Cyan"></button>
+                    <button onclick="setTheme('theme-violet')" class="w-5 h-5 rounded-lg bg-violet-500 hover:scale-110 transition shadow" title="Royal Violet"></button>
+                    <button onclick="setTheme('theme-sapphire')" class="w-5 h-5 rounded-lg bg-blue-500 hover:scale-110 transition shadow" title="Ocean Sapphire"></button>
+                    <button onclick="setTheme('theme-amber')" class="w-5 h-5 rounded-lg bg-amber-500 hover:scale-110 transition shadow" title="Sunset Gold"></button>
+                    
+                    <span class="text-[10px] text-slate-400 font-bold px-1.5 border-l border-white/20 hidden sm:inline">Cerah:</span>
+                    <button onclick="setTheme('theme-light-emerald')" class="w-5 h-5 rounded-lg bg-emerald-200 border border-emerald-600 hover:scale-110 transition shadow" title="Light Emerald"></button>
+                    <button onclick="setTheme('theme-light-cyan')" class="w-5 h-5 rounded-lg bg-cyan-200 border border-cyan-600 hover:scale-110 transition shadow" title="Light Cyan"></button>
+                    <button onclick="setTheme('theme-light-gold')" class="w-5 h-5 rounded-lg bg-amber-200 border border-amber-600 hover:scale-110 transition shadow" title="Light Gold"></button>
                 </div>
 
                 <!-- Font Select -->
                 <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-white/10">
                     <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-font"></i> Font:</span>
-                    <button onclick="setFont('font-jakarta')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold">Jakarta</button>
-                    <button onclick="setFont('font-outfit')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold">Outfit</button>
-                    <button onclick="setFont('font-space')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold">Mono</button>
+                    <button onclick="setFont('font-jakarta')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold text-white">Jakarta</button>
+                    <button onclick="setFont('font-outfit')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold text-white">Outfit</button>
+                    <button onclick="setFont('font-space')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold text-white">Mono</button>
                 </div>
 
                 <!-- Actions -->
@@ -625,9 +680,6 @@
                         <span class="text-theme-400 font-black text-xs uppercase tracking-widest editable" data-key="tlsTag">KOMPETENSI & LEGALITAS</span>
                         <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 editable" data-key="tlsTitle">Hard Skills, Soft Skills & Sertifikasi</h2>
                     </div>
-                    <button onclick="addToolCard()" id="btnAddTool" class="hidden mt-4 md:mt-0 bg-theme-500/20 hover:bg-theme-500 border border-theme-500/30 text-theme-300 hover:text-slate-950 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
-                        <i class="fa-solid fa-plus"></i> Tambah Atribut
-                    </button>
                 </div>
 
                 <!-- Grid Skills & Sertifikat -->
@@ -827,7 +879,7 @@
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <h3 class="text-lg font-extrabold text-white">Login Admin Editor</h3>
-                <p class="text-xs text-slate-400 mt-1">Kulonuwun Namung Kulo: <span class="font-bold text-theme-400">kulonuwunsalah</span></p>
+                <p class="text-xs text-slate-400 mt-1">Sandi Default: <span class="font-bold text-theme-400">adminq123</span></p>
             </div>
             <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div>
@@ -873,12 +925,12 @@
         function handleLoginSubmit(e) {
             e.preventDefault();
             const pass = document.getElementById('adminPasswordInput').value;
-            if (pass === 'adminq123') {
+            if (pass === 'adminq123' || pass === 'kulonuwunsalah') {
                 closeLoginModal();
                 enableSuperAdminMode();
                 showToast("Admin Aktif", "Akses editor penuh diaktifkan.", "success");
             } else {
-                showToast("Sandi Salah", "Kata sandi default adalah adminq123", "error");
+                showToast("Sandi Salah", "Kata sandi tidak sesuai", "error");
             }
         }
 
@@ -887,7 +939,7 @@
             document.getElementById('adminBar').classList.remove('hidden');
             document.body.classList.add('pt-12');
 
-            ['btnAddJourney', 'btnAddPortfolio', 'btnAddTool', 'btnHeroImg'].forEach(id => {
+            ['btnAddJourney', 'btnAddPortfolio', 'btnHeroImg'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('hidden');
             });
@@ -904,7 +956,7 @@
             document.getElementById('adminBar').classList.add('hidden');
             document.body.classList.remove('pt-12');
 
-            ['btnAddJourney', 'btnAddPortfolio', 'btnAddTool', 'btnHeroImg'].forEach(id => {
+            ['btnAddJourney', 'btnAddPortfolio', 'btnHeroImg'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
@@ -920,8 +972,9 @@
 
         function setTheme(themeClass) {
             const root = document.getElementById('bodyRoot');
-            root.className = root.className.replace(/theme-\w+/g, '').trim();
+            root.className = root.className.replace(/theme-[\w-]+/g, '').trim();
             root.classList.add(themeClass);
+            localStorage.setItem('portfolio_theme', themeClass);
             showToast("Tema Diubah", "Tema visual diperbarui.", "success");
         }
 
@@ -929,6 +982,7 @@
             const root = document.getElementById('bodyRoot');
             root.classList.remove('font-jakarta', 'font-outfit', 'font-space');
             root.classList.add(fontClass);
+            localStorage.setItem('portfolio_font', fontClass);
             showToast("Font Diubah", "Tipografi diperbarui.", "success");
         }
 
@@ -980,13 +1034,13 @@
                 <div class="relative pl-6 sm:pl-8 group">
                     <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-theme-500 border-4 border-slate-950"></div>
                     <div class="glass-card p-6 sm:p-8 rounded-3xl relative">
-                        <span class="text-xs text-theme-400 font-extrabold editable" contenteditable="true">Periode Baru</span>
-                        <h3 class="text-xl font-black text-white mt-1 editable" contenteditable="true">Jabatan Baru</h3>
-                        <h4 class="text-sm font-bold text-slate-300 editable" contenteditable="true">Nama Perusahaan / Institusi</h4>
-                        <ul class="mt-3 space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-4 leading-relaxed editable" contenteditable="true">
+                        <span class="text-xs text-theme-400 font-extrabold editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>Periode Baru</span>
+                        <h3 class="text-xl font-black text-white mt-1 editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>Jabatan Baru</h3>
+                        <h4 class="text-sm font-bold text-slate-300 editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>Nama Perusahaan / Institusi</h4>
+                        <ul class="mt-3 space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-4 leading-relaxed editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>
                             <li>Tuliskan pencapaian utama dan rincian tanggung jawab pekerjaan di sini...</li>
                         </ul>
-                        <button onclick="removeCard(this)" class="delete-btn absolute top-4 right-4 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white p-2 rounded-lg text-xs transition">
+                        <button onclick="removeCard(this)" class="delete-btn ${isAdminLoggedIn ? '' : 'hidden'} absolute top-4 right-4 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white p-2 rounded-lg text-xs transition">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </div>
@@ -1003,22 +1057,22 @@
                     <div>
                         <div class="relative h-48 bg-slate-900 overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="Karya Baru">
-                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-theme-400 text-[10px] font-bold px-2.5 py-1 rounded-full editable" contenteditable="true">KATEGORI KARYA</span>
-                            <button onclick="triggerCardImgUpload(this)" class="img-upload-btn absolute bottom-3 right-3 bg-theme-500 text-slate-950 p-2 rounded-xl text-xs shadow hover:scale-110 transition">
+                            <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-theme-400 text-[10px] font-bold px-2.5 py-1 rounded-full editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>KATEGORI KARYA</span>
+                            <button onclick="triggerCardImgUpload(this)" class="img-upload-btn ${isAdminLoggedIn ? '' : 'hidden'} absolute bottom-3 right-3 bg-theme-500 text-slate-950 p-2 rounded-xl text-xs shadow hover:scale-110 transition">
                                 <i class="fa-solid fa-camera"></i>
                             </button>
                             <input type="file" accept="image/*" class="hidden" onchange="updateCardImg(event, this)">
                         </div>
                         <div class="p-6">
-                            <h3 class="text-lg font-bold text-white editable" contenteditable="true">Judul Portofolio Baru</h3>
-                            <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" contenteditable="true">Deskripsikan ringkasan riset atau hasil proyek ini...</p>
+                            <h3 class="text-lg font-bold text-white editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>Judul Portofolio Baru</h3>
+                            <p class="text-xs text-slate-300 mt-2 leading-relaxed editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}>Deskripsikan ringkasan riset atau hasil proyek ini...</p>
                         </div>
                     </div>
                     <div class="p-6 pt-0 flex items-center justify-between text-xs text-slate-300 border-t border-white/10 mt-4">
-                        <span class="editable" contenteditable="true"><i class="fa-solid fa-check-circle text-theme-400 mr-1"></i> Terverifikasi</span>
+                        <span class="editable" ${isAdminLoggedIn ? 'contenteditable="true"' : ''}><i class="fa-solid fa-check-circle text-theme-400 mr-1"></i> Terverifikasi</span>
                         <a href="#contact" class="text-theme-400 font-bold hover:underline">Detail →</a>
                     </div>
-                    <button onclick="removeCard(this)" class="delete-btn absolute top-3 right-3 bg-rose-500/80 text-white p-2 rounded-xl text-xs transition">
+                    <button onclick="removeCard(this)" class="delete-btn ${isAdminLoggedIn ? '' : 'hidden'} absolute top-3 right-3 bg-rose-500/80 text-white p-2 rounded-xl text-xs transition">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
@@ -1027,37 +1081,122 @@
             showToast("Ditambahkan", "Kartu portofolio baru ditambahkan.", "success");
         }
 
+        // SIMPAN PERMANEN
         async function savePortfolioToCloud() {
-            if (!window.db || !window.auth) {
-                showToast("Simpan Tampilan", "Perubahan tersimpan pada halaman aktif ini.", "success");
-                return;
+            const dataToSave = {};
+            
+            // Simpan konten teks
+            document.querySelectorAll('.editable').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (key) {
+                    dataToSave[key] = el.innerHTML;
+                }
+            });
+
+            // Simpan foto utama & foto-foto kartu
+            const heroImg = document.getElementById('heroImg');
+            if (heroImg) dataToSave['heroImgSrc'] = heroImg.src;
+
+            const portfolioContainer = document.getElementById('portfolioGrid');
+            if (portfolioContainer) dataToSave['portfolioContainerHTML'] = portfolioContainer.innerHTML;
+
+            const journeyContainer = document.getElementById('journeyContainer');
+            if (journeyContainer) dataToSave['journeyContainerHTML'] = journeyContainer.innerHTML;
+
+            // Simpan Tema & Font
+            const root = document.getElementById('bodyRoot');
+            dataToSave['activeTheme'] = localStorage.getItem('portfolio_theme') || root.className;
+            dataToSave['activeFont'] = localStorage.getItem('portfolio_font') || 'font-jakarta';
+
+            // 1. Simpan ke LocalStorage sebagai backup cepat
+            localStorage.setItem('portfolio_saved_data', JSON.stringify(dataToSave));
+
+            // 2. Simpan ke Firestore
+            if (window.db && window.doc && window.setDoc) {
+                try {
+                    if (window.auth && !window.auth.currentUser && window.signInAnonymously) {
+                        await window.signInAnonymously(window.auth);
+                    }
+
+                    const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
+                    await window.setDoc(docRef, {
+                        content: dataToSave,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
+
+                    showToast("Tersimpan Permanen", "Semua perubahan disinkronkan ke Cloud & Browser.", "success");
+                    return;
+                } catch (err) {
+                    console.warn("Firestore save failed, fallback to LocalStorage:", err);
+                }
             }
 
-            try {
-                if (!window.auth.currentUser) {
-                    await window.signInAnonymously(window.auth);
+            showToast("Tersimpan Lokal", "Perubahan berhasil disimpan permanen di browser ini.", "success");
+        }
+
+        // MEMUAT DATA SAAT REFRESH
+        async function loadPortfolioData() {
+            let loadedData = null;
+
+            // Load Tema & Font Awal jika ada
+            const savedTheme = localStorage.getItem('portfolio_theme');
+            if (savedTheme) setTheme(savedTheme);
+
+            const savedFont = localStorage.getItem('portfolio_font');
+            if (savedFont) setFont(savedFont);
+
+            // 1. Ambil dari Firestore Cloud terlebih dahulu
+            if (window.db && window.doc && window.getDoc) {
+                try {
+                    const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
+                    const snap = await window.getDoc(docRef);
+                    if (snap.exists() && snap.data().content) {
+                        loadedData = snap.data().content;
+                    }
+                } catch (err) {
+                    console.warn("Firestore load failed, checking LocalStorage:", err);
+                }
+            }
+
+            // 2. Jika Cloud kosong/gagal, ambil dari LocalStorage
+            if (!loadedData) {
+                const localStr = localStorage.getItem('portfolio_saved_data');
+                if (localStr) {
+                    try { loadedData = JSON.parse(localStr); } catch(e){}
+                }
+            }
+
+            // Apply data ke tampilan jika ditemukan
+            if (loadedData) {
+                // Restore kontainer dinamis (Pengalaman & Portofolio)
+                if (loadedData['journeyContainerHTML']) {
+                    document.getElementById('journeyContainer').innerHTML = loadedData['journeyContainerHTML'];
+                }
+                if (loadedData['portfolioContainerHTML']) {
+                    document.getElementById('portfolioGrid').innerHTML = loadedData['portfolioContainerHTML'];
                 }
 
-                const dataToSave = {};
+                // Restore Foto
+                if (loadedData['heroImgSrc']) {
+                    const heroImg = document.getElementById('heroImg');
+                    if (heroImg) heroImg.src = loadedData['heroImgSrc'];
+                }
+
+                // Restore Tema & Font
+                if (loadedData['activeTheme']) setTheme(loadedData['activeTheme']);
+                if (loadedData['activeFont']) setFont(loadedData['activeFont']);
+
+                // Restore Teks
                 document.querySelectorAll('.editable').forEach(el => {
                     const key = el.getAttribute('data-key');
-                    if (key) {
-                        dataToSave[key] = el.innerHTML;
+                    if (key && loadedData[key] !== undefined) {
+                        el.innerHTML = loadedData[key];
                     }
                 });
-
-                const docRef = window.doc(window.db, 'artifacts', window.appId, 'public', 'data', 'portfolio_content', 'main_doc');
-                await window.setDoc(docRef, {
-                    content: dataToSave,
-                    updatedAt: new Date().toISOString()
-                }, { merge: true });
-
-                showToast("Tersimpan Cloud", "Seluruh isi CV & perubahan disinkronkan ke Cloud.", "success");
-            } catch (err) {
-                console.error("Save Error:", err);
-                showToast("Tersimpan Tampilan", "Perubahan tersimpan pada browser.", "info");
             }
         }
+
+        window.loadPortfolioData = loadPortfolioData;
 
         function handleFormSubmit(e) {
             e.preventDefault();
@@ -1093,3 +1232,4 @@
     </script>
 </body>
 </html>
+```
