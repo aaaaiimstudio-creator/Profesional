@@ -16,11 +16,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK (Modular CDN v11) -->
+    <!-- Firebase SDK (Modular CDN v11) dengan Realtime Listener (onSnapshot) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCbYJRcAwQIL6L7MyoNidq_PhI3-_2yJEc",
@@ -47,12 +47,31 @@
         window.signInAnonymously = signInAnonymously;
         window.setDoc = setDoc;
         window.doc = doc;
-        window.getDoc = getDoc;
+        window.onSnapshot = onSnapshot;
 
-        // Auto load data dari Cloud saat halaman siap
+        // Auto load & Realtime sync dari Cloud Firestore
         window.addEventListener('DOMContentLoaded', async () => {
-            if (window.loadPortfolioData) {
-                await window.loadPortfolioData();
+            if (window.auth && window.signInAnonymously) {
+                try {
+                    await window.signInAnonymously(window.auth);
+                } catch (err) {
+                    console.warn("Auth warning:", err);
+                }
+            }
+
+            if (window.db && window.doc && window.onSnapshot) {
+                const docRef = window.doc(window.db, 'portfolio', 'main');
+                // Menggunakan onSnapshot agar perubahan antar browser langsung sinkron secara realtime
+                window.onSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().content) {
+                        // Jangan timpa jika admin sedang aktif mengetik di browser ini agar tidak konflik
+                        if (typeof window.applyPortfolioData === 'function') {
+                            window.applyPortfolioData(docSnap.data().content);
+                        }
+                    }
+                }, (error) => {
+                    console.warn("Snapshot listener error:", error);
+                });
             }
         });
     </script>
@@ -96,7 +115,6 @@
     </script>
 
     <style>
-        /* TEMA GELAP (DARK THEMES) */
         :root, body.theme-emerald {
             --c-50: #ecfdf5; --c-100: #d1fae5; --c-400: #34d399; --c-500: #10b981;
             --c-600: #059669; --c-700: #047857; --c-900: #064e3b;
@@ -142,7 +160,6 @@
             --nav-bg: rgba(2, 6, 23, 0.85); --card-subtext: #94a3b8;
         }
 
-        /* TEMA CERAH (LIGHT THEMES) */
         body.theme-light-emerald {
             --c-50: #ecfdf5; --c-100: #d1fae5; --c-400: #059669; --c-500: #10b981;
             --c-600: #047857; --c-700: #064e3b; --c-900: #022c22;
@@ -231,7 +248,6 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2">
-                <!-- Theme Select Gelap & Cerah -->
                 <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-white/10">
                     <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-palette"></i> Gelap:</span>
                     <button onclick="setTheme('theme-emerald')" class="w-5 h-5 rounded-lg bg-emerald-500 hover:scale-110 transition shadow" title="Emerald Wealth"></button>
@@ -246,7 +262,6 @@
                     <button onclick="setTheme('theme-light-gold')" class="w-5 h-5 rounded-lg bg-amber-200 border border-amber-600 hover:scale-110 transition shadow" title="Light Gold"></button>
                 </div>
 
-                <!-- Font Select -->
                 <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-white/10">
                     <span class="text-[10px] text-slate-400 font-bold px-1.5 hidden sm:inline"><i class="fa-solid fa-font"></i> Font:</span>
                     <button onclick="setFont('font-jakarta')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold text-white">Jakarta</button>
@@ -254,7 +269,6 @@
                     <button onclick="setFont('font-space')" class="px-2 py-1 text-[11px] rounded-lg bg-slate-800 hover:bg-slate-700 font-bold text-white">Mono</button>
                 </div>
 
-                <!-- Actions -->
                 <button onclick="savePortfolioToCloud()" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold px-3.5 py-1.5 rounded-xl text-xs shadow-lg transition flex items-center gap-1.5">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Permanen
                 </button>
@@ -941,7 +955,6 @@
             root.className = root.className.replace(/theme-[\w-]+/g, '').trim();
             root.classList.add(themeClass);
             localStorage.setItem('portfolio_theme', themeClass);
-            showToast("Tema Diubah", "Tema visual diperbarui.", "success");
         }
 
         function setFont(fontClass) {
@@ -949,14 +962,12 @@
             root.classList.remove('font-jakarta', 'font-outfit', 'font-space');
             root.classList.add(fontClass);
             localStorage.setItem('portfolio_font', fontClass);
-            showToast("Font Diubah", "Tipografi diperbarui.", "success");
         }
 
         function triggerFileInput(id) {
             document.getElementById(id).click();
         }
 
-        // Fungsi kompresi gambar agar ukurannya tidak melebihi kuota dokumen Firestore (1MB)
         function compressImage(file, maxWidth, maxHeight, quality, callback) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -1078,7 +1089,7 @@
             showToast("Ditambahkan", "Kartu portofolio baru ditambahkan.", "success");
         }
 
-        // SIMPAN KE CLOUD & LOCALSTORAGE
+        // SIMPAN KE CLOUD FIREBASE
         async function savePortfolioToCloud() {
             const dataToSave = {};
             
@@ -1102,93 +1113,64 @@
             dataToSave['activeTheme'] = localStorage.getItem('portfolio_theme') || root.className;
             dataToSave['activeFont'] = localStorage.getItem('portfolio_font') || 'font-jakarta';
 
-            // Simpan lokal sebagai backup browser
-            localStorage.setItem('portfolio_saved_data', JSON.stringify(dataToSave));
-
-            // Simpan ke Firestore Cloud (Jalur disederhanakan agar tidak terkendala aturan hak akses)
             if (window.db && window.doc && window.setDoc) {
                 try {
-                    if (window.auth && !window.auth.currentUser && window.signInAnonymously) {
-                        await window.signInAnonymously(window.auth);
-                    }
-
                     const docRef = window.doc(window.db, 'portfolio', 'main');
                     await window.setDoc(docRef, {
                         content: dataToSave,
                         updatedAt: new Date().toISOString()
                     }, { merge: true });
 
-                    showToast("Tersimpan Permanen", "Data berhasil disinkronkan ke Cloud & dapat diakses di browser/HP lain.", "success");
+                    showToast("Tersimpan Permanen", "Data berhasil disinkronkan secara realtime ke Cloud Firebase.", "success");
                     return;
                 } catch (err) {
                     console.error("Firestore save error:", err);
                     showToast("Gagal Cloud", "Gagal menyimpan ke Cloud. Periksa koneksi internet.", "error");
                 }
             } else {
-                showToast("Tersimpan Lokal", "Perubahan disimpan di browser ini.", "success");
+                showToast("Gagal", "Database Firebase belum terinisialisasi.", "error");
             }
         }
 
-        // MEMUAT DATA LINTAS BROWSER DARI FIRESTORE & LOCALSTORAGE
-        async function loadPortfolioData() {
-            let loadedData = null;
+        // MENERAPKAN DATA KE HALAMAN (REALTIME SYNC)
+        function applyPortfolioData(loadedData) {
+            if (!loadedData) return;
 
-            // 1. Coba ambil data dari Firebase Cloud
-            if (window.db && window.doc && window.getDoc) {
-                try {
-                    if (window.auth && !window.auth.currentUser && window.signInAnonymously) {
-                        await window.signInAnonymously(window.auth);
-                    }
-
-                    const docRef = window.doc(window.db, 'portfolio', 'main');
-                    const snap = await window.getDoc(docRef);
-                    if (snap.exists() && snap.data().content) {
-                        loadedData = snap.data().content;
-                    }
-                } catch (err) {
-                    console.warn("Gagal memuat dari Cloud:", err);
-                }
+            if (loadedData['journeyContainerHTML'] && !isAdminLoggedIn) {
+                document.getElementById('journeyContainer').innerHTML = loadedData['journeyContainerHTML'];
+            }
+            if (loadedData['portfolioContainerHTML'] && !isAdminLoggedIn) {
+                document.getElementById('portfolioGrid').innerHTML = loadedData['portfolioContainerHTML'];
             }
 
-            // 2. Jika Cloud kosong/gagal, ambil dari LocalStorage perangkat
-            if (!loadedData) {
-                const localStr = localStorage.getItem('portfolio_saved_data');
-                if (localStr) {
-                    try { loadedData = JSON.parse(localStr); } catch(e){}
-                }
+            if (loadedData['heroImgSrc']) {
+                const heroImg = document.getElementById('heroImg');
+                if (heroImg) heroImg.src = loadedData['heroImgSrc'];
             }
 
-            // Terapkan data ke elemen halaman
-            if (loadedData) {
-                if (loadedData['journeyContainerHTML']) {
-                    document.getElementById('journeyContainer').innerHTML = loadedData['journeyContainerHTML'];
-                }
-                if (loadedData['portfolioContainerHTML']) {
-                    document.getElementById('portfolioGrid').innerHTML = loadedData['portfolioContainerHTML'];
-                }
+            if (loadedData['activeTheme']) {
+                setTheme(loadedData['activeTheme']);
+            }
+            if (loadedData['activeFont']) {
+                setFont(loadedData['activeFont']);
+            }
 
-                if (loadedData['heroImgSrc']) {
-                    const heroImg = document.getElementById('heroImg');
-                    if (heroImg) heroImg.src = loadedData['heroImgSrc'];
-                }
-
-                if (loadedData['activeTheme']) {
-                    setTheme(loadedData['activeTheme']);
-                }
-                if (loadedData['activeFont']) {
-                    setFont(loadedData['activeFont']);
-                }
-
-                document.querySelectorAll('.editable').forEach(el => {
-                    const key = el.getAttribute('data-key');
-                    if (key && loadedData[key] !== undefined) {
+            document.querySelectorAll('.editable').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (key && loadedData[key] !== undefined) {
+                    // Hindari menimpa teks yang sedang aktif diedit oleh admin di browser ini
+                    if (document.activeElement !== el) {
                         el.innerHTML = loadedData[key];
                     }
-                });
+                }
+            });
+
+            if (isAdminLoggedIn) {
+                document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
             }
         }
 
-        window.loadPortfolioData = loadPortfolioData;
+        window.applyPortfolioData = applyPortfolioData;
 
         function handleFormSubmit(e) {
             e.preventDefault();
