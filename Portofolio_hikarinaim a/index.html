@@ -61,10 +61,8 @@
 
             if (window.db && window.doc && window.onSnapshot) {
                 const docRef = window.doc(window.db, 'portfolio', 'main');
-                // Menggunakan onSnapshot agar perubahan antar browser langsung sinkron secara realtime
                 window.onSnapshot(docRef, (docSnap) => {
                     if (docSnap.exists() && docSnap.data().content) {
-                        // Jangan timpa jika admin sedang aktif mengetik di browser ini agar tidak konflik
                         if (typeof window.applyPortfolioData === 'function') {
                             window.applyPortfolioData(docSnap.data().content);
                         }
@@ -875,7 +873,7 @@
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 border border-white/10 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 max-w-xs">
-        <div id="toastIcon" class="w-8 h-8 rounded-xl bg-theme-500/20 text-theme-400 flex items-center justify-center text-sm shrink-0">
+        <div id="toastIcon" class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm shrink-0">
             <i class="fa-solid fa-check"></i>
         </div>
         <div>
@@ -1132,15 +1130,18 @@
             }
         }
 
-        // MENERAPKAN DATA KE HALAMAN (REALTIME SYNC)
+        // MENERAPKAN DATA KE HALAMAN (REALTIME SYNC - DIPERBAIKI)
         function applyPortfolioData(loadedData) {
             if (!loadedData) return;
 
-            if (loadedData['journeyContainerHTML'] && !isAdminLoggedIn) {
-                document.getElementById('journeyContainer').innerHTML = loadedData['journeyContainerHTML'];
-            }
-            if (loadedData['portfolioContainerHTML'] && !isAdminLoggedIn) {
-                document.getElementById('portfolioGrid').innerHTML = loadedData['portfolioContainerHTML'];
+            // Jangan timpa kontainer jika admin sedang aktif mengedit di browser ini untuk menghindari konflik kursor
+            if (!isAdminLoggedIn) {
+                if (loadedData['journeyContainerHTML']) {
+                    document.getElementById('journeyContainer').innerHTML = loadedData['journeyContainerHTML'];
+                }
+                if (loadedData['portfolioContainerHTML']) {
+                    document.getElementById('portfolioGrid').innerHTML = loadedData['portfolioContainerHTML'];
+                }
             }
 
             if (loadedData['heroImgSrc']) {
@@ -1158,7 +1159,6 @@
             document.querySelectorAll('.editable').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (key && loadedData[key] !== undefined) {
-                    // Hindari menimpa teks yang sedang aktif diedit oleh admin di browser ini
                     if (document.activeElement !== el) {
                         el.innerHTML = loadedData[key];
                     }
@@ -1167,6 +1167,7 @@
 
             if (isAdminLoggedIn) {
                 document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'true'));
+                document.querySelectorAll('.delete-btn, .img-upload-btn').forEach(btn => btn.classList.remove('hidden'));
             }
         }
 
